@@ -64,6 +64,7 @@
     colorMode: "hex",
     colorEditorOpen: false,
     colorEditorTarget: "primary",
+    saveBeforeCloseResolver: null,
     suppressPalettePresetRefresh: false,
     exportDialogOpen: false,
     pickedColor: "#000000",
@@ -243,7 +244,11 @@
     newProjectHeightInput: document.getElementById("newProjectHeightInput"),
     newProjectCancelBtn: document.getElementById("newProjectCancelBtn"),
     createNewProjectBtn: document.getElementById("createNewProjectBtn"),
-    newSizePresetButtons: Array.from(document.querySelectorAll(".new-size-preset"))
+    newSizePresetButtons: Array.from(document.querySelectorAll(".new-size-preset")),
+    saveBeforeCloseModal: document.getElementById("saveBeforeCloseModal"),
+    saveBeforeCloseMessage: document.getElementById("saveBeforeCloseMessage"),
+    saveBeforeCloseSaveBtn: document.getElementById("saveBeforeCloseSaveBtn"),
+    saveBeforeCloseDontSaveBtn: document.getElementById("saveBeforeCloseDontSaveBtn")
   };
 
   const shortcutStorageKey = "spritepad_shortcuts_v1";
@@ -5036,6 +5041,18 @@
       els.createNewProjectBtn.addEventListener("click", createNewProjectFromDialog);
     }
 
+    if (els.saveBeforeCloseSaveBtn != null) {
+      els.saveBeforeCloseSaveBtn.addEventListener("click", function () {
+        resolveSaveBeforeCloseDialog("save");
+      });
+    }
+
+    if (els.saveBeforeCloseDontSaveBtn != null) {
+      els.saveBeforeCloseDontSaveBtn.addEventListener("click", function () {
+        resolveSaveBeforeCloseDialog("dontSave");
+      });
+    }
+
     for (let i = 0; i < els.newSizePresetButtons.length; i++) {
       els.newSizePresetButtons[i].addEventListener("click", function () {
         const size = this.dataset.size;
@@ -5168,13 +5185,44 @@
   }
 
 
-  function shouldSaveDocumentBeforeClose(index) {
+  function showSaveBeforeCloseDialog(documentName) {
+    if (!els.saveBeforeCloseModal) {
+      return Promise.resolve("dontSave");
+    }
+
+    if (els.saveBeforeCloseMessage) {
+      els.saveBeforeCloseMessage.textContent = 'Save "' + documentName + '" before closing?';
+    }
+
+    els.saveBeforeCloseModal.classList.remove("hidden");
+
+    return new Promise(function (resolve) {
+      state.saveBeforeCloseResolver = resolve;
+    });
+  }
+
+  function resolveSaveBeforeCloseDialog(choice) {
+    if (els.saveBeforeCloseModal) {
+      els.saveBeforeCloseModal.classList.add("hidden");
+    }
+
+    const resolver = state.saveBeforeCloseResolver;
+    state.saveBeforeCloseResolver = null;
+
+    if (resolver) {
+      resolver(choice);
+    }
+  }
+
+  async function shouldSaveDocumentBeforeClose(index) {
     ensureDocumentSystem();
     const documentInfo = state.documents[index];
     if (!documentInfo) return true;
+    if (!documentInfo.dirty) return true;
 
-    const shouldSave = window.confirm("Save \"" + documentInfo.name + "\" before closing?\n\nOK = Save\nCancel = Don\'t Save");
-    if (shouldSave) {
+    const choice = await showSaveBeforeCloseDialog(documentInfo.name);
+
+    if (choice === "save") {
       const currentIndex = state.currentDocument;
       if (currentIndex !== index) {
         saveCurrentDocumentSnapshot();
@@ -5191,13 +5239,14 @@
     return true;
   }
 
-  function closeDocument(index) {
+  async function closeDocument(index) {
     ensureDocumentSystem();
     if (index < 0) return false;
     if (index >= state.documents.length) return false;
 
     saveCurrentDocumentSnapshot();
-    if (!shouldSaveDocumentBeforeClose(index)) return false;
+    const canClose = await shouldSaveDocumentBeforeClose(index);
+    if (!canClose) return false;
 
     state.documents.splice(index, 1);
 
@@ -5232,7 +5281,7 @@
     return closeDocument(state.currentDocument);
   }
 
-  function exitApp() {
+  async function exitApp() {
     ensureDocumentSystem();
     saveCurrentDocumentSnapshot();
 
@@ -5240,7 +5289,8 @@
       state.currentDocument = 0;
       loadProjectData(state.documents[0].data);
       renderDocumentTabs();
-      if (!closeDocument(0)) return;
+      const closed = await closeDocument(0);
+      if (!closed) return;
     }
 
     if (!nativeExitApp()) {

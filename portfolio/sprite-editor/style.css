@@ -4620,3 +4620,162 @@ input[type="number"] {
     height: 142px !important;
   }
 }
+
+/* === 2026-05-24 Desktop-App local spacing + native-style save prompt === */
+:root {
+  --right-dock-width: 610px !important;
+  --right-dock-total: var(--right-dock-width) !important;
+}
+
+.canvas-section::after {
+  right: var(--right-dock-width) !important;
+}
+
+.canvas-toolbar,
+.canvas-wrap,
+.canvas-bottom-bar {
+  padding-right: calc(var(--right-dock-width) + 10px) !important;
+}
+
+.timeline-panel {
+  grid-template-columns: 188px minmax(0, 1fr) !important;
+  padding-right: 10px !important;
+  margin-right: var(--right-dock-width) !important;
+}
+
+.animation-sidebar {
+  min-width: 0 !important;
+}
+
+.animation-list-item {
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+}
+
+.animation-list-name {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.frame-timeline {
+  min-width: 0 !important;
+}
+
+.inspector {
+  width: var(--right-dock-width) !important;
+}
+
+.inspector .panel-card.split-panel-card,
+.inspector .panel-card {
+  grid-template-columns: minmax(300px, 1.12fr) minmax(250px, 0.88fr) !important;
+  gap: 10px !important;
+}
+
+#layersTab {
+  padding-right: 12px !important;
+}
+
+#paletteTab {
+  padding-left: 4px !important;
+}
+
+#paletteTab .active-colors {
+  max-width: 260px !important;
+  grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr) !important;
+  gap: 5px !important;
+}
+
+#paletteTab .active-color-button {
+  height: 22px !important;
+  min-height: 22px !important;
+}
+
+#paletteTab .palette-section {
+  max-width: 260px !important;
+  margin-bottom: 8px !important;
+}
+
+#paletteTab .palette-swatches {
+  grid-template-columns: repeat(6, 19px) !important;
+  gap: 5px !important;
+}
+
+#paletteTab .swatch {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+#paletteTab .palette-builder {
+  max-width: 260px !important;
+}
+
+#paletteTab .palette-preset-row,
+#paletteTab .palette-builder select {
+  max-width: 260px !important;
+}
+
+#paletteTab .palette-wheel {
+  width: 162px !important;
+  height: 162px !important;
+  margin-inline: auto !important;
+}
+
+.layer-item {
+  min-height: 70px !important;
+}
+
+.layer-preview-window {
+  max-height: 96px !important;
+}
+
+.save-before-close-backdrop {
+  background: rgba(0, 0, 0, 0.18) !important;
+  z-index: 9000 !important;
+}
+
+.save-before-close-modal {
+  width: min(380px, calc(100vw - 40px));
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.48);
+  padding: 16px;
+}
+
+.save-before-close-modal h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.save-before-close-modal p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.save-before-close-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.save-before-close-actions button {
+  min-height: 34px;
+}
+
+@media (max-width: 1280px) {
+  :root {
+    --right-dock-width: 560px !important;
+  }
+
+  .timeline-panel {
+    grid-template-columns: 176px minmax(0, 1fr) !important;
+  }
+
+  .inspector .panel-card.split-panel-card,
+  .inspector .panel-card {
+    grid-template-columns: minmax(275px, 1.12fr) minmax(235px, 0.88fr) !important;
+  }
+}
