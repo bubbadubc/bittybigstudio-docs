@@ -1,0 +1,18 @@
+{
+  "name": "SpritePad",
+  "short_name": "SpritePad",
+  "description": "Pixel art, animation, and game-ready sprite export.",
+  "start_url": "../sprite-editor.html",
+  "scope": "../",
+  "display": "fullscreen",
+  "background_color": "#404040",
+  "theme_color": "#2e323a",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#404040" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="SpritePad" />
+  <link rel="manifest" href="./sprite-editor/manifest.webmanifest" />
   <title>SpritePad</title>
   <link rel="stylesheet" href="./sprite-editor/style.css" />
 </head>
@@ -12,11 +17,13 @@
       <div class="menu-group">
         <button class="menu-root">File</button>
         <div class="menu-dropdown">
+          <button data-action="newProject">New <span data-shortcut-label="newProject"></span></button>
           <button data-action="saveProject">Save Project <span data-shortcut-label="saveProject"></span></button>
-          <button data-action="openProject">Open Project <span data-shortcut-label="openProject"></span></button>
-          <button data-action="downloadSheet">Export PNG Sheet <span data-shortcut-label="downloadSheet"></span></button>
-          <button data-action="downloadJson">Export JSON <span data-shortcut-label="downloadJson"></span></button>
-          <button data-action="copyNotes">Copy Import Notes <span data-shortcut-label="copyNotes"></span></button>
+          <button data-action="openProject">Open <span data-shortcut-label="openProject"></span></button>
+          <button data-action="closeCurrentDocument">Close <span data-shortcut-label="closeCurrentDocument"></span></button>
+          <button data-action="exitApp">Exit <span data-shortcut-label="exitApp"></span></button>
+          <div class="menu-separator"></div>
+          <button data-action="downloadSheet">Export <span data-shortcut-label="downloadSheet"></span></button>
         </div>
       </div>
 
@@ -27,17 +34,26 @@
           <button data-action="redo">Redo <span data-shortcut-label="redo"></span></button>
           <button data-action="copySelection">Copy Selection <span data-shortcut-label="copySelection"></span></button>
           <button data-action="cutSelection">Cut Selection <span data-shortcut-label="cutSelection"></span></button>
-          <button data-action="pasteWithTransparency">Paste With Transparency <span data-shortcut-label="pasteWithTransparency"></span></button>
-          <button data-action="pasteNoTransparency">Paste No Transparency <span data-shortcut-label="pasteNoTransparency"></span></button>
+          <button data-action="pasteWithTransparency">Paste <span data-shortcut-label="pasteWithTransparency"></span></button>
+          <button data-action="pasteIntoNewLayer">Paste into New Layer <span data-shortcut-label="pasteIntoNewLayer"></span></button>
+          <button data-action="pasteIntoNewImage">Paste into New Image <span data-shortcut-label="pasteIntoNewImage"></span></button>
           <button data-action="deleteSelection">Delete Selection <span data-shortcut-label="deleteSelection"></span></button>
           <button data-action="selectAll">Select All <span data-shortcut-label="selectAll"></span></button>
           <button data-action="clearSelection">Clear Selection <span data-shortcut-label="clearSelection"></span></button>
+          <div class="menu-separator"></div>
+          <div class="menu-form-title">Sprite Size</div>
+          <div class="menu-size-form">
+            <label>W <input id="newWidthInput" type="number" min="4" max="256" value="32" /></label>
+            <label>H <input id="newHeightInput" type="number" min="4" max="256" value="32" /></label>
+            <button id="newProjectBtn" class="ghost-btn menu-apply-btn">Apply</button>
+          </div>
         </div>
       </div>
 
       <div class="menu-group">
         <button class="menu-root">Tools</button>
         <div class="menu-dropdown">
+          <button data-action="toolBrush">Brush <span data-shortcut-label="toolBrush"></span></button>
           <button data-action="toolPencil">Pencil <span data-shortcut-label="toolPencil"></span></button>
           <button data-action="toolEraser">Eraser <span data-shortcut-label="toolEraser"></span></button>
           <button data-action="toolFill">Fill <span data-shortcut-label="toolFill"></span></button>
@@ -45,9 +61,7 @@
           <button data-action="toolRect">Rectangle <span data-shortcut-label="toolRect"></span></button>
           <button data-action="toolCircle">Circle <span data-shortcut-label="toolCircle"></span></button>
           <button data-action="toolSelect">Select <span data-shortcut-label="toolSelect"></span></button>
-          <button data-action="toolEyedropper">Eyedropper <span data-shortcut-label="toolEyedropper"></span></button>
-          <button data-action="toolDither">Dither <span data-shortcut-label="toolDither"></span></button>
-          <button data-action="toolShade">Shade <span data-shortcut-label="toolShade"></span></button>
+          <button data-action="toolEyedropper">Color Picker <span data-shortcut-label="toolEyedropper"></span></button>
           <button data-action="toolMove">Move Layer <span data-shortcut-label="toolMove"></span></button>
           <button data-action="toggleBezier">Toggle Bezier Line <span data-shortcut-label="toggleBezier"></span></button>
         </div>
@@ -61,7 +75,6 @@
           <button data-action="toggleSymmetry">Toggle Symmetry <span data-shortcut-label="toggleSymmetry"></span></button>
           <button data-action="tabLayers">Show Layers <span data-shortcut-label="tabLayers"></span></button>
           <button data-action="tabPalette">Show Palette <span data-shortcut-label="tabPalette"></span></button>
-          <button data-action="tabExport">Show Export <span data-shortcut-label="tabExport"></span></button>
           <button data-action="zoomIn">Zoom In <span data-shortcut-label="zoomIn"></span></button>
           <button data-action="zoomOut">Zoom Out <span data-shortcut-label="zoomOut"></span></button>
         </div>
@@ -73,6 +86,7 @@
           <button data-action="addLayer">Add Layer <span data-shortcut-label="addLayer"></span></button>
           <button data-action="duplicateLayer">Duplicate Layer <span data-shortcut-label="duplicateLayer"></span></button>
           <button data-action="mergeLayerDown">Merge Down <span data-shortcut-label="mergeLayerDown"></span></button>
+          <button data-action="deleteLayer">Delete Layer <span data-shortcut-label="deleteLayer"></span></button>
           <button data-action="moveLayerUp">Move Layer Up <span data-shortcut-label="moveLayerUp"></span></button>
           <button data-action="moveLayerDown">Move Layer Down <span data-shortcut-label="moveLayerDown"></span></button>
           <button data-action="flipLayerH">Flip Horizontal <span data-shortcut-label="flipLayerH"></span></button>
@@ -101,72 +115,70 @@
         <button class="menu-root">Options</button>
         <div class="menu-dropdown align-right">
           <button data-action="openShortcuts">Keyboard Shortcuts <span data-shortcut-label="openShortcuts"></span></button>
+          <button data-action="toggleFullscreen">Fullscreen <span data-shortcut-label="toggleFullscreen"></span></button>
         </div>
       </div>
-      <div class="sprite-size-bar" aria-label="Sprite size">
-        <span class="sprite-size-title">Sprite Size</span>
-        <label class="sprite-size-field">
-          <span>W</span>
-          <input id="newWidthInput" type="number" min="4" max="256" value="32" />
-        </label>
-        <label class="sprite-size-field">
-          <span>H</span>
-          <input id="newHeightInput" type="number" min="4" max="256" value="32" />
-        </label>
-        <div class="template-row sprite-size-presets">
-          <button class="template-btn" data-size="16">16</button>
-          <button class="template-btn active" data-size="32">32</button>
-          <button class="template-btn" data-size="48">48</button>
-          <button class="template-btn" data-size="64">64</button>
-        </div>
-        <button id="newProjectBtn" class="ghost-btn sprite-size-apply">Apply</button>
+      <div class="document-tabs-shell" aria-label="Open images">
+        <button id="documentTabScrollLeftBtn" class="document-tab-scroll-btn" type="button" title="Scroll image tabs left" aria-label="Scroll image tabs left">‹</button>
+        <div id="documentTabs" class="document-tabs" aria-label="Open images"></div>
+        <button id="documentTabScrollRightBtn" class="document-tab-scroll-btn" type="button" title="Scroll image tabs right" aria-label="Scroll image tabs right">›</button>
       </div>
 
       <div class="top-actions menu-actions">
-        <button id="undoBtn" class="ghost-btn" title="Ctrl+Z">Undo</button>
-        <button id="redoBtn" class="ghost-btn" title="Ctrl+Y">Redo</button>
-        <button id="saveProjectBtn" class="ghost-btn">Save</button>
-        <label class="ghost-btn file-btn">
-          Open
-          <input id="openProjectInput" type="file" accept="application/json,.json,.spritepad" />
-        </label>
-        <button id="exportPngBtn" class="primary-btn">Export PNG</button>
+        <button id="exportPngBtn" class="primary-btn">Export</button>
       </div>
     </nav>
 
     <main class="workspace">
       <aside class="tool-rail" aria-label="Tools">
-        <button class="tool-btn active" data-tool="pencil" title="Pencil">✎<span>Pencil</span></button>
+        <button class="tool-btn active" data-tool="brush" title="Pen">🖌<span>Brush</span></button>
+        <button class="tool-btn" data-tool="pencil" title="Pencil">✎<span>Pencil</span></button>
         <button class="tool-btn" data-tool="eraser" title="Eraser">▱<span>Eraser</span></button>
         <button class="tool-btn" data-tool="fill" title="Fill">▣<span>Fill</span></button>
         <button class="tool-btn" data-tool="line" title="Line">╱<span>Line</span></button>
         <button class="tool-btn" data-tool="rect" title="Rectangle">□<span>Rect</span></button>
         <button class="tool-btn" data-tool="circle" title="Circle">○<span>Circle</span></button>
-        <button class="tool-btn" data-tool="select" title="Rectangular Select">▦<span>Select</span></button>
-        <button class="tool-btn" data-tool="eyedropper" title="Eyedropper">◉<span>Pick</span></button>
-        <button class="tool-btn" data-tool="dither" title="Dither">░<span>Dither</span></button>
-        <button class="tool-btn" data-tool="shade" title="Lighten / Darken">◐<span>Shade</span></button>
-        <button class="tool-btn" data-tool="move" title="Move Layer">⇄<span>Move</span></button>
+        <button class="tool-btn" data-tool="select" title="Select"><span class="dotted-rect-icon" aria-hidden="true"></span><span>Select</span></button>
+        <button class="tool-btn" data-tool="eyedropper" title="Color Picker"><span class="eyedropper-glyph" aria-hidden="true">⌕</span><span>Color</span></button>
+        <button class="tool-btn" data-tool="move" title="Move Layer">✥<span>Move</span></button>
       </aside>
 
       <section class="canvas-section">
         <div class="canvas-toolbar">
-          <div class="field-row compact tool-status">
-            <span>Tool</span>
-            <strong id="activeToolLabel">Pencil</strong>
+          <div class="field-row compact tool-status" title="Left tool / Right tool">
+            <span>L</span>
+            <strong id="activeToolLabel" class="tool-status-icon" aria-label="Left tool">🖌</strong>
+            <span class="secondary-tool-tag">R</span>
+            <strong id="secondaryToolLabel" class="tool-status-icon" aria-label="Right tool">▱</strong>
           </div>
 
-          <div class="field-row compact">
-            <label>Brush</label>
-            <input id="brushSizeInput" type="range" min="1" max="8" value="1" />
-            <span id="brushSizeLabel">1px</span>
+          <div class="field-row compact brush-size-row">
+            <label>Brush Size</label>
+            <input id="brushSizeInput" class="mini-number-input" type="number" min="1" max="32" value="1" />
+            <span id="brushSizeLabel">px</span>
           </div>
 
-          <div class="field-row compact">
+          <div class="top-actions toolbar-file-actions" aria-label="Quick file actions">
+            <button id="undoBtn" class="ghost-btn icon-action" title="Undo" aria-label="Undo">↶</button>
+            <button id="redoBtn" class="ghost-btn icon-action" title="Redo" aria-label="Redo">↷</button>
+            <button id="saveProjectBtn" class="ghost-btn icon-action" title="Save" aria-label="Save">💾</button>
+            <button id="openProjectBtn" class="ghost-btn icon-action" title="Open" aria-label="Open">📂</button>
+            <input id="openProjectInput" class="hidden-file-input" type="file" multiple accept="application/json,.json,.spritepad,image/png,image/jpeg,image/jpg,image/gif,image/webp,image/bmp" />
+          </div>
+
+          <div class="field-row compact zoom-top-row">
             <label>Zoom</label>
-            <input id="zoomInput" type="range" min="6" max="28" value="16" />
-            <span id="zoomLabel">16x</span>
+            <input id="zoomInput" type="range" min="1" max="128" value="16" />
+            <span id="zoomLabel">100%</span>
           </div>
+
+          <button id="gridToggleBtn" class="toggle-btn icon-toggle" title="Grid" aria-label="Grid">▦</button>
+          <button id="onionToggleBtn" class="toggle-btn icon-toggle" title="Onion Skin" aria-label="Onion Skin">🧅</button>
+          <button id="symmetryToggleBtn" class="toggle-btn icon-toggle symmetry-icon" title="Symmetry" aria-label="Symmetry">○│○</button>
+        </div>
+
+        <div class="canvas-wrap" id="canvasWrap">
+          <div id="toolOptionsPanel" class="floating-tool-options">
 
           <div id="lineOptionsRow" class="field-row compact line-options">
             <label>Line</label>
@@ -183,148 +195,170 @@
             <label>Selection</label>
             <button id="copySelectionBtn" class="ghost-btn micro-btn">Copy</button>
             <button id="cutSelectionBtn" class="ghost-btn micro-btn">Cut</button>
-            <button id="pasteWithTransparencyBtn" class="ghost-btn micro-btn">Paste Alpha</button>
-            <button id="pasteNoTransparencyBtn" class="ghost-btn micro-btn">Paste Solid</button>
+            <button id="pasteWithTransparencyBtn" class="ghost-btn micro-btn">Paste</button>
+            <button id="pasteNewLayerBtn" class="ghost-btn micro-btn">Paste Layer</button>
+            <button id="pasteNewImageBtn" class="ghost-btn micro-btn">Paste Image</button>
+            <button id="pasteNoTransparencyBtn" class="ghost-btn micro-btn hidden-compat-button" tabindex="-1" aria-hidden="true">Paste Solid</button>
             <button id="clearSelectionBtn" class="ghost-btn micro-btn">Clear</button>
           </div>
-
-          <button id="gridToggleBtn" class="toggle-btn active">Grid</button>
-          <button id="onionToggleBtn" class="toggle-btn active">Onion</button>
-          <button id="symmetryToggleBtn" class="toggle-btn">Symmetry</button>
-        </div>
-
-        <div class="canvas-wrap" id="canvasWrap">
+          </div>
           <canvas id="pixelCanvas" width="512" height="512"></canvas>
         </div>
 
-        <div class="timeline-panel">
-          <div class="timeline-header">
-            <div>
-              <h2>Animation Timeline</h2>
-              <p id="frameStatus">Frame 1 of 1</p>
-            </div>
-          </div>
+        <div class="canvas-bottom-bar">
+          <div id="frameStatus" class="canvas-status-label">Animation Timeline</div>
 
-          <div class="animation-manager">
-            <label>
-              Animation
-              <select id="animationSelect"></select>
-            </label>
-            <label>
-              Name
-              <input id="animationNameInput" type="text" value="Idle" />
-            </label>
-            <label>
-              Anim ms
-              <input id="animationDurationInput" type="number" min="30" step="10" value="120" />
-            </label>
-            <button id="addAnimationBtn" class="ghost-btn small-btn">+ Animation</button>
-            <button id="deleteAnimationBtn" class="ghost-btn danger small-btn">Delete Animation</button>
-          </div>
-
-          <div class="frame-control-row">
-            <label class="frame-duration-field">
-              Frame ms
-              <input id="frameDurationInput" type="number" min="30" step="10" value="120" />
-            </label>
-            <div class="timeline-actions frame-actions">
-              <button id="playBtn" class="primary-btn small-btn">Play</button>
-              <button id="moveFrameLeftBtn" class="ghost-btn small-btn">Move Left</button>
-              <button id="moveFrameRightBtn" class="ghost-btn small-btn">Move Right</button>
-              <button id="addFrameBtn" class="ghost-btn small-btn">+ Frame</button>
-              <button id="dupFrameBtn" class="ghost-btn small-btn">Duplicate</button>
-              <button id="deleteFrameBtn" class="ghost-btn danger small-btn">Delete</button>
-            </div>
-          </div>
-
-          <div id="frameStrip" class="frame-strip" aria-label="Animation frames"></div>
         </div>
+
+        <div class="timeline-panel">
+          <aside class="animation-sidebar" aria-label="Animations">
+            <div class="animation-sidebar-top-row">
+              <h2>Animations</h2>
+              <div class="animation-sidebar-controls">
+                <button id="addAnimationBtn" class="ghost-btn tiny-btn" title="Add Animation" aria-label="Add Animation">+</button>
+                <button id="deleteAnimationBtn" class="ghost-btn danger tiny-btn" title="Delete Animation" aria-label="Delete Animation">−</button>
+              </div>
+            </div>
+
+            <div id="animationList" class="animation-list" aria-label="Animation list"></div>
+
+            <input id="animationDurationInput" class="hidden-compat-input" type="text" inputmode="numeric" pattern="[0-9]*" value="100" aria-hidden="true" tabindex="-1" />
+            <input id="animationNameInput" class="hidden-compat-input" type="text" value="Animation 0" aria-hidden="true" tabindex="-1" />
+          </aside>
+
+          <section class="frame-timeline" aria-label="Animation frames">
+            <div class="frame-top-row">
+              <div class="timeline-actions frame-actions">
+                <button id="previousAnimationBtn" class="ghost-btn timeline-text-btn" title="Previous Animation" aria-label="Previous Animation">Prev</button>
+                <button id="jumpStartBtn" class="ghost-btn timeline-icon-btn" title="Jump to Start" aria-label="Jump to Start">⏮</button>
+                <button id="previousFrameBtn" class="ghost-btn timeline-icon-btn" title="Back 1 Frame" aria-label="Back 1 Frame">◀◀</button>
+                <button id="playBtn" class="primary-btn timeline-icon-btn" title="Play" aria-label="Play">▶</button>
+                <button id="pauseBtn" class="ghost-btn timeline-icon-btn" title="Pause" aria-label="Pause">⏸</button>
+                <button id="stopBtn" class="ghost-btn timeline-icon-btn" title="Stop" aria-label="Stop">■</button>
+                <button id="nextFrameBtn" class="ghost-btn timeline-icon-btn" title="Forward 1 Frame" aria-label="Forward 1 Frame">▶▶</button>
+                <button id="jumpEndBtn" class="ghost-btn timeline-icon-btn" title="Jump to End" aria-label="Jump to End">⏭</button>
+                <button id="nextAnimationBtn" class="ghost-btn timeline-text-btn" title="Next Animation" aria-label="Next Animation">Next</button>
+
+                <span class="timeline-divider" aria-hidden="true"></span>
+
+                <button id="addFrameBtn" class="ghost-btn small-btn">+ Frame</button>
+                <button id="moveFrameLeftBtn" class="ghost-btn small-btn" title="Move Frame Left">Move ◀</button>
+                <button id="moveFrameRightBtn" class="ghost-btn small-btn" title="Move Frame Right">Move ▶</button>
+                <button id="dupFrameBtn" class="ghost-btn small-btn">Duplicate</button>
+                <button id="deleteFrameBtn" class="ghost-btn danger small-btn">Delete</button>
+              </div>
+
+              <label class="frame-duration-field hidden-compat-field">
+                Frame ms
+                <input id="frameDurationInput" type="text" inputmode="numeric" pattern="[0-9]*" value="100" />
+              </label>
+            </div>
+
+            <div id="frameStrip" class="frame-strip" aria-label="Animation frames"></div>
+          </section>
+        </div>
+
       </section>
 
       <aside class="inspector">
-        <section class="panel-card">
-          <div class="panel-tabs">
-            <button class="tab-btn active" data-tab="layers">Layers</button>
-            <button class="tab-btn" data-tab="palette">Palette</button>
-            <button class="tab-btn" data-tab="export">Export</button>
+        <section class="panel-card split-panel-card">
+          <div class="panel-swap-row">
+            <button id="swapSidePanelsBtn" class="ghost-btn micro-btn" type="button" title="Swap Layers and Palette">⇄ Swap</button>
           </div>
 
-          <div id="layersTab" class="tab-panel active">
-            <div class="panel-header-row">
+          <div id="layersTab" class="tab-panel active side-panel-section">
+            <div class="panel-header-row layer-panel-heading">
               <h2>Layers</h2>
-              <button id="addLayerBtn" class="ghost-btn small-btn">+ Layer</button>
+            </div>
+            <div class="layer-action-toolbar" aria-label="Layer actions">
+              <button id="addLayerBtn" class="ghost-btn layer-icon-btn" title="Add Layer" aria-label="Add Layer">+</button>
+              <button id="deleteLayerBtn" class="ghost-btn danger layer-icon-btn" title="Delete Layer" aria-label="Delete Layer">🗑</button>
+              <button id="clearLayerToolbarBtn" class="ghost-btn layer-icon-btn" title="Clear Layer" aria-label="Clear Layer">⌧</button>
+              <button id="duplicateLayerBtn" class="ghost-btn layer-icon-btn" title="Duplicate Layer" aria-label="Duplicate Layer">⧉</button>
+              <button id="mergeLayerBtn" class="ghost-btn layer-icon-btn" title="Merge Down" aria-label="Merge Down">⇩</button>
+              <button id="moveLayerUpBtn" class="ghost-btn layer-icon-btn" title="Move Up" aria-label="Move Up">▲</button>
+              <button id="moveLayerDownBtn" class="ghost-btn layer-icon-btn" title="Move Down" aria-label="Move Down">▼</button>
+              <button id="outlineBtn" class="ghost-btn layer-icon-btn" title="Outline" aria-label="Outline">▣</button>
             </div>
             <div id="layerList" class="layer-list"></div>
-            <div class="layer-actions-grid">
-              <button id="duplicateLayerBtn" class="ghost-btn small-btn">Duplicate</button>
-              <button id="mergeLayerBtn" class="ghost-btn small-btn">Merge Down</button>
-              <button id="moveLayerUpBtn" class="ghost-btn small-btn">Move Up</button>
-              <button id="moveLayerDownBtn" class="ghost-btn small-btn">Move Down</button>
-              <button id="flipHBtn" class="ghost-btn small-btn">Flip H</button>
-              <button id="flipVBtn" class="ghost-btn small-btn">Flip V</button>
-              <button id="rotateLayerBtn" class="ghost-btn small-btn">Rotate 90°</button>
-              <button id="outlineBtn" class="ghost-btn small-btn">Outline</button>
+            <div class="layer-preview-panel">
+              <div class="layer-preview-title">Preview</div>
+              <div class="layer-preview-controls">
+                <label>Zoom <input id="layerPreviewZoomInput" type="range" min="1" max="4" step="1" value="1" /></label>
+                <span id="layerPreviewZoomLabel">1x</span>
+              </div>
+              <div class="layer-preview-window">
+                <canvas id="layerPreviewCanvas" width="32" height="32"></canvas>
+              </div>
             </div>
           </div>
 
           <div id="paletteTab" class="tab-panel">
-            <div class="color-block">
+            <div class="color-block active-colors">
               <label>
                 Primary
-                <input id="primaryColorInput" type="color" value="#2f7cff" />
+                <button id="primaryColorInput" class="active-color-button" type="button" value="#000000" aria-label="Edit primary color"></button>
               </label>
+              <button id="swapColorsBtn" class="ghost-btn icon-btn" title="Swap primary and secondary colors">⇄</button>
               <label>
                 Secondary
-                <input id="secondaryColorInput" type="color" value="#101322" />
+                <button id="secondaryColorInput" class="active-color-button" type="button" value="#ffffff" aria-label="Edit secondary color"></button>
               </label>
             </div>
 
-            <div class="palette-actions">
-              <button id="addColorBtn" class="ghost-btn small-btn">Add Color</button>
-              <button id="replaceColorBtn" class="ghost-btn small-btn">Replace Picked</button>
-              <button id="clearLayerBtn" class="ghost-btn danger small-btn">Clear Layer</button>
+            <div class="palette-section">
+              <div class="panel-header-row tight-row">
+                <h2>Recent Colors</h2>
+                <p id="paletteCountLabel">0 colors used</p>
+              </div>
+              <div id="paletteSwatches" class="palette-swatches recent-swatches"></div>
             </div>
 
-            <div id="paletteSwatches" class="palette-swatches"></div>
-
-            <div class="palette-meter">
-              <label>
-                Palette limit
-                <input id="paletteLimitInput" type="number" min="1" max="256" value="32" />
-              </label>
-              <p id="paletteCountLabel">0 colors used</p>
+            <div class="palette-section">
+              <div class="panel-header-row tight-row">
+                <h2>Custom</h2>
+                <button id="saveSwatchBtn" class="ghost-btn small-btn">Save Swatch</button>
+              </div>
+              <div id="customSwatches" class="palette-swatches custom-swatches"></div>
             </div>
+
+            <div class="palette-section palette-builder">
+              <h2>Palette Presets</h2>
+              <div class="palette-preset-row">
+                <label>
+                  Preset
+                  <select id="palettePresetInput">
+                    <option value="oneTone">1 Tone</option>
+                    <option value="twoTone">2 Tone</option>
+                    <option value="fourTone">4 Tone</option>
+                    <option value="analogous">Analogous</option>
+                    <option value="complementary">Complementary</option>
+                    <option value="triad">Triad</option>
+                    <option value="eightBit">8-bit</option>
+                    <option value="sixteenBit">16-bit</option>
+                    <option value="gameboy">Game Boy</option>
+                  </select>
+                </label>
+                <button id="applyPalettePresetBtn" class="ghost-btn small-btn hidden-compat-button" tabindex="-1" aria-hidden="true">Apply Preset</button>
+              </div>
+              <input id="paletteWheelInput" class="hidden-compat-input" type="color" value="#ff5b7f" aria-hidden="true" tabindex="-1" />
+              <div id="palettePresetSwatches" class="palette-swatches preset-swatches"></div>
+              <div id="paletteWheel" class="palette-wheel" aria-label="Palette color wheel"></div>
+            </div>
+
           </div>
 
-          <div id="exportTab" class="tab-panel">
-            <h2>Game Export</h2>
-            <p class="muted-copy">Exports each animation on its own sprite-sheet row plus JSON metadata.</p>
-
-            <label>
-              Engine preset
-              <select id="enginePresetInput">
-                <option value="generic">Generic</option>
-                <option value="stencyl">Stencyl</option>
-                <option value="godot">Godot</option>
-                <option value="unity">Unity</option>
-                <option value="gamemaker">GameMaker</option>
-              </select>
-            </label>
+          <div id="exportTab" class="tab-panel hidden-compat-panel">
+            <h2>PNG Export</h2>
+            <p class="muted-copy">Exports each animation on its own sprite-sheet row.</p>
 
             <label>
               Export scale
-              <select id="exportScaleInput">
-                <option value="1">1x</option>
-                <option value="2">2x</option>
-                <option value="3">3x</option>
-                <option value="4">4x</option>
-              </select>
+              <input id="exportScaleInput" type="number" min="1" max="64" step="1" value="1" />
             </label>
 
             <div class="export-actions">
               <button id="downloadSheetBtn" class="primary-btn full-btn">Download Sprite Sheet</button>
-              <button id="downloadJsonBtn" class="ghost-btn full-btn">Download JSON Metadata</button>
-              <button id="copyNotesBtn" class="ghost-btn full-btn">Copy Import Notes</button>
             </div>
 
             <div class="export-preview-box">
@@ -336,6 +370,136 @@
     </main>
   </div>
 
+
+  <div id="startupModal" class="modal-backdrop startup-backdrop" role="dialog" aria-modal="true" aria-labelledby="startupTitle">
+    <div class="startup-modal">
+      <div class="modal-header">
+        <div>
+          <h2 id="startupTitle">SpritePad</h2>
+          <p>Start a new image or open an existing project/image.</p>
+        </div>
+      </div>
+      <div class="startup-actions">
+        <button id="startupNewBtn" class="primary-btn">New</button>
+        <button id="startupOpenBtn" class="ghost-btn">Open</button>
+      </div>
+      <button id="startupCloseBtn" class="ghost-btn small-btn startup-skip-btn">Start blank 32×32</button>
+    </div>
+  </div>
+
+  <div id="newProjectModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="newProjectTitle">
+    <div class="new-project-modal">
+      <div class="modal-header">
+        <div>
+          <h2 id="newProjectTitle">New Image</h2>
+          <p>Choose the starting canvas size.</p>
+        </div>
+        <button id="newProjectCancelBtn" class="ghost-btn small-btn">Cancel</button>
+      </div>
+      <div class="new-project-grid">
+        <label>Width <input id="newProjectWidthInput" type="number" min="1" max="1024" value="32" /></label>
+        <label>Height <input id="newProjectHeightInput" type="number" min="1" max="1024" value="32" /></label>
+      </div>
+      <div class="template-row new-project-presets">
+        <button class="new-size-preset ghost-btn micro-btn" data-size="16">16</button>
+        <button class="new-size-preset ghost-btn micro-btn" data-size="32">32</button>
+        <button class="new-size-preset ghost-btn micro-btn" data-size="48">48</button>
+        <button class="new-size-preset ghost-btn micro-btn" data-size="64">64</button>
+        <button class="new-size-preset ghost-btn micro-btn" data-size="128">128</button>
+      </div>
+      <div class="modal-footer">
+        <button id="createNewProjectBtn" class="primary-btn">Create</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="exportModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="exportTitle">
+    <div class="export-modal">
+      <div class="modal-header">
+        <div>
+          <h2 id="exportTitle">Export</h2>
+          <p>Choose layout, scale, and file type.</p>
+        </div>
+        <button id="exportModalCloseBtn" class="ghost-btn small-btn">Close</button>
+      </div>
+      <div class="export-modal-grid">
+        <label>
+          Scale
+          <input id="exportModalScaleInput" type="number" min="1" max="256" step="1" value="1" />
+        </label>
+        <label>
+          Layout
+          <select id="exportModalLayoutInput">
+            <option value="horizontalPerAnimation">Horizontal per animation</option>
+            <option value="verticalPerAnimation">Vertical per animation</option>
+            <option value="horizontalStrip">Horizontal strip</option>
+            <option value="verticalStrip">Vertical strip</option>
+            <option value="packed">Packed</option>
+          </select>
+        </label>
+        <label>
+          File type
+          <select id="exportModalFormatInput">
+            <option value="png">PNG</option>
+            <option value="jpg">JPG</option>
+            <option value="gif">GIF</option>
+            <option value="pdf">PDF</option>
+            <option value="svg">SVG</option>
+          </select>
+        </label>
+      </div>
+      <div class="export-preview-box modal-preview-box">
+        <canvas id="exportModalPreviewCanvas" width="320" height="96"></canvas>
+      </div>
+      <div class="modal-footer">
+        <button id="exportModalSaveBtn" class="primary-btn">Export</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="colorEditorPanel" class="modal-backdrop hidden color-editor-backdrop" role="dialog" aria-modal="true" aria-labelledby="colorEditorTitle">
+    <div class="color-editor-modal">
+      <div class="modal-header color-editor-header">
+        <div>
+          <h2 id="colorEditorTitle">Color Picker</h2>
+          <p id="colorEditorTargetLabel">Primary color</p>
+        </div>
+        <select id="colorModeInput" class="compact-select" aria-label="Color input mode">
+          <option value="hex">HEX</option>
+          <option value="rgb">RGB</option>
+          <option value="hsl">HSL</option>
+          <option value="hsv">HSV</option>
+        </select>
+        <button id="colorEditorCloseBtn" class="ghost-btn small-btn">Close</button>
+      </div>
+
+      <div class="color-picker-visual">
+        <div id="colorPlane" class="color-plane" aria-label="Color saturation and value selector">
+          <span id="colorPlaneHandle" class="color-plane-handle"></span>
+        </div>
+        <input id="colorHueInput" class="color-hue-input" type="range" min="0" max="360" value="0" aria-label="Hue" />
+      </div>
+
+      <div class="color-value-row">
+        <span id="colorPreviewChip" class="color-preview-chip"></span>
+        <input id="colorValueInput" class="color-value-input" type="text" value="#000000" aria-label="Color value" />
+      </div>
+
+      <div class="color-channel-grid">
+        <label class="color-channel-row color-mode-rgb">R <input id="rgbRInput" type="range" min="0" max="255" value="0" /><span id="rgbRValue">0</span></label>
+        <label class="color-channel-row color-mode-rgb">G <input id="rgbGInput" type="range" min="0" max="255" value="0" /><span id="rgbGValue">0</span></label>
+        <label class="color-channel-row color-mode-rgb">B <input id="rgbBInput" type="range" min="0" max="255" value="0" /><span id="rgbBValue">0</span></label>
+        <label class="color-channel-row color-mode-hsl">H <input id="hslHInput" type="range" min="0" max="360" value="0" /><span id="hslHValue">0</span></label>
+        <label class="color-channel-row color-mode-hsl">S <input id="hslSInput" type="range" min="0" max="100" value="0" /><span id="hslSValue">0%</span></label>
+        <label class="color-channel-row color-mode-hsl">L <input id="hslLInput" type="range" min="0" max="100" value="0" /><span id="hslLValue">0%</span></label>
+        <label class="color-channel-row color-mode-hsv">H <input id="hsvHInput" type="range" min="0" max="360" value="0" /><span id="hsvHValue">0</span></label>
+        <label class="color-channel-row color-mode-hsv">S <input id="hsvSInput" type="range" min="0" max="100" value="0" /><span id="hsvSValue">0%</span></label>
+        <label class="color-channel-row color-mode-hsv">V <input id="hsvVInput" type="range" min="0" max="100" value="0" /><span id="hsvVValue">0%</span></label>
+      </div>
+    </div>
+  </div>
 
   <div id="shortcutModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="shortcutTitle">
     <div class="shortcut-modal">
