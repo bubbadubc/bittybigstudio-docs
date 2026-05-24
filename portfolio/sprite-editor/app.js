@@ -57,12 +57,16 @@
     shortcuts: {},
     shortcutCaptureAction: null,
     menuIsOpen: false,
-    activeMenuGroup: null
+    activeMenuGroup: null,
+    toolPanelOpen: false
   };
 
   const els = {
     toolButtons: Array.from(document.querySelectorAll(".tool-btn")),
     activeToolLabel: document.getElementById("activeToolLabel"),
+    toolPanel: document.getElementById("toolPanel"),
+    toolPanelToggleBtn: document.getElementById("toolPanelToggleBtn"),
+    hideToolPanelBtn: document.getElementById("hideToolPanelBtn"),
     brushSizeInput: document.getElementById("brushSizeInput"),
     brushSizeLabel: document.getElementById("brushSizeLabel"),
     zoomInput: document.getElementById("zoomInput"),
@@ -437,8 +441,10 @@
     if (state.zoom < 8) return;
 
     ctx.save();
-    ctx.strokeStyle = "rgba(17, 19, 27, 0.24)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.32)";
     ctx.lineWidth = 1;
+    ctx.lineCap = "round";
+    ctx.setLineDash([1, Math.max(4, Math.floor(state.zoom / 3))]);
 
     for (let x = 0; x <= state.width; x++) {
       const px = x * state.zoom + 0.5;
@@ -1217,6 +1223,34 @@
   function setTool(tool) {
     state.tool = tool;
     updateToolUi();
+  }
+
+  function setToolPanelOpen(isOpen) {
+    state.toolPanelOpen = isOpen;
+
+    if (els.toolPanel != null) {
+      if (state.toolPanelOpen) {
+        els.toolPanel.classList.remove("hidden");
+      } else {
+        els.toolPanel.classList.add("hidden");
+      }
+    }
+
+    if (els.toolPanelToggleBtn != null) {
+      if (state.toolPanelOpen) {
+        els.toolPanelToggleBtn.setAttribute("aria-expanded", "true");
+      } else {
+        els.toolPanelToggleBtn.setAttribute("aria-expanded", "false");
+      }
+    }
+  }
+
+  function toggleToolPanel() {
+    if (state.toolPanelOpen) {
+      setToolPanelOpen(false);
+    } else {
+      setToolPanelOpen(true);
+    }
   }
 
   function updateToolUi() {
@@ -2292,6 +2326,17 @@
     for (let i = 0; i < els.toolButtons.length; i++) {
       els.toolButtons[i].addEventListener("click", function () {
         setTool(this.dataset.tool);
+        setToolPanelOpen(false);
+      });
+    }
+
+    if (els.toolPanelToggleBtn != null) {
+      els.toolPanelToggleBtn.addEventListener("click", toggleToolPanel);
+    }
+
+    if (els.hideToolPanelBtn != null) {
+      els.hideToolPanelBtn.addEventListener("click", function () {
+        setToolPanelOpen(false);
       });
     }
 
@@ -2854,13 +2899,13 @@
     executeAction(action);
   }
 
-function initBlankProject() {
-  state.animations = [createAnimation("Animation 0")];
-  state.currentAnimation = 0;
-  state.currentFrame = 0;
-  state.currentLayer = 0;
-  syncActiveFrames();
-}
+  function initBlankProject() {
+    state.animations = [createAnimation("Animation 0")];
+    state.currentAnimation = 0;
+    state.currentFrame = 0;
+    state.currentLayer = 0;
+    syncActiveFrames();
+  }
 
   function boot() {
     loadShortcuts();

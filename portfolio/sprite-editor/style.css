@@ -173,8 +173,8 @@ h1 {
 
 .workspace {
   display: grid;
-  grid-template-columns: 76px minmax(0, 1fr) 360px;
-  gap: 14px;
+  grid-template-columns: 64px minmax(0, 1fr) 360px;
+  gap: 12px;
   align-items: start;
 }
 
@@ -189,33 +189,41 @@ h1 {
   box-shadow: var(--shadow);
 }
 
+.tool-status span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .tool-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 6px;
   position: sticky;
-  top: 16px;
-  display: grid;
-  gap: 7px;
-  padding: 8px;
+  top: 82px;
 }
 
 .tool-btn {
-  width: 58px;
-  min-height: 52px;
+  width: 50px;
+  min-height: 38px;
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: 3px;
-  padding: 6px 4px;
-  border-radius: 14px;
+  gap: 1px;
+  padding: 4px 3px;
+  border-radius: 12px;
+  font-size: 0.92rem;
   font-weight: 900;
 }
 
 .tool-btn span {
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size: 0.52rem;
+  line-height: 1;
+  font-weight: 800;
   color: var(--muted);
 }
-
-
 
 .tool-btn.active,
 .toggle-btn.active,
@@ -278,7 +286,7 @@ label {
   background-image: var(--transparent-checker);
   background-size: 16px 16px;
   background-position: 0 0;
-  border-radius: 10px;
+  border-radius: 0;
   box-shadow: 0 25px 70px rgba(0, 0, 0, 0.5);
   touch-action: none;
 }
@@ -554,7 +562,7 @@ select:focus {
 
 @media (max-width: 1180px) {
   .workspace {
-    grid-template-columns: 68px minmax(0, 1fr);
+    grid-template-columns: 64px minmax(0, 1fr);
   }
 
   .inspector {
@@ -579,6 +587,7 @@ select:focus {
     grid-template-columns: repeat(3, 1fr);
   }
 
+
   .workspace {
     display: grid;
     grid-template-columns: 1fr;
@@ -586,12 +595,14 @@ select:focus {
 
   .tool-rail {
     position: static;
-    grid-template-columns: repeat(5, 1fr);
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 
   .tool-btn {
-    width: 100%;
-    min-height: 48px;
+    width: 46px;
+    min-height: 36px;
   }
 
   .canvas-wrap {
@@ -692,7 +703,7 @@ button:disabled {
   display: flex;
   align-items: center;
   gap: 4px;
-  margin: -6px 0 14px;
+  margin: 0 0 14px;
   padding: 6px;
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 14px;
@@ -700,6 +711,76 @@ button:disabled {
   box-shadow: var(--shadow);
   position: relative;
   z-index: 20;
+  flex-wrap: wrap;
+}
+
+.menu-actions {
+  margin-left: auto;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.menu-actions .ghost-btn,
+.menu-actions .primary-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 0.86rem;
+}
+
+.sprite-size-bar {
+  margin-left: 16px;
+  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 0 6px;
+}
+
+.sprite-size-title {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.sprite-size-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.sprite-size-field input[type="number"] {
+  width: 58px;
+  min-height: 30px;
+  border-radius: 10px;
+  padding: 0 8px;
+  font-size: 0.86rem;
+  font-weight: 900;
+}
+
+.sprite-size-presets {
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+
+.sprite-size-presets .template-btn {
+  min-width: 36px;
+  min-height: 30px;
+  padding: 0 8px;
+  border-radius: 10px;
+  font-size: 0.78rem;
+}
+
+.sprite-size-apply {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 0.82rem;
 }
 
 .menu-group {
@@ -887,11 +968,36 @@ button:disabled {
     top: 0;
   }
 
+  .sprite-size-bar {
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: wrap;
+    padding: 4px 0;
+  }
+
+  .sprite-size-presets {
+    flex-wrap: wrap;
+  }
+
+  .menu-actions {
+    width: 100%;
+    margin-left: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(72px, 1fr));
+  }
+
+  .menu-actions .ghost-btn,
+  .menu-actions .primary-btn,
+  .menu-actions .file-btn {
+    width: 100%;
+    padding: 0 8px;
+  }
+
   .menu-dropdown {
     position: fixed;
     left: 10px;
     right: 10px;
-    top: 126px;
+    top: 68px;
     min-width: 0;
   }
 

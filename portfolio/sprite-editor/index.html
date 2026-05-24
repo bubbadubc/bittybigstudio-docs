@@ -135,26 +135,12 @@
     </nav>
 
     <main class="workspace">
-      <aside class="tool-rail" aria-label="Tools">
-        <button class="tool-btn active" data-tool="pencil" title="Pencil">✎<span>Pencil</span></button>
-        <button class="tool-btn" data-tool="eraser" title="Eraser">▱<span>Eraser</span></button>
-        <button class="tool-btn" data-tool="fill" title="Fill">▣<span>Fill</span></button>
-        <button class="tool-btn" data-tool="line" title="Line">╱<span>Line</span></button>
-        <button class="tool-btn" data-tool="rect" title="Rectangle">□<span>Rect</span></button>
-        <button class="tool-btn" data-tool="circle" title="Circle">○<span>Circle</span></button>
-        <button class="tool-btn" data-tool="select" title="Rectangular Select">▦<span>Select</span></button>
-        <button class="tool-btn" data-tool="eyedropper" title="Eyedropper">◉<span>Pick</span></button>
-        <button class="tool-btn" data-tool="dither" title="Dither">░<span>Dither</span></button>
-        <button class="tool-btn" data-tool="shade" title="Lighten / Darken">◐<span>Shade</span></button>
-        <button class="tool-btn" data-tool="move" title="Move Layer">⇄<span>Move</span></button>
-      </aside>
-
       <section class="canvas-section">
         <div class="canvas-toolbar">
-          <div class="field-row compact tool-status">
+          <button id="toolPanelToggleBtn" class="field-row compact tool-picker-toggle" type="button" aria-expanded="false" aria-controls="toolPanel">
             <span>Tool</span>
             <strong id="activeToolLabel">Pencil</strong>
-          </div>
+          </button>
 
           <div class="field-row compact">
             <label>Brush</label>
@@ -191,6 +177,26 @@
           <button id="gridToggleBtn" class="toggle-btn active">Grid</button>
           <button id="onionToggleBtn" class="toggle-btn active">Onion</button>
           <button id="symmetryToggleBtn" class="toggle-btn">Symmetry</button>
+        </div>
+
+        <div id="toolPanel" class="tool-panel hidden" aria-label="Tools">
+          <div class="tool-panel-header">
+            <span>Choose Tool</span>
+            <button id="hideToolPanelBtn" class="ghost-btn micro-btn" type="button">Hide</button>
+          </div>
+          <div class="tool-grid">
+            <button class="tool-btn active" data-tool="pencil" title="Pencil">✎<span>Pencil</span></button>
+            <button class="tool-btn" data-tool="eraser" title="Eraser">▱<span>Eraser</span></button>
+            <button class="tool-btn" data-tool="fill" title="Fill">▣<span>Fill</span></button>
+            <button class="tool-btn" data-tool="line" title="Line">╱<span>Line</span></button>
+            <button class="tool-btn" data-tool="rect" title="Rectangle">□<span>Rect</span></button>
+            <button class="tool-btn" data-tool="circle" title="Circle">○<span>Circle</span></button>
+            <button class="tool-btn" data-tool="select" title="Rectangular Select">▦<span>Select</span></button>
+            <button class="tool-btn" data-tool="eyedropper" title="Eyedropper">◉<span>Pick</span></button>
+            <button class="tool-btn" data-tool="dither" title="Dither">░<span>Dither</span></button>
+            <button class="tool-btn" data-tool="shade" title="Lighten / Darken">◐<span>Shade</span></button>
+            <button class="tool-btn" data-tool="move" title="Move Layer">⇄<span>Move</span></button>
+          </div>
         </div>
 
         <div class="canvas-wrap" id="canvasWrap">
