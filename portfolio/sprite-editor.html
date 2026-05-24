@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpritePad</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-bar">
+      <div class="brand-block">
+        <div class="logo-mark">SP</div>
+        <div>
+          <h1>SpritePad</h1>
+          <p>Pixel art → animation → game-ready export.</p>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <button id="undoBtn" class="ghost-btn" title="Ctrl+Z">Undo</button>
+        <button id="redoBtn" class="ghost-btn" title="Ctrl+Y">Redo</button>
+        <button id="saveProjectBtn" class="ghost-btn">Save</button>
+        <label class="ghost-btn file-btn">
+          Open
+          <input id="openProjectInput" type="file" accept="application/json,.json,.spritepad" />
+        </label>
+        <button id="exportPngBtn" class="primary-btn">Export PNG</button>
+      </div>
+    </header>
+
+    <nav id="menuBar" class="menu-bar" aria-label="Application menu">
+      <div class="menu-group">
+        <button class="menu-root">File</button>
+        <div class="menu-dropdown">
+          <button data-action="saveProject">Save Project <span data-shortcut-label="saveProject"></span></button>
+          <button data-action="openProject">Open Project <span data-shortcut-label="openProject"></span></button>
+          <button data-action="downloadSheet">Export PNG Sheet <span data-shortcut-label="downloadSheet"></span></button>
+          <button data-action="downloadJson">Export JSON <span data-shortcut-label="downloadJson"></span></button>
+          <button data-action="copyNotes">Copy Import Notes <span data-shortcut-label="copyNotes"></span></button>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-root">Edit</button>
+        <div class="menu-dropdown">
+          <button data-action="undo">Undo <span data-shortcut-label="undo"></span></button>
+          <button data-action="redo">Redo <span data-shortcut-label="redo"></span></button>
+          <button data-action="copySelection">Copy Selection <span data-shortcut-label="copySelection"></span></button>
+          <button data-action="cutSelection">Cut Selection <span data-shortcut-label="cutSelection"></span></button>
+          <button data-action="pasteWithTransparency">Paste With Transparency <span data-shortcut-label="pasteWithTransparency"></span></button>
+          <button data-action="pasteNoTransparency">Paste No Transparency <span data-shortcut-label="pasteNoTransparency"></span></button>
+          <button data-action="deleteSelection">Delete Selection <span data-shortcut-label="deleteSelection"></span></button>
+          <button data-action="selectAll">Select All <span data-shortcut-label="selectAll"></span></button>
+          <button data-action="clearSelection">Clear Selection <span data-shortcut-label="clearSelection"></span></button>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-root">Tools</button>
+        <div class="menu-dropdown">
+          <button data-action="toolPencil">Pencil <span data-shortcut-label="toolPencil"></span></button>
+          <button data-action="toolEraser">Eraser <span data-shortcut-label="toolEraser"></span></button>
+          <button data-action="toolFill">Fill <span data-shortcut-label="toolFill"></span></button>
+          <button data-action="toolLine">Line <span data-shortcut-label="toolLine"></span></button>
+          <button data-action="toolRect">Rectangle <span data-shortcut-label="toolRect"></span></button>
+          <button data-action="toolCircle">Circle <span data-shortcut-label="toolCircle"></span></button>
+          <button data-action="toolSelect">Select <span data-shortcut-label="toolSelect"></span></button>
+          <button data-action="toolEyedropper">Eyedropper <span data-shortcut-label="toolEyedropper"></span></button>
+          <button data-action="toolDither">Dither <span data-shortcut-label="toolDither"></span></button>
+          <button data-action="toolShade">Shade <span data-shortcut-label="toolShade"></span></button>
+          <button data-action="toolMove">Move Layer <span data-shortcut-label="toolMove"></span></button>
+          <button data-action="toggleBezier">Toggle Bezier Line <span data-shortcut-label="toggleBezier"></span></button>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-root">View</button>
+        <div class="menu-dropdown">
+          <button data-action="toggleGrid">Toggle Grid <span data-shortcut-label="toggleGrid"></span></button>
+          <button data-action="toggleOnion">Toggle Onion Skin <span data-shortcut-label="toggleOnion"></span></button>
+          <button data-action="toggleSymmetry">Toggle Symmetry <span data-shortcut-label="toggleSymmetry"></span></button>
+          <button data-action="tabLayers">Show Layers <span data-shortcut-label="tabLayers"></span></button>
+          <button data-action="tabPalette">Show Palette <span data-shortcut-label="tabPalette"></span></button>
+          <button data-action="tabExport">Show Export <span data-shortcut-label="tabExport"></span></button>
+          <button data-action="zoomIn">Zoom In <span data-shortcut-label="zoomIn"></span></button>
+          <button data-action="zoomOut">Zoom Out <span data-shortcut-label="zoomOut"></span></button>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-root">Layer</button>
+        <div class="menu-dropdown">
+          <button data-action="addLayer">Add Layer <span data-shortcut-label="addLayer"></span></button>
+          <button data-action="duplicateLayer">Duplicate Layer <span data-shortcut-label="duplicateLayer"></span></button>
+          <button data-action="mergeLayerDown">Merge Down <span data-shortcut-label="mergeLayerDown"></span></button>
+          <button data-action="moveLayerUp">Move Layer Up <span data-shortcut-label="moveLayerUp"></span></button>
+          <button data-action="moveLayerDown">Move Layer Down <span data-shortcut-label="moveLayerDown"></span></button>
+          <button data-action="flipLayerH">Flip Horizontal <span data-shortcut-label="flipLayerH"></span></button>
+          <button data-action="flipLayerV">Flip Vertical <span data-shortcut-label="flipLayerV"></span></button>
+          <button data-action="rotateLayer">Rotate 90° <span data-shortcut-label="rotateLayer"></span></button>
+          <button data-action="outlineLayer">Outline <span data-shortcut-label="outlineLayer"></span></button>
+          <button data-action="clearLayer">Clear Layer <span data-shortcut-label="clearLayer"></span></button>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-root">Animation</button>
+        <div class="menu-dropdown">
+          <button data-action="playAnimation">Play / Stop <span data-shortcut-label="playAnimation"></span></button>
+          <button data-action="addAnimation">Add Animation <span data-shortcut-label="addAnimation"></span></button>
+          <button data-action="deleteAnimation">Delete Animation <span data-shortcut-label="deleteAnimation"></span></button>
+          <button data-action="addFrame">Add Frame <span data-shortcut-label="addFrame"></span></button>
+          <button data-action="duplicateFrame">Duplicate Frame <span data-shortcut-label="duplicateFrame"></span></button>
+          <button data-action="deleteFrame">Delete Frame <span data-shortcut-label="deleteFrame"></span></button>
+          <button data-action="moveFrameLeft">Move Frame Left <span data-shortcut-label="moveFrameLeft"></span></button>
+          <button data-action="moveFrameRight">Move Frame Right <span data-shortcut-label="moveFrameRight"></span></button>
+        </div>
+      </div>
+
+      <div class="menu-group">
+        <button class="menu-root">Options</button>
+        <div class="menu-dropdown align-right">
+          <button data-action="openShortcuts">Keyboard Shortcuts <span data-shortcut-label="openShortcuts"></span></button>
+        </div>
+      </div>
+    </nav>
+
+    <main class="workspace">
+      <aside class="tool-rail" aria-label="Tools">
+        <button class="tool-btn active" data-tool="pencil" title="Pencil">✎<span>Pencil</span></button>
+        <button class="tool-btn" data-tool="eraser" title="Eraser">▱<span>Eraser</span></button>
+        <button class="tool-btn" data-tool="fill" title="Fill">▣<span>Fill</span></button>
+        <button class="tool-btn" data-tool="line" title="Line">╱<span>Line</span></button>
+        <button class="tool-btn" data-tool="rect" title="Rectangle">□<span>Rect</span></button>
+        <button class="tool-btn" data-tool="circle" title="Circle">○<span>Circle</span></button>
+        <button class="tool-btn" data-tool="select" title="Rectangular Select">▦<span>Select</span></button>
+        <button class="tool-btn" data-tool="eyedropper" title="Eyedropper">◉<span>Pick</span></button>
+        <button class="tool-btn" data-tool="dither" title="Dither">░<span>Dither</span></button>
+        <button class="tool-btn" data-tool="shade" title="Lighten / Darken">◐<span>Shade</span></button>
+        <button class="tool-btn" data-tool="move" title="Move Layer">⇄<span>Move</span></button>
+      </aside>
+
+      <section class="canvas-section">
+        <div class="canvas-toolbar">
+          <div class="field-row compact">
+            <label>Tool</label>
+            <strong id="activeToolLabel">Pencil</strong>
+          </div>
+
+          <div class="field-row compact">
+            <label>Brush</label>
+            <input id="brushSizeInput" type="range" min="1" max="8" value="1" />
+            <span id="brushSizeLabel">1px</span>
+          </div>
+
+          <div class="field-row compact">
+            <label>Zoom</label>
+            <input id="zoomInput" type="range" min="6" max="28" value="16" />
+            <span id="zoomLabel">16x</span>
+          </div>
+
+          <div id="lineOptionsRow" class="field-row compact line-options">
+            <label>Line</label>
+            <select id="lineModeInput" aria-label="Line mode">
+              <option value="straight">Straight</option>
+              <option value="bezier">Bezier</option>
+            </select>
+            <label class="inline-label">Bend</label>
+            <input id="bezierBendInput" type="range" min="-100" max="100" value="35" />
+            <span id="bezierBendLabel">35</span>
+          </div>
+
+          <div id="selectionOptionsRow" class="field-row compact selection-options">
+            <label>Selection</label>
+            <button id="copySelectionBtn" class="ghost-btn micro-btn">Copy</button>
+            <button id="cutSelectionBtn" class="ghost-btn micro-btn">Cut</button>
+            <button id="pasteWithTransparencyBtn" class="ghost-btn micro-btn">Paste Alpha</button>
+            <button id="pasteNoTransparencyBtn" class="ghost-btn micro-btn">Paste Solid</button>
+            <button id="clearSelectionBtn" class="ghost-btn micro-btn">Clear</button>
+          </div>
+
+          <button id="gridToggleBtn" class="toggle-btn active">Grid</button>
+          <button id="onionToggleBtn" class="toggle-btn active">Onion</button>
+          <button id="symmetryToggleBtn" class="toggle-btn">Symmetry</button>
+        </div>
+
+        <div class="canvas-wrap" id="canvasWrap">
+          <canvas id="pixelCanvas" width="512" height="512"></canvas>
+        </div>
+
+        <div class="timeline-panel">
+          <div class="timeline-header">
+            <div>
+              <h2>Animation Timeline</h2>
+              <p id="frameStatus">Frame 1 of 1</p>
+            </div>
+          </div>
+
+          <div class="animation-manager">
+            <label>
+              Animation
+              <select id="animationSelect"></select>
+            </label>
+            <label>
+              Name
+              <input id="animationNameInput" type="text" value="Idle" />
+            </label>
+            <label>
+              Anim ms
+              <input id="animationDurationInput" type="number" min="30" step="10" value="120" />
+            </label>
+            <button id="addAnimationBtn" class="ghost-btn small-btn">+ Animation</button>
+            <button id="deleteAnimationBtn" class="ghost-btn danger small-btn">Delete Animation</button>
+          </div>
+
+          <div class="frame-control-row">
+            <label class="frame-duration-field">
+              Frame ms
+              <input id="frameDurationInput" type="number" min="30" step="10" value="120" />
+            </label>
+            <div class="timeline-actions frame-actions">
+              <button id="playBtn" class="primary-btn small-btn">Play</button>
+              <button id="moveFrameLeftBtn" class="ghost-btn small-btn">Move Left</button>
+              <button id="moveFrameRightBtn" class="ghost-btn small-btn">Move Right</button>
+              <button id="addFrameBtn" class="ghost-btn small-btn">+ Frame</button>
+              <button id="dupFrameBtn" class="ghost-btn small-btn">Duplicate</button>
+              <button id="deleteFrameBtn" class="ghost-btn danger small-btn">Delete</button>
+            </div>
+          </div>
+
+          <div id="frameStrip" class="frame-strip" aria-label="Animation frames"></div>
+        </div>
+      </section>
+
+      <aside class="inspector">
+        <div class="new-project-card panel-card">
+          <h2>Sprite Size</h2>
+          <div class="field-grid two-col">
+            <label>
+              Width
+              <input id="newWidthInput" type="number" min="4" max="256" value="32" />
+            </label>
+            <label>
+              Height
+              <input id="newHeightInput" type="number" min="4" max="256" value="32" />
+            </label>
+          </div>
+          <div class="template-row">
+            <button class="template-btn" data-size="16">16</button>
+            <button class="template-btn active" data-size="32">32</button>
+            <button class="template-btn" data-size="48">48</button>
+            <button class="template-btn" data-size="64">64</button>
+          </div>
+          <button id="newProjectBtn" class="primary-btn full-btn">Apply Size</button>
+        </div>
+
+        <section class="panel-card">
+          <div class="panel-tabs">
+            <button class="tab-btn active" data-tab="layers">Layers</button>
+            <button class="tab-btn" data-tab="palette">Palette</button>
+            <button class="tab-btn" data-tab="export">Export</button>
+          </div>
+
+          <div id="layersTab" class="tab-panel active">
+            <div class="panel-header-row">
+              <h2>Layers</h2>
+              <button id="addLayerBtn" class="ghost-btn small-btn">+ Layer</button>
+            </div>
+            <div id="layerList" class="layer-list"></div>
+            <div class="layer-actions-grid">
+              <button id="duplicateLayerBtn" class="ghost-btn small-btn">Duplicate</button>
+              <button id="mergeLayerBtn" class="ghost-btn small-btn">Merge Down</button>
+              <button id="moveLayerUpBtn" class="ghost-btn small-btn">Move Up</button>
+              <button id="moveLayerDownBtn" class="ghost-btn small-btn">Move Down</button>
+              <button id="flipHBtn" class="ghost-btn small-btn">Flip H</button>
+              <button id="flipVBtn" class="ghost-btn small-btn">Flip V</button>
+              <button id="rotateLayerBtn" class="ghost-btn small-btn">Rotate 90°</button>
+              <button id="outlineBtn" class="ghost-btn small-btn">Outline</button>
+            </div>
+          </div>
+
+          <div id="paletteTab" class="tab-panel">
+            <div class="color-block">
+              <label>
+                Primary
+                <input id="primaryColorInput" type="color" value="#2f7cff" />
+              </label>
+              <label>
+                Secondary
+                <input id="secondaryColorInput" type="color" value="#101322" />
+              </label>
+            </div>
+
+            <div class="palette-actions">
+              <button id="addColorBtn" class="ghost-btn small-btn">Add Color</button>
+              <button id="replaceColorBtn" class="ghost-btn small-btn">Replace Picked</button>
+              <button id="clearLayerBtn" class="ghost-btn danger small-btn">Clear Layer</button>
+            </div>
+
+            <div id="paletteSwatches" class="palette-swatches"></div>
+
+            <div class="palette-meter">
+              <label>
+                Palette limit
+                <input id="paletteLimitInput" type="number" min="1" max="256" value="32" />
+              </label>
+              <p id="paletteCountLabel">0 colors used</p>
+            </div>
+          </div>
+
+          <div id="exportTab" class="tab-panel">
+            <h2>Game Export</h2>
+            <p class="muted-copy">Exports each animation on its own sprite-sheet row plus JSON metadata.</p>
+
+            <label>
+              Engine preset
+              <select id="enginePresetInput">
+                <option value="generic">Generic</option>
+                <option value="stencyl">Stencyl</option>
+                <option value="godot">Godot</option>
+                <option value="unity">Unity</option>
+                <option value="gamemaker">GameMaker</option>
+              </select>
+            </label>
+
+            <label>
+              Export scale
+              <select id="exportScaleInput">
+                <option value="1">1x</option>
+                <option value="2">2x</option>
+                <option value="3">3x</option>
+                <option value="4">4x</option>
+              </select>
+            </label>
+
+            <div class="export-actions">
+              <button id="downloadSheetBtn" class="primary-btn full-btn">Download Sprite Sheet</button>
+              <button id="downloadJsonBtn" class="ghost-btn full-btn">Download JSON Metadata</button>
+              <button id="copyNotesBtn" class="ghost-btn full-btn">Copy Import Notes</button>
+            </div>
+
+            <div class="export-preview-box">
+              <canvas id="exportPreviewCanvas" width="320" height="96"></canvas>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+
+  <div id="shortcutModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="shortcutTitle">
+    <div class="shortcut-modal">
+      <div class="modal-header">
+        <div>
+          <h2 id="shortcutTitle">Keyboard Shortcuts</h2>
+          <p>Click Assign, press the keys, then SpritePad remembers it.</p>
+        </div>
+        <button id="shortcutCloseBtn" class="ghost-btn small-btn">Close</button>
+      </div>
+      <div id="shortcutCaptureHint" class="shortcut-capture hidden">Press a key combo… Esc cancels.</div>
+      <div id="shortcutRows" class="shortcut-rows"></div>
+      <div class="modal-footer">
+        <button id="shortcutResetBtn" class="ghost-btn danger small-btn">Reset Defaults</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
