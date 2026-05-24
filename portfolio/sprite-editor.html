@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#404040" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <title>SpritePad</title>
   <link rel="stylesheet" href="./sprite-editor/style.css" />
 </head>
@@ -32,12 +35,20 @@
           <button data-action="deleteSelection">Delete Selection <span data-shortcut-label="deleteSelection"></span></button>
           <button data-action="selectAll">Select All <span data-shortcut-label="selectAll"></span></button>
           <button data-action="clearSelection">Clear Selection <span data-shortcut-label="clearSelection"></span></button>
+          <div class="menu-separator"></div>
+          <div class="menu-form-title">Sprite Size</div>
+          <div class="menu-size-form">
+            <label>W <input id="newWidthInput" type="number" min="4" max="256" value="32" /></label>
+            <label>H <input id="newHeightInput" type="number" min="4" max="256" value="32" /></label>
+            <button id="newProjectBtn" class="ghost-btn menu-apply-btn">Apply</button>
+          </div>
         </div>
       </div>
 
       <div class="menu-group">
         <button class="menu-root">Tools</button>
         <div class="menu-dropdown">
+          <button data-action="toolBrush">Brush <span data-shortcut-label="toolBrush"></span></button>
           <button data-action="toolPencil">Pencil <span data-shortcut-label="toolPencil"></span></button>
           <button data-action="toolEraser">Eraser <span data-shortcut-label="toolEraser"></span></button>
           <button data-action="toolFill">Fill <span data-shortcut-label="toolFill"></span></button>
@@ -46,8 +57,6 @@
           <button data-action="toolCircle">Circle <span data-shortcut-label="toolCircle"></span></button>
           <button data-action="toolSelect">Select <span data-shortcut-label="toolSelect"></span></button>
           <button data-action="toolEyedropper">Eyedropper <span data-shortcut-label="toolEyedropper"></span></button>
-          <button data-action="toolDither">Dither <span data-shortcut-label="toolDither"></span></button>
-          <button data-action="toolShade">Shade <span data-shortcut-label="toolShade"></span></button>
           <button data-action="toolMove">Move Layer <span data-shortcut-label="toolMove"></span></button>
           <button data-action="toggleBezier">Toggle Bezier Line <span data-shortcut-label="toggleBezier"></span></button>
         </div>
@@ -101,33 +110,15 @@
         <button class="menu-root">Options</button>
         <div class="menu-dropdown align-right">
           <button data-action="openShortcuts">Keyboard Shortcuts <span data-shortcut-label="openShortcuts"></span></button>
+          <button data-action="toggleFullscreen">Fullscreen <span data-shortcut-label="toggleFullscreen"></span></button>
         </div>
       </div>
-      <div class="sprite-size-bar" aria-label="Sprite size">
-        <span class="sprite-size-title">Sprite Size</span>
-        <label class="sprite-size-field">
-          <span>W</span>
-          <input id="newWidthInput" type="number" min="4" max="256" value="32" />
-        </label>
-        <label class="sprite-size-field">
-          <span>H</span>
-          <input id="newHeightInput" type="number" min="4" max="256" value="32" />
-        </label>
-        <div class="template-row sprite-size-presets">
-          <button class="template-btn" data-size="16">16</button>
-          <button class="template-btn active" data-size="32">32</button>
-          <button class="template-btn" data-size="48">48</button>
-          <button class="template-btn" data-size="64">64</button>
-        </div>
-        <button id="newProjectBtn" class="ghost-btn sprite-size-apply">Apply</button>
-      </div>
-
       <div class="top-actions menu-actions">
-        <button id="undoBtn" class="ghost-btn" title="Ctrl+Z">Undo</button>
-        <button id="redoBtn" class="ghost-btn" title="Ctrl+Y">Redo</button>
-        <button id="saveProjectBtn" class="ghost-btn">Save</button>
-        <label class="ghost-btn file-btn">
-          Open
+        <button id="undoBtn" class="ghost-btn icon-action" title="Undo" aria-label="Undo">↶</button>
+        <button id="redoBtn" class="ghost-btn icon-action" title="Redo" aria-label="Redo">↷</button>
+        <button id="saveProjectBtn" class="ghost-btn icon-action" title="Save" aria-label="Save">💾</button>
+        <label class="ghost-btn file-btn icon-action" title="Open" aria-label="Open">
+          📂
           <input id="openProjectInput" type="file" accept="application/json,.json,.spritepad" />
         </label>
         <button id="exportPngBtn" class="primary-btn">Export PNG</button>
@@ -136,7 +127,8 @@
 
     <main class="workspace">
       <aside class="tool-rail" aria-label="Tools">
-        <button class="tool-btn active" data-tool="pencil" title="Pencil">✎<span>Pencil</span></button>
+        <button class="tool-btn active" data-tool="brush" title="Left click sets primary tool. Right click sets secondary tool.">🖌<span>Brush</span></button>
+        <button class="tool-btn" data-tool="pencil" title="Single-pixel Pencil">✎<span>Pencil</span></button>
         <button class="tool-btn" data-tool="eraser" title="Eraser">▱<span>Eraser</span></button>
         <button class="tool-btn" data-tool="fill" title="Fill">▣<span>Fill</span></button>
         <button class="tool-btn" data-tool="line" title="Line">╱<span>Line</span></button>
@@ -144,28 +136,22 @@
         <button class="tool-btn" data-tool="circle" title="Circle">○<span>Circle</span></button>
         <button class="tool-btn" data-tool="select" title="Rectangular Select">▦<span>Select</span></button>
         <button class="tool-btn" data-tool="eyedropper" title="Eyedropper">◉<span>Pick</span></button>
-        <button class="tool-btn" data-tool="dither" title="Dither">░<span>Dither</span></button>
-        <button class="tool-btn" data-tool="shade" title="Lighten / Darken">◐<span>Shade</span></button>
-        <button class="tool-btn" data-tool="move" title="Move Layer">⇄<span>Move</span></button>
+        <button class="tool-btn" data-tool="move" title="Move Layer">✥<span>Move</span></button>
       </aside>
 
       <section class="canvas-section">
         <div class="canvas-toolbar">
-          <div class="field-row compact tool-status">
-            <span>Tool</span>
-            <strong id="activeToolLabel">Pencil</strong>
+          <div class="field-row compact tool-status" title="Left tool / Right tool">
+            <span>L</span>
+            <strong id="activeToolLabel" class="tool-status-icon" aria-label="Left tool">🖌</strong>
+            <span class="secondary-tool-tag">R</span>
+            <strong id="secondaryToolLabel" class="tool-status-icon" aria-label="Right tool">▱</strong>
           </div>
 
-          <div class="field-row compact">
-            <label>Brush</label>
-            <input id="brushSizeInput" type="range" min="1" max="8" value="1" />
-            <span id="brushSizeLabel">1px</span>
-          </div>
-
-          <div class="field-row compact">
-            <label>Zoom</label>
-            <input id="zoomInput" type="range" min="6" max="28" value="16" />
-            <span id="zoomLabel">16x</span>
+          <div class="field-row compact brush-size-row">
+            <label>Brush Size</label>
+            <input id="brushSizeInput" class="mini-number-input" type="number" min="1" max="32" value="1" />
+            <span id="brushSizeLabel">px</span>
           </div>
 
           <div id="lineOptionsRow" class="field-row compact line-options">
@@ -188,13 +174,21 @@
             <button id="clearSelectionBtn" class="ghost-btn micro-btn">Clear</button>
           </div>
 
-          <button id="gridToggleBtn" class="toggle-btn active">Grid</button>
-          <button id="onionToggleBtn" class="toggle-btn active">Onion</button>
-          <button id="symmetryToggleBtn" class="toggle-btn">Symmetry</button>
+          <button id="gridToggleBtn" class="toggle-btn icon-toggle" title="Grid" aria-label="Grid">▦</button>
+          <button id="onionToggleBtn" class="toggle-btn icon-toggle" title="Onion Skin" aria-label="Onion Skin">🧅</button>
+          <button id="symmetryToggleBtn" class="toggle-btn icon-toggle symmetry-icon" title="Symmetry" aria-label="Symmetry">○│○</button>
         </div>
 
         <div class="canvas-wrap" id="canvasWrap">
           <canvas id="pixelCanvas" width="512" height="512"></canvas>
+        </div>
+
+        <div class="canvas-bottom-bar">
+          <div class="field-row compact zoom-bottom-row">
+            <label>Zoom</label>
+            <input id="zoomInput" type="range" min="6" max="28" value="16" />
+            <span id="zoomLabel">16x</span>
+          </div>
         </div>
 
         <div class="timeline-panel">
@@ -212,7 +206,7 @@
             </label>
             <label>
               Name
-              <input id="animationNameInput" type="text" value="Idle" />
+              <input id="animationNameInput" type="text" value="Animation 0" />
             </label>
             <label>
               Anim ms
@@ -268,31 +262,59 @@
           </div>
 
           <div id="paletteTab" class="tab-panel">
-            <div class="color-block">
+            <div class="color-block active-colors">
               <label>
                 Primary
-                <input id="primaryColorInput" type="color" value="#2f7cff" />
+                <input id="primaryColorInput" type="color" value="#000000" />
               </label>
+              <button id="swapColorsBtn" class="ghost-btn icon-btn" title="Swap primary and secondary colors">⇄</button>
               <label>
                 Secondary
-                <input id="secondaryColorInput" type="color" value="#101322" />
+                <input id="secondaryColorInput" type="color" value="#ffffff" />
               </label>
             </div>
 
-            <div class="palette-actions">
-              <button id="addColorBtn" class="ghost-btn small-btn">Add Color</button>
-              <button id="replaceColorBtn" class="ghost-btn small-btn">Replace Picked</button>
-              <button id="clearLayerBtn" class="ghost-btn danger small-btn">Clear Layer</button>
+            <div class="palette-section">
+              <div class="panel-header-row tight-row">
+                <h2>Recent Colors</h2>
+                <p id="paletteCountLabel">0 colors used</p>
+              </div>
+              <div id="paletteSwatches" class="palette-swatches recent-swatches"></div>
             </div>
 
-            <div id="paletteSwatches" class="palette-swatches"></div>
+            <div class="palette-section">
+              <div class="panel-header-row tight-row">
+                <h2>Custom Swatches</h2>
+                <button id="saveSwatchBtn" class="ghost-btn small-btn">Save Swatch</button>
+              </div>
+              <div id="customSwatches" class="palette-swatches custom-swatches"></div>
+            </div>
 
-            <div class="palette-meter">
+            <div class="palette-section palette-builder">
+              <h2>Palette Presets</h2>
               <label>
-                Palette limit
-                <input id="paletteLimitInput" type="number" min="1" max="256" value="32" />
+                Preset
+                <select id="palettePresetInput">
+                  <option value="oneTone">1 Tone</option>
+                  <option value="twoTone">2 Tone</option>
+                  <option value="fourTone">4 Tone</option>
+                  <option value="analogous">Analogous</option>
+                  <option value="complementary">Complementary</option>
+                  <option value="triad">Triad</option>
+                  <option value="eightBit">8-bit</option>
+                  <option value="sixteenBit">16-bit</option>
+                  <option value="gameboy">Game Boy</option>
+                </select>
               </label>
-              <p id="paletteCountLabel">0 colors used</p>
+              <label>
+                Color Wheel
+                <input id="paletteWheelInput" type="color" value="#ff5b7f" />
+              </label>
+              <div id="palettePresetSwatches" class="palette-swatches preset-swatches"></div>
+            </div>
+
+            <div class="palette-actions compact-actions">
+              <button id="clearLayerBtn" class="ghost-btn danger small-btn">Clear Layer</button>
             </div>
           </div>
 

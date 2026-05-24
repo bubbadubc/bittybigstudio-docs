@@ -13,13 +13,24 @@
     width: 32,
     height: 32,
     zoom: 16,
-    tool: "pencil",
+    tool: "brush",
+    secondaryTool: "eraser",
+    strokeTool: "brush",
+    strokeColor: "#000000",
+    activePointerButton: 0,
     brushSize: 1,
-    primaryColor: "#2f7cff",
-    secondaryColor: "#101322",
+    isPanningCanvas: false,
+    canvasPanX: 0,
+    canvasPanY: 0,
+    panStartX: 0,
+    panStartY: 0,
+    panOriginX: 0,
+    panOriginY: 0,
+    primaryColor: "#000000",
+    secondaryColor: "#ffffff",
     symmetry: false,
-    showGrid: true,
-    showOnion: true,
+    showGrid: false,
+    showOnion: false,
     lineMode: "straight",
     bezierBend: 35,
     isDrawing: false,
@@ -29,17 +40,26 @@
     lastY: 0,
     startImageData: null,
     moveCanvas: null,
-    shadeDarken: false,
     currentAnimation: 0,
     currentFrame: 0,
     currentLayer: 0,
     animations: [],
     frames: [],
     palette: [
-      "#000000", "#ffffff", "#2f7cff", "#ffcc4d",
-      "#ff5b7f", "#53e086", "#7f5cff", "#101322"
+      "#000000", "#ffffff", "#ffcc4d", "#ff5b7f",
+      "#53e086", "#2f7cff", "#7f5cff", "#101322",
+      "#3b2f52", "#1f8a70", "#f25f5c", "#70c1b3",
+      "#f3ffbd", "#b2dbbf", "#247ba0", "#50514f"
     ],
-    pickedColor: "#2f7cff",
+    customSwatches: [
+      "#000000", "#ffffff", "#7f7f7f", "#c0c0c0",
+      "#ff0000", "#ff8000", "#ffff00", "#00ff00",
+      "#00ffff", "#0000ff", "#8000ff", "#ff00ff",
+      "#4b2e2b", "#2b4b32", "#2b374b", "#101322"
+    ],
+    palettePresetColors: [],
+    activeCustomSwatch: 0,
+    pickedColor: "#000000",
     undoStack: [],
     redoStack: [],
     isPlaying: false,
@@ -118,11 +138,14 @@
     outlineBtn: document.getElementById("outlineBtn"),
     primaryColorInput: document.getElementById("primaryColorInput"),
     secondaryColorInput: document.getElementById("secondaryColorInput"),
-    addColorBtn: document.getElementById("addColorBtn"),
-    replaceColorBtn: document.getElementById("replaceColorBtn"),
+    swapColorsBtn: document.getElementById("swapColorsBtn"),
+    saveSwatchBtn: document.getElementById("saveSwatchBtn"),
     clearLayerBtn: document.getElementById("clearLayerBtn"),
     paletteSwatches: document.getElementById("paletteSwatches"),
-    paletteLimitInput: document.getElementById("paletteLimitInput"),
+    customSwatches: document.getElementById("customSwatches"),
+    palettePresetInput: document.getElementById("palettePresetInput"),
+    paletteWheelInput: document.getElementById("paletteWheelInput"),
+    palettePresetSwatches: document.getElementById("palettePresetSwatches"),
     paletteCountLabel: document.getElementById("paletteCountLabel"),
     saveProjectBtn: document.getElementById("saveProjectBtn"),
     openProjectInput: document.getElementById("openProjectInput"),
@@ -176,6 +199,7 @@
     {
       name: "Tools",
       actions: [
+        { id: "toolBrush", label: "Brush", defaultKey: "B" },
         { id: "toolPencil", label: "Pencil", defaultKey: "P" },
         { id: "toolEraser", label: "Eraser", defaultKey: "E" },
         { id: "toolFill", label: "Fill", defaultKey: "F" },
@@ -184,10 +208,8 @@
         { id: "toolCircle", label: "Circle", defaultKey: "C" },
         { id: "toolSelect", label: "Select", defaultKey: "S" },
         { id: "toolEyedropper", label: "Eyedropper", defaultKey: "I" },
-        { id: "toolDither", label: "Dither", defaultKey: "D" },
-        { id: "toolShade", label: "Shade", defaultKey: "H" },
         { id: "toolMove", label: "Move Layer", defaultKey: "M" },
-        { id: "toggleBezier", label: "Toggle Bezier Line", defaultKey: "B" }
+        { id: "toggleBezier", label: "Toggle Bezier Line", defaultKey: "Shift+B" }
       ]
     },
     {
@@ -234,7 +256,8 @@
     {
       name: "Options",
       actions: [
-        { id: "openShortcuts", label: "Keyboard Shortcuts", defaultKey: "Ctrl+/" }
+        { id: "openShortcuts", label: "Keyboard Shortcuts", defaultKey: "Ctrl+/" },
+        { id: "toggleFullscreen", label: "Fullscreen", defaultKey: "Ctrl+Enter" }
       ]
     }
   ];
@@ -353,6 +376,7 @@
     canvas.height = state.height * state.zoom;
     ctx.imageSmoothingEnabled = false;
     els.zoomLabel.textContent = state.zoom + "x";
+    updateCanvasPan();
   }
 
   function rgbaFromHex(hex, alpha) {
@@ -441,25 +465,18 @@
     if (state.zoom < 8) return;
 
     ctx.save();
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.32)";
-    ctx.lineWidth = 1;
-    ctx.lineCap = "round";
-    ctx.setLineDash([1, Math.max(4, Math.floor(state.zoom / 3))]);
+    ctx.fillStyle = "rgba(220, 226, 235, 0.28)";
 
-    for (let x = 0; x <= state.width; x++) {
-      const px = x * state.zoom + 0.5;
-      ctx.beginPath();
-      ctx.moveTo(px, 0);
-      ctx.lineTo(px, canvas.height);
-      ctx.stroke();
-    }
+    const spacing = state.zoom / 4;
+    const dotSize = 1;
 
-    for (let y = 0; y <= state.height; y++) {
-      const py = y * state.zoom + 0.5;
-      ctx.beginPath();
-      ctx.moveTo(0, py);
-      ctx.lineTo(canvas.width, py);
-      ctx.stroke();
+    for (let x = 0; x <= state.width * 4; x++) {
+      const px = Math.round(x * spacing);
+
+      for (let y = 0; y <= state.height * 4; y++) {
+        const py = Math.round(y * spacing);
+        ctx.fillRect(px, py, dotSize, dotSize);
+      }
     }
 
     ctx.restore();
@@ -789,16 +806,22 @@
     }
   }
 
-  function paintAt(x, y) {
-    if (state.tool === "pencil") {
+  function paintAt(x, y, tool, colorHex) {
+    if (tool === "brush") {
       applySymmetryPoints(x, y, function (px, py) {
         applyBrush(px, py, function (bx, by) {
-          drawPixel(bx, by, state.primaryColor);
+          drawPixel(bx, by, colorHex);
         });
       });
     }
 
-    if (state.tool === "eraser") {
+    if (tool === "pencil") {
+      applySymmetryPoints(x, y, function (px, py) {
+        drawPixel(px, py, colorHex);
+      });
+    }
+
+    if (tool === "eraser") {
       applySymmetryPoints(x, y, function (px, py) {
         applyBrush(px, py, function (bx, by) {
           erasePixel(bx, by);
@@ -806,40 +829,6 @@
       });
     }
 
-    if (state.tool === "dither") {
-      applySymmetryPoints(x, y, function (px, py) {
-        applyBrush(px, py, function (bx, by) {
-          const even = (bx + by) % 2 === 0;
-          if (even) {
-            drawPixel(bx, by, state.primaryColor);
-          } else {
-            drawPixel(bx, by, state.secondaryColor);
-          }
-        });
-      });
-    }
-
-    if (state.tool === "shade") {
-      shadeAt(x, y);
-    }
-  }
-
-  function shadeAt(x, y) {
-    const layer = getLayer();
-    if (!layer) return;
-    const imageData = layer.ctx.getImageData(0, 0, state.width, state.height);
-    const index = dataIndex(x, y, state.width);
-    if (imageData.data[index + 3] === 0) return;
-
-    let amount = 18;
-    if (state.shadeDarken) {
-      amount = -18;
-    }
-
-    imageData.data[index] = clamp(imageData.data[index] + amount, 0, 255);
-    imageData.data[index + 1] = clamp(imageData.data[index + 1] + amount, 0, 255);
-    imageData.data[index + 2] = clamp(imageData.data[index + 2] + amount, 0, 255);
-    layer.ctx.putImageData(imageData, 0, 0);
   }
 
   function clamp(value, min, max) {
@@ -988,12 +977,12 @@
     }
   }
 
-  function floodFill(x, y) {
+  function floodFill(x, y, colorHex) {
     const layer = getLayer();
     if (!layer) return;
     const imageData = layer.ctx.getImageData(0, 0, state.width, state.height);
     const target = readPixelFromImageData(imageData, x, y);
-    const fill = rgbaFromHex(state.primaryColor, 255);
+    const fill = rgbaFromHex(colorHex, 255);
 
     if (colorsMatch(target, fill)) return;
 
@@ -1090,18 +1079,72 @@
     loadProjectData(next);
   }
 
+  function getToolLabel(tool) {
+    if (tool === "eyedropper") return "Pick";
+    if (tool === "rect") return "Rect";
+    return tool.charAt(0).toUpperCase() + tool.slice(1);
+  }
+
+  function getToolIcon(tool) {
+    if (tool === "brush") return "🖌";
+    if (tool === "pencil") return "✎";
+    if (tool === "eraser") return "▱";
+    if (tool === "fill") return "▣";
+    if (tool === "line") return "╱";
+    if (tool === "rect") return "□";
+    if (tool === "circle") return "○";
+    if (tool === "select") return "▦";
+    if (tool === "eyedropper") return "◉";
+    if (tool === "move") return "✥";
+    return "?";
+  }
+
+  function updateCanvasPan() {
+    canvas.style.transform = "translate(" + state.canvasPanX + "px, " + state.canvasPanY + "px)";
+  }
+
+  function beginCanvasPan(event) {
+    state.isPanningCanvas = true;
+    state.panStartX = event.clientX;
+    state.panStartY = event.clientY;
+    state.panOriginX = state.canvasPanX;
+    state.panOriginY = state.canvasPanY;
+    canvas.setPointerCapture(event.pointerId);
+  }
+
+  function beginStroke(event) {
+    if (event.button === 2) {
+      state.activePointerButton = 2;
+      state.strokeTool = state.secondaryTool;
+      state.strokeColor = state.secondaryColor;
+    } else {
+      state.activePointerButton = 0;
+      state.strokeTool = state.tool;
+      state.strokeColor = state.primaryColor;
+    }
+  }
+
   function onPointerDown(event) {
     event.preventDefault();
+
+    if (event.button === 1 || event.altKey) {
+      beginCanvasPan(event);
+      return;
+    }
+
+    beginStroke(event);
+
+    const tool = state.strokeTool;
+    const color = state.strokeColor;
     const point = getCanvasPoint(event);
     state.isDrawing = true;
     state.startX = point.x;
     state.startY = point.y;
     state.lastX = point.x;
     state.lastY = point.y;
-    state.shadeDarken = event.shiftKey;
     canvas.setPointerCapture(event.pointerId);
 
-    if (state.tool === "select") {
+    if (tool === "select") {
       state.selectionDragStart = {
         x: point.x,
         y: point.y
@@ -1111,7 +1154,7 @@
       return;
     }
 
-    if (state.tool === "eyedropper") {
+    if (tool === "eyedropper") {
       sampleCompositeColor(point.x, point.y);
       renderAllUi();
       return;
@@ -1119,20 +1162,20 @@
 
     pushUndo();
 
-    if (state.tool === "fill") {
-      floodFill(point.x, point.y);
+    if (tool === "fill") {
+      floodFill(point.x, point.y, color);
       state.isDrawing = false;
       renderAllUi();
       return;
     }
 
-    if (state.tool === "line" || state.tool === "rect" || state.tool === "circle") {
+    if (tool === "line" || tool === "rect" || tool === "circle") {
       state.startImageData = getLayerSnapshot();
       renderAllUi();
       return;
     }
 
-    if (state.tool === "move") {
+    if (tool === "move") {
       state.startImageData = getLayerSnapshot();
       state.moveCanvas = document.createElement("canvas");
       state.moveCanvas.width = state.width;
@@ -1141,46 +1184,57 @@
       return;
     }
 
-    paintAt(point.x, point.y);
+    paintAt(point.x, point.y, tool, color);
     renderAllUi();
   }
 
   function onPointerMove(event) {
+    if (state.isPanningCanvas) {
+      event.preventDefault();
+      state.canvasPanX = state.panOriginX + (event.clientX - state.panStartX);
+      state.canvasPanY = state.panOriginY + (event.clientY - state.panStartY);
+      updateCanvasPan();
+      return;
+    }
+
     if (!state.isDrawing) return;
     event.preventDefault();
+
+    const tool = state.strokeTool;
+    const color = state.strokeColor;
     const point = getCanvasPoint(event);
 
-    if (state.tool === "select") {
+    if (tool === "select") {
       if (!state.selectionDragStart) return;
       setSelectionFromPoints(state.selectionDragStart.x, state.selectionDragStart.y, point.x, point.y);
       renderAllUi();
       return;
     }
 
-    if (state.tool === "line" || state.tool === "rect" || state.tool === "circle") {
+    if (tool === "line" || tool === "rect" || tool === "circle") {
       restoreLayerSnapshot(state.startImageData);
 
-      if (state.tool === "line") {
+      if (tool === "line") {
         if (state.lineMode === "bezier") {
-          drawBezier(state.startX, state.startY, point.x, point.y, state.primaryColor);
+          drawBezier(state.startX, state.startY, point.x, point.y, color);
         } else {
-          drawLine(state.startX, state.startY, point.x, point.y, state.primaryColor);
+          drawLine(state.startX, state.startY, point.x, point.y, color);
         }
       }
 
-      if (state.tool === "rect") {
-        drawRect(state.startX, state.startY, point.x, point.y, state.primaryColor);
+      if (tool === "rect") {
+        drawRect(state.startX, state.startY, point.x, point.y, color);
       }
 
-      if (state.tool === "circle") {
-        drawCircle(state.startX, state.startY, point.x, point.y, state.primaryColor);
+      if (tool === "circle") {
+        drawCircle(state.startX, state.startY, point.x, point.y, color);
       }
 
       renderAllUi();
       return;
     }
 
-    if (state.tool === "move") {
+    if (tool === "move") {
       restoreLayerSnapshot(state.startImageData);
       const layer = getLayer();
       layer.ctx.clearRect(0, 0, state.width, state.height);
@@ -1191,17 +1245,10 @@
       return;
     }
 
-    state.shadeDarken = event.shiftKey;
 
-    if (state.tool === "pencil") {
+    if (tool === "brush" || tool === "pencil" || tool === "eraser") {
       traceLine(state.lastX, state.lastY, point.x, point.y, function (px, py) {
-        paintAt(px, py);
-      });
-    }
-
-    if (state.tool === "eraser" || state.tool === "dither" || state.tool === "shade") {
-      traceLine(state.lastX, state.lastY, point.x, point.y, function (px, py) {
-        paintAt(px, py);
+        paintAt(px, py, tool, color);
       });
     }
 
@@ -1211,17 +1258,31 @@
   }
 
   function onPointerUp(event) {
+    if (state.isPanningCanvas) {
+      event.preventDefault();
+      state.isPanningCanvas = false;
+      return;
+    }
+
     if (!state.isDrawing) return;
     event.preventDefault();
     state.isDrawing = false;
     state.selectionDragStart = null;
     state.startImageData = null;
     state.moveCanvas = null;
+    state.strokeTool = state.tool;
+    state.strokeColor = state.primaryColor;
+    state.activePointerButton = 0;
     renderAllUi();
   }
 
   function setTool(tool) {
     state.tool = tool;
+    updateToolUi();
+  }
+
+  function setSecondaryTool(tool) {
+    state.secondaryTool = tool;
     updateToolUi();
   }
 
@@ -1256,27 +1317,38 @@
   function updateToolUi() {
     for (let i = 0; i < els.toolButtons.length; i++) {
       const button = els.toolButtons[i];
+
       if (button.dataset.tool === state.tool) {
         button.classList.add("active");
       } else {
         button.classList.remove("active");
       }
+
+      if (button.dataset.tool === state.secondaryTool) {
+        button.classList.add("secondary-active");
+      } else {
+        button.classList.remove("secondary-active");
+      }
     }
 
-    const pretty = state.tool.charAt(0).toUpperCase() + state.tool.slice(1);
-    els.activeToolLabel.textContent = pretty;
-    els.brushSizeLabel.textContent = state.brushSize + "px";
+    els.activeToolLabel.textContent = getToolIcon(state.tool);
+    els.activeToolLabel.title = getToolLabel(state.tool);
+    if (els.secondaryToolLabel != null) {
+      els.secondaryToolLabel.textContent = getToolIcon(state.secondaryTool);
+      els.secondaryToolLabel.title = getToolLabel(state.secondaryTool);
+    }
+    els.brushSizeLabel.textContent = "px";
     els.lineModeInput.value = state.lineMode;
     els.bezierBendInput.value = state.bezierBend;
     els.bezierBendLabel.textContent = String(state.bezierBend);
 
-    if (state.tool === "line") {
+    if (state.tool === "line" || state.secondaryTool === "line") {
       els.lineOptionsRow.style.display = "flex";
     } else {
       els.lineOptionsRow.style.display = "none";
     }
 
-    if (state.tool === "select" || hasSelection() || state.clipboard !== null) {
+    if (state.tool === "select" || state.secondaryTool === "select" || hasSelection() || state.clipboard !== null) {
       els.selectionOptionsRow.style.display = "flex";
     } else {
       els.selectionOptionsRow.style.display = "none";
@@ -1809,54 +1881,241 @@
 
       els.paletteSwatches.appendChild(swatch);
     }
+
+    renderCustomSwatches();
+    renderPalettePreset();
+  }
+
+  function renderCustomSwatches() {
+    if (!els.customSwatches) return;
+    els.customSwatches.innerHTML = "";
+
+    for (let i = 0; i < state.customSwatches.length; i++) {
+      const color = state.customSwatches[i];
+      const swatch = document.createElement("button");
+      swatch.className = "swatch custom-swatch";
+      swatch.style.background = color;
+      swatch.title = "Custom " + (i + 1) + ": " + color;
+
+      if (i === state.activeCustomSwatch) {
+        swatch.classList.add("selected-slot");
+      }
+
+      swatch.addEventListener("click", function () {
+        state.activeCustomSwatch = i;
+        state.primaryColor = color;
+        state.pickedColor = color;
+        els.primaryColorInput.value = color;
+        renderPalette();
+      });
+
+      els.customSwatches.appendChild(swatch);
+    }
   }
 
   function addPaletteColor(color) {
     const cleaned = color.toLowerCase();
+    const existing = [];
 
     for (let i = 0; i < state.palette.length; i++) {
-      if (state.palette[i].toLowerCase() === cleaned) {
-        renderPalette();
-        return;
+      if (state.palette[i].toLowerCase() !== cleaned) {
+        existing.push(state.palette[i]);
       }
     }
 
-    state.palette.push(color);
+    state.palette = [color].concat(existing).slice(0, 16);
+    renderPalette();
+  }
+
+  function saveCurrentSwatch() {
+    state.customSwatches[state.activeCustomSwatch] = state.primaryColor;
+    renderPalette();
+  }
+
+  function swapColors() {
+    const oldPrimary = state.primaryColor;
+    state.primaryColor = state.secondaryColor;
+    state.secondaryColor = oldPrimary;
+    state.pickedColor = state.primaryColor;
+    els.primaryColorInput.value = state.primaryColor;
+    els.secondaryColorInput.value = state.secondaryColor;
+    addPaletteColor(state.primaryColor);
+    addPaletteColor(state.secondaryColor);
     renderPalette();
   }
 
   function replacePickedColor() {
-    pushUndo();
-    const layer = getLayer();
-    const imageData = layer.ctx.getImageData(0, 0, state.width, state.height);
-    const from = rgbaFromHex(state.pickedColor, 255);
-    const to = rgbaFromHex(state.primaryColor, 255);
+    return;
+  }
 
-    for (let y = 0; y < state.height; y++) {
-      for (let x = 0; x < state.width; x++) {
-        const index = dataIndex(x, y, state.width);
-        const current = {
-          r: imageData.data[index],
-          g: imageData.data[index + 1],
-          b: imageData.data[index + 2],
-          a: imageData.data[index + 3]
-        };
+  function hexToRgb(hex) {
+    const cleaned = hex.replace("#", "");
+    return {
+      r: parseInt(cleaned.substring(0, 2), 16),
+      g: parseInt(cleaned.substring(2, 4), 16),
+      b: parseInt(cleaned.substring(4, 6), 16)
+    };
+  }
 
-        if (!colorsMatch(current, from)) continue;
+  function rgbToHex(r, g, b) {
+    const rr = clamp(Math.round(r), 0, 255).toString(16).padStart(2, "0");
+    const gg = clamp(Math.round(g), 0, 255).toString(16).padStart(2, "0");
+    const bb = clamp(Math.round(b), 0, 255).toString(16).padStart(2, "0");
+    return "#" + rr + gg + bb;
+  }
 
-        imageData.data[index] = to.r;
-        imageData.data[index + 1] = to.g;
-        imageData.data[index + 2] = to.b;
-        imageData.data[index + 3] = to.a;
+  function rgbToHsl(r, g, b) {
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h = 0;
+    let s = 0;
+    const l = (max + min) / 2;
+
+    if (max !== min) {
+      const d = max - min;
+      if (l > 0.5) {
+        s = d / (2 - max - min);
+      } else {
+        s = d / (max + min);
       }
+
+      if (max === r) {
+        h = (g - b) / d;
+        if (g < b) h += 6;
+      } else if (max === g) {
+        h = (b - r) / d + 2;
+      } else {
+        h = (r - g) / d + 4;
+      }
+
+      h /= 6;
     }
 
-    layer.ctx.putImageData(imageData, 0, 0);
-    state.pickedColor = state.primaryColor;
-    renderAllUi();
+    return {
+      h: h * 360,
+      s: s,
+      l: l
+    };
+  }
+
+  function hslToHex(h, s, l) {
+    h = ((h % 360) + 360) % 360;
+    h /= 360;
+
+    let r = l;
+    let g = l;
+    let b = l;
+
+    if (s !== 0) {
+      let q = l * (1 + s);
+      if (l >= 0.5) q = l + s - l * s;
+      const p = 2 * l - q;
+      r = hueToRgb(p, q, h + 1 / 3);
+      g = hueToRgb(p, q, h);
+      b = hueToRgb(p, q, h - 1 / 3);
+    }
+
+    return rgbToHex(r * 255, g * 255, b * 255);
+  }
+
+  function hueToRgb(p, q, t) {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  }
+
+  function createTheoryPalette() {
+    const preset = els.palettePresetInput.value;
+    const baseRgb = hexToRgb(els.paletteWheelInput.value);
+    const baseHsl = rgbToHsl(baseRgb.r, baseRgb.g, baseRgb.b);
+    let colors = [];
+
+    if (preset === "oneTone") {
+      colors = [hslToHex(baseHsl.h, baseHsl.s, 0.20), hslToHex(baseHsl.h, baseHsl.s, 0.38), hslToHex(baseHsl.h, baseHsl.s, 0.58), hslToHex(baseHsl.h, baseHsl.s, 0.78)];
+    } else if (preset === "twoTone") {
+      colors = [hslToHex(baseHsl.h, baseHsl.s, 0.28), hslToHex(baseHsl.h, baseHsl.s, 0.62), hslToHex(baseHsl.h + 180, baseHsl.s, 0.34), hslToHex(baseHsl.h + 180, baseHsl.s, 0.68)];
+    } else if (preset === "fourTone") {
+      colors = [hslToHex(baseHsl.h, baseHsl.s, 0.34), hslToHex(baseHsl.h + 90, baseHsl.s, 0.44), hslToHex(baseHsl.h + 180, baseHsl.s, 0.54), hslToHex(baseHsl.h + 270, baseHsl.s, 0.64)];
+    } else if (preset === "analogous") {
+      colors = [hslToHex(baseHsl.h - 45, baseHsl.s, 0.48), hslToHex(baseHsl.h - 20, baseHsl.s, 0.56), hslToHex(baseHsl.h, baseHsl.s, 0.60), hslToHex(baseHsl.h + 20, baseHsl.s, 0.56), hslToHex(baseHsl.h + 45, baseHsl.s, 0.48)];
+    } else if (preset === "complementary") {
+      colors = [hslToHex(baseHsl.h, baseHsl.s, 0.28), hslToHex(baseHsl.h, baseHsl.s, 0.60), hslToHex(baseHsl.h + 180, baseHsl.s, 0.32), hslToHex(baseHsl.h + 180, baseHsl.s, 0.64)];
+    } else if (preset === "triad") {
+      colors = [hslToHex(baseHsl.h, baseHsl.s, 0.55), hslToHex(baseHsl.h + 120, baseHsl.s, 0.55), hslToHex(baseHsl.h + 240, baseHsl.s, 0.55), hslToHex(baseHsl.h, baseHsl.s, 0.25), hslToHex(baseHsl.h, baseHsl.s, 0.78)];
+    } else if (preset === "eightBit") {
+      colors = ["#000000", "#ffffff", "#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff"];
+    } else if (preset === "sixteenBit") {
+      colors = ["#000000", "#1d2b53", "#7e2553", "#008751", "#ab5236", "#5f574f", "#c2c3c7", "#fff1e8", "#ff004d", "#ffa300", "#ffec27", "#00e436", "#29adff", "#83769c", "#ff77a8", "#ffccaa"];
+    } else if (preset === "gameboy") {
+      colors = ["#0f380f", "#306230", "#8bac0f", "#9bbc0f"];
+    }
+
+    return colors;
+  }
+
+  function renderPalettePreset() {
+    if (!els.palettePresetSwatches) return;
+
+    if (state.palettePresetColors.length === 0) {
+      state.palettePresetColors = createTheoryPalette();
+    }
+
+    els.palettePresetSwatches.innerHTML = "";
+
+    for (let i = 0; i < state.palettePresetColors.length; i++) {
+      const color = state.palettePresetColors[i];
+      const swatch = document.createElement("button");
+      swatch.className = "swatch preset-swatch";
+      swatch.style.background = color;
+      swatch.title = color + " — click to use, drag to reorder";
+      swatch.draggable = true;
+      swatch.dataset.index = String(i);
+
+      swatch.addEventListener("click", function () {
+        state.primaryColor = color;
+        state.pickedColor = color;
+        els.primaryColorInput.value = color;
+        addPaletteColor(color);
+      });
+
+      swatch.addEventListener("dragstart", function (event) {
+        event.dataTransfer.setData("text/plain", String(i));
+      });
+
+      swatch.addEventListener("dragover", function (event) {
+        event.preventDefault();
+      });
+
+      swatch.addEventListener("drop", function (event) {
+        event.preventDefault();
+        const fromIndex = Number(event.dataTransfer.getData("text/plain"));
+        const toIndex = i;
+        if (Number.isNaN(fromIndex)) return;
+        if (fromIndex === toIndex) return;
+        const moved = state.palettePresetColors.splice(fromIndex, 1)[0];
+        state.palettePresetColors.splice(toIndex, 0, moved);
+        renderPalettePreset();
+      });
+
+      els.palettePresetSwatches.appendChild(swatch);
+    }
+  }
+
+  function refreshPalettePreset() {
+    state.palettePresetColors = createTheoryPalette();
+    renderPalettePreset();
   }
 
   function updatePaletteCount() {
+    if (!els.paletteCountLabel) return;
+
     const used = new Set();
 
     for (let animationIndex = 0; animationIndex < state.animations.length; animationIndex++) {
@@ -1875,15 +2134,7 @@
       }
     }
 
-    const limit = Number(els.paletteLimitInput.value);
     els.paletteCountLabel.textContent = used.size + " colors used";
-
-    const meter = els.paletteCountLabel.closest(".palette-meter");
-    if (used.size > limit) {
-      meter.classList.add("limit-warning");
-    } else {
-      meter.classList.remove("limit-warning");
-    }
   }
 
   function getMaxFrameCount() {
@@ -2124,6 +2375,7 @@
       primaryColor: state.primaryColor,
       secondaryColor: state.secondaryColor,
       palette: state.palette,
+      customSwatches: state.customSwatches,
       animations: animations
     };
   }
@@ -2161,9 +2413,10 @@
     state.currentAnimation = 0;
     state.currentFrame = 0;
     state.currentLayer = data.currentLayer || 0;
-    state.primaryColor = data.primaryColor || "#2f7cff";
-    state.secondaryColor = data.secondaryColor || "#101322";
+    state.primaryColor = data.primaryColor || "#000000";
+    state.secondaryColor = data.secondaryColor || "#ffffff";
     state.palette = data.palette || state.palette;
+    state.customSwatches = data.customSwatches || state.customSwatches;
     state.animations = [];
     state.frames = [];
     state.selection.active = false;
@@ -2322,11 +2575,28 @@
     canvas.addEventListener("pointermove", onPointerMove);
     canvas.addEventListener("pointerup", onPointerUp);
     canvas.addEventListener("pointercancel", onPointerUp);
+    canvas.addEventListener("contextmenu", function (event) {
+      event.preventDefault();
+    });
+    document.addEventListener("contextmenu", function (event) {
+      event.preventDefault();
+    });
 
     for (let i = 0; i < els.toolButtons.length; i++) {
-      els.toolButtons[i].addEventListener("click", function () {
+      els.toolButtons[i].addEventListener("pointerdown", function (event) {
+        event.preventDefault();
+
+        if (event.button === 2) {
+          setSecondaryTool(this.dataset.tool);
+          return;
+        }
+
         setTool(this.dataset.tool);
         setToolPanelOpen(false);
+      });
+
+      els.toolButtons[i].addEventListener("contextmenu", function (event) {
+        event.preventDefault();
       });
     }
 
@@ -2341,7 +2611,11 @@
     }
 
     els.brushSizeInput.addEventListener("input", function () {
-      state.brushSize = Number(els.brushSizeInput.value);
+      let size = Number(els.brushSizeInput.value);
+      if (!size || size < 1) size = 1;
+      if (size > 32) size = 32;
+      state.brushSize = Math.floor(size);
+      els.brushSizeInput.value = String(state.brushSize);
       updateToolUi();
     });
 
@@ -2468,13 +2742,23 @@
       addPaletteColor(state.secondaryColor);
     });
 
-    els.addColorBtn.addEventListener("click", function () {
-      addPaletteColor(state.primaryColor);
-    });
+    if (els.swapColorsBtn != null) {
+      els.swapColorsBtn.addEventListener("click", swapColors);
+    }
 
-    els.replaceColorBtn.addEventListener("click", replacePickedColor);
+    if (els.saveSwatchBtn != null) {
+      els.saveSwatchBtn.addEventListener("click", saveCurrentSwatch);
+    }
+
+    if (els.palettePresetInput != null) {
+      els.palettePresetInput.addEventListener("change", refreshPalettePreset);
+    }
+
+    if (els.paletteWheelInput != null) {
+      els.paletteWheelInput.addEventListener("input", refreshPalettePreset);
+    }
+
     els.clearLayerBtn.addEventListener("click", clearLayer);
-    els.paletteLimitInput.addEventListener("input", updatePaletteCount);
 
     els.copySelectionBtn.addEventListener("click", copySelection);
     els.cutSelectionBtn.addEventListener("click", cutSelection);
@@ -2598,6 +2882,19 @@
     if (tabName === "export") els.exportTab.classList.add("active");
   }
 
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(function () {
+        return;
+      });
+      return;
+    }
+
+    document.exitFullscreen().catch(function () {
+      return;
+    });
+  }
+
   function executeAction(action) {
     if (!action) return;
 
@@ -2617,6 +2914,7 @@
     if (action === "selectAll") selectAll();
     if (action === "clearSelection") clearSelection();
 
+    if (action === "toolBrush") setTool("brush");
     if (action === "toolPencil") setTool("pencil");
     if (action === "toolEraser") setTool("eraser");
     if (action === "toolFill") setTool("fill");
@@ -2625,8 +2923,6 @@
     if (action === "toolCircle") setTool("circle");
     if (action === "toolSelect") setTool("select");
     if (action === "toolEyedropper") setTool("eyedropper");
-    if (action === "toolDither") setTool("dither");
-    if (action === "toolShade") setTool("shade");
     if (action === "toolMove") setTool("move");
     if (action === "toggleBezier") toggleBezierMode();
 
@@ -2669,6 +2965,7 @@
     if (action === "moveFrameRight") moveFrame(1);
 
     if (action === "openShortcuts") openShortcutsModal();
+    if (action === "toggleFullscreen") toggleFullscreen();
   }
 
   function toggleBezierMode() {
