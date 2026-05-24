@@ -2854,62 +2854,17 @@
     executeAction(action);
   }
 
-  function initDemoSprite() {
-    const idle = {
-      name: "Idle",
-      duration: 140,
-      frames: [createFrame(140), createFrame(140), createFrame(140), createFrame(140)]
-    };
-
-    const blink = {
-      name: "Blink",
-      duration: 110,
-      frames: [createFrame(110), createFrame(110)]
-    };
-
-    state.animations = [idle, blink];
-    state.currentAnimation = 0;
-    state.currentFrame = 0;
-    state.currentLayer = 0;
-    syncActiveFrames();
-
-    for (let i = 0; i < idle.frames.length; i++) {
-      const layer = idle.frames[i].layers[0];
-      layer.name = "Sprite";
-      const bob = i % 2;
-
-      layer.ctx.fillStyle = "#2f7cff";
-      layer.ctx.fillRect(12, 10 + bob, 8, 10);
-      layer.ctx.fillStyle = "#101322";
-      layer.ctx.fillRect(14, 13 + bob, 2, 2);
-      layer.ctx.fillRect(18, 13 + bob, 2, 2);
-      layer.ctx.fillStyle = "#ffcc4d";
-      layer.ctx.fillRect(13, 21 + bob, 3, 5);
-      layer.ctx.fillRect(18, 21 + bob, 3, 5);
-    }
-
-    for (let j = 0; j < blink.frames.length; j++) {
-      const layer = blink.frames[j].layers[0];
-      layer.name = "Sprite";
-      layer.ctx.fillStyle = "#2f7cff";
-      layer.ctx.fillRect(12, 10, 8, 10);
-      layer.ctx.fillStyle = "#101322";
-      if (j === 0) {
-        layer.ctx.fillRect(14, 13, 2, 2);
-        layer.ctx.fillRect(18, 13, 2, 2);
-      } else {
-        layer.ctx.fillRect(14, 14, 2, 1);
-        layer.ctx.fillRect(18, 14, 2, 1);
-      }
-      layer.ctx.fillStyle = "#ffcc4d";
-      layer.ctx.fillRect(13, 21, 3, 5);
-      layer.ctx.fillRect(18, 21, 3, 5);
-    }
-  }
+function initBlankProject() {
+  state.animations = [createAnimation("Animation 0")];
+  state.currentAnimation = 0;
+  state.currentFrame = 0;
+  state.currentLayer = 0;
+  syncActiveFrames();
+}
 
   function boot() {
     loadShortcuts();
-    initDemoSprite();
+    initBlankProject();
     resizeDisplayCanvas();
     setupEvents();
     updateShortcutLabels();
