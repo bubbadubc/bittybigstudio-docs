@@ -203,6 +203,22 @@
           </div>
           </div>
           <canvas id="pixelCanvas" width="512" height="512"></canvas>
+          <div id="floatingPreviewPanel" class="floating-preview-panel" style="left: 16px; bottom: 16px;">
+            <div id="floatingPreviewHeader" class="floating-preview-header">
+              <span>Preview</span>
+              <div class="floating-window-actions">
+                <button id="layerPreviewDockBtn" class="floating-window-action" type="button" title="Dock preview" aria-label="Dock preview">⌂</button>
+                <button id="layerPreviewMinimizeBtn" class="floating-window-action" type="button" title="Minimize preview" aria-label="Minimize preview">−</button>
+              </div>
+            </div>
+            <div class="layer-preview-controls floating-preview-controls">
+              <label>Zoom <input id="layerPreviewZoomInput" type="range" min="1" max="4" step="1" value="1" /></label>
+              <span id="layerPreviewZoomLabel">1x</span>
+            </div>
+            <div class="layer-preview-window floating-preview-window">
+              <canvas id="layerPreviewCanvas" width="32" height="32"></canvas>
+            </div>
+          </div>
         </div>
 
         <div class="canvas-bottom-bar">
@@ -267,8 +283,12 @@
           </div>
 
           <div id="layersTab" class="tab-panel active side-panel-section">
-            <div class="panel-header-row layer-panel-heading">
+            <div class="panel-header-row layer-panel-heading floating-panel-heading">
               <h2>Layers</h2>
+              <div class="floating-window-actions">
+                <button id="layersDockBtn" class="floating-window-action" type="button" title="Dock layers" aria-label="Dock layers">⌂</button>
+                <button id="layersMinimizeBtn" class="floating-window-action" type="button" title="Minimize layers" aria-label="Minimize layers">−</button>
+              </div>
             </div>
             <div class="layer-action-toolbar" aria-label="Layer actions">
               <button id="addLayerBtn" class="ghost-btn layer-icon-btn" title="Add Layer" aria-label="Add Layer">+</button>
@@ -281,19 +301,17 @@
               <button id="outlineBtn" class="ghost-btn layer-icon-btn" title="Outline" aria-label="Outline">▣</button>
             </div>
             <div id="layerList" class="layer-list"></div>
-            <div class="layer-preview-panel">
-              <div class="layer-preview-title">Preview</div>
-              <div class="layer-preview-controls">
-                <label>Zoom <input id="layerPreviewZoomInput" type="range" min="1" max="4" step="1" value="1" /></label>
-                <span id="layerPreviewZoomLabel">1x</span>
-              </div>
-              <div class="layer-preview-window">
-                <canvas id="layerPreviewCanvas" width="32" height="32"></canvas>
-              </div>
-            </div>
           </div>
 
           <div id="paletteTab" class="tab-panel">
+            <div class="panel-header-row palette-panel-heading floating-panel-heading">
+              <h2>Palette</h2>
+              <div class="floating-window-actions">
+                <button id="paletteDockBtn" class="floating-window-action" type="button" title="Dock palette" aria-label="Dock palette">⌂</button>
+                <button id="paletteMinimizeBtn" class="floating-window-action" type="button" title="Minimize palette" aria-label="Minimize palette">−</button>
+              </div>
+            </div>
+
             <div class="color-block active-colors">
               <label>
                 Primary
@@ -512,6 +530,7 @@
       <div class="save-before-close-actions">
         <button id="saveBeforeCloseSaveBtn" class="primary-btn">Save</button>
         <button id="saveBeforeCloseDontSaveBtn" class="ghost-btn">Don’t Save</button>
+        <button id="saveBeforeCloseCancelBtn" class="ghost-btn">Cancel</button>
       </div>
     </div>
   </div>

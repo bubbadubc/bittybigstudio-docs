@@ -4779,3 +4779,742 @@ input[type="number"] {
     grid-template-columns: minmax(275px, 1.12fr) minmax(235px, 0.88fr) !important;
   }
 }
+
+/* === 2026-05-24 animation rename + floating preview + split dock sizing === */
+:root {
+  --right-dock-width: 650px !important;
+}
+
+.canvas-section::after {
+  right: var(--right-dock-width) !important;
+}
+
+.canvas-toolbar,
+.canvas-wrap,
+.canvas-bottom-bar {
+  padding-right: calc(var(--right-dock-width) + 10px) !important;
+}
+
+.timeline-panel {
+  grid-template-columns: 238px minmax(0, 1fr) !important;
+  padding-right: 10px !important;
+  margin-right: var(--right-dock-width) !important;
+}
+
+.animation-list-item {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  min-height: 34px !important;
+  padding: 0 7px !important;
+}
+
+.animation-list-name-input {
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 24px !important;
+  padding: 0 7px !important;
+  border: 1px solid transparent !important;
+  border-radius: 7px !important;
+  background: rgba(255, 255, 255, 0.025) !important;
+  color: var(--text) !important;
+  font-weight: 800 !important;
+  font-size: 0.74rem !important;
+  outline: none !important;
+}
+
+.animation-list-name-input:hover,
+.animation-list-name-input:focus {
+  border-color: rgba(105, 167, 255, 0.55) !important;
+  background: rgba(0, 0, 0, 0.15) !important;
+}
+
+.animation-list-meta {
+  display: grid !important;
+  grid-template-columns: auto 52px auto !important;
+  align-items: center !important;
+  gap: 5px !important;
+}
+
+.animation-list-duration {
+  width: 52px !important;
+}
+
+.inspector {
+  width: var(--right-dock-width) !important;
+}
+
+.inspector .panel-card.split-panel-card,
+.inspector .panel-card {
+  grid-template-columns: minmax(310px, 1fr) minmax(310px, 1fr) !important;
+  gap: 12px !important;
+}
+
+#paletteTab .active-colors,
+#paletteTab .palette-section,
+#paletteTab .palette-builder,
+#paletteTab .palette-preset-row,
+#paletteTab .palette-builder select {
+  max-width: none !important;
+}
+
+#paletteTab .palette-swatches {
+  grid-template-columns: repeat(6, 22px) !important;
+  gap: 6px !important;
+}
+
+#paletteTab .swatch {
+  width: 22px !important;
+  height: 22px !important;
+}
+
+#paletteTab .palette-wheel {
+  width: 184px !important;
+  height: 184px !important;
+}
+
+.layer-action-toolbar {
+  gap: 7px !important;
+  padding-bottom: 8px !important;
+}
+
+.layer-icon-btn {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  font-size: 1rem !important;
+}
+
+.layer-name-input {
+  user-select: text !important;
+}
+
+.floating-preview-panel {
+  position: absolute !important;
+  z-index: 50 !important;
+  width: 210px !important;
+  background: rgba(32, 36, 48, 0.96) !important;
+  border: 1px solid rgba(255, 255, 255, 0.13) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.42) !important;
+  overflow: hidden !important;
+}
+
+.floating-preview-header {
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 8px !important;
+  background: rgba(20, 23, 32, 0.94) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09) !important;
+  color: var(--text) !important;
+  font-size: 0.74rem !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  cursor: move !important;
+  user-select: none !important;
+}
+
+.floating-preview-minimize {
+  width: 20px !important;
+  height: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.055) !important;
+  color: var(--text) !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+.floating-preview-controls {
+  padding: 7px 8px 5px !important;
+  margin: 0 !important;
+}
+
+.floating-preview-window {
+  width: calc(100% - 16px) !important;
+  height: 112px !important;
+  min-height: 112px !important;
+  max-height: 112px !important;
+  margin: 0 8px 8px !important;
+  display: grid !important;
+  place-items: center !important;
+  overflow: hidden !important;
+  background-color: var(--checker-b) !important;
+  background-image: var(--transparent-checker) !important;
+  background-size: 16px 16px !important;
+  border-radius: 9px !important;
+}
+
+.floating-preview-window canvas {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  image-rendering: pixelated !important;
+}
+
+.floating-preview-panel.minimized {
+  width: 104px !important;
+}
+
+.floating-preview-panel.minimized .floating-preview-controls,
+.floating-preview-panel.minimized .floating-preview-window {
+  display: none !important;
+}
+
+.save-before-close-actions {
+  grid-template-columns: 1fr 1fr 1fr !important;
+}
+
+@media (max-width: 1280px) {
+  :root {
+    --right-dock-width: 600px !important;
+  }
+
+  .timeline-panel {
+    grid-template-columns: 220px minmax(0, 1fr) !important;
+  }
+
+  .inspector .panel-card.split-panel-card,
+  .inspector .panel-card {
+    grid-template-columns: minmax(285px, 1fr) minmax(285px, 1fr) !important;
+  }
+}
+
+/* === 2026-05-24 floating Layers + Palette windows === */
+:root {
+  --right-dock-width: 0px !important;
+  --right-dock-total: 0px !important;
+}
+
+.canvas-section::after {
+  display: none !important;
+}
+
+.canvas-toolbar,
+.canvas-wrap,
+.canvas-bottom-bar,
+.timeline-panel {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
+.inspector {
+  position: fixed !important;
+  inset: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  pointer-events: none !important;
+  z-index: 90 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.inspector .panel-card.split-panel-card,
+.inspector .panel-card {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.panel-swap-row,
+.inspector .panel-tabs,
+#exportTab {
+  display: none !important;
+}
+
+#layersTab,
+#paletteTab {
+  position: fixed !important;
+  display: block !important;
+  pointer-events: auto !important;
+  min-width: 260px !important;
+  min-height: 220px !important;
+  margin: 0 !important;
+  padding: 10px !important;
+  background: rgba(32, 36, 48, 0.96) !important;
+  border: 1px solid rgba(255, 255, 255, 0.13) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.42) !important;
+  z-index: 110 !important;
+  overflow: auto !important;
+  resize: both !important;
+  scrollbar-gutter: stable !important;
+}
+
+#layersTab {
+  top: 118px !important;
+  left: auto !important;
+  right: 372px !important;
+  width: 334px !important;
+  height: 330px !important;
+  max-width: calc(100vw - 32px) !important;
+  max-height: calc(100vh - 138px) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.13) !important;
+}
+
+#paletteTab {
+  top: 118px !important;
+  left: auto !important;
+  right: 16px !important;
+  width: 338px !important;
+  height: 650px !important;
+  max-width: calc(100vw - 32px) !important;
+  max-height: calc(100vh - 138px) !important;
+}
+
+.floating-panel-heading {
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin: -10px -10px 10px !important;
+  padding: 0 10px !important;
+  background: rgba(20, 23, 32, 0.94) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09) !important;
+  cursor: move !important;
+  user-select: none !important;
+}
+
+.floating-panel-heading h2 {
+  margin: 0 !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.03em !important;
+  text-transform: uppercase !important;
+}
+
+#layersTab .layer-action-toolbar {
+  grid-template-columns: repeat(8, 1fr) !important;
+  gap: 6px !important;
+  padding-bottom: 8px !important;
+}
+
+#layersTab .layer-icon-btn {
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  font-size: 0.95rem !important;
+}
+
+#layersTab .layer-list {
+  max-height: calc(100% - 82px) !important;
+  overflow-y: auto !important;
+}
+
+#layersTab .layer-item {
+  min-height: 70px !important;
+}
+
+#paletteTab .active-colors,
+#paletteTab .palette-section,
+#paletteTab .palette-builder,
+#paletteTab .palette-preset-row,
+#paletteTab .palette-builder select {
+  max-width: none !important;
+}
+
+#paletteTab .active-colors {
+  grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr) !important;
+  gap: 7px !important;
+}
+
+#paletteTab .active-color-button {
+  height: 26px !important;
+  min-height: 26px !important;
+}
+
+#paletteTab .palette-section {
+  margin-bottom: 10px !important;
+}
+
+#paletteTab .palette-swatches {
+  width: 100% !important;
+  grid-template-columns: repeat(6, 24px) !important;
+  column-gap: 12px !important;
+  row-gap: 10px !important;
+  justify-content: space-between !important;
+}
+
+#paletteTab .swatch {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+#paletteTab .palette-wheel {
+  width: 192px !important;
+  height: 192px !important;
+  margin: 10px auto 0 !important;
+}
+
+#paletteTab.dragging,
+#layersTab.dragging {
+  opacity: 0.94 !important;
+  cursor: move !important;
+}
+
+@media (max-width: 1280px) {
+  #layersTab {
+    width: 318px !important;
+    right: 354px !important;
+  }
+
+  #paletteTab {
+    width: 320px !important;
+  }
+
+  #paletteTab .palette-wheel {
+    width: 176px !important;
+    height: 176px !important;
+  }
+}
+
+
+/* === 2026-05-24 resizable floating layer/palette windows === */
+#layersTab,
+#paletteTab {
+  resize: both !important;
+  overflow: auto !important;
+  min-width: 260px !important;
+  min-height: 220px !important;
+  scrollbar-gutter: stable !important;
+}
+
+#paletteTab .palette-swatches {
+  width: 100% !important;
+  grid-template-columns: repeat(6, 24px) !important;
+  column-gap: 12px !important;
+  row-gap: 10px !important;
+  justify-content: space-between !important;
+}
+
+#paletteTab .swatch {
+  width: 24px !important;
+  height: 24px !important;
+}
+
+#layersTab .layer-list {
+  max-height: calc(100% - 82px) !important;
+}
+
+#layersTab .floating-panel-heading,
+#paletteTab .floating-panel-heading {
+  cursor: move !important;
+}
+
+
+/* === 2026-05-24 manual resize + compact 7-wide swatches === */
+#layersTab,
+#paletteTab {
+  resize: none !important;
+  overflow: auto !important;
+  padding-bottom: 18px !important;
+}
+
+#layersTab.resizing,
+#paletteTab.resizing {
+  user-select: none !important;
+}
+
+.floating-resize-handle {
+  position: absolute !important;
+  right: 4px !important;
+  bottom: 4px !important;
+  width: 15px !important;
+  height: 15px !important;
+  cursor: nwse-resize !important;
+  z-index: 4 !important;
+  opacity: 0.85 !important;
+  background:
+    linear-gradient(135deg, transparent 0 45%, rgba(255,255,255,0.42) 46% 54%, transparent 55%),
+    linear-gradient(135deg, transparent 0 63%, rgba(255,255,255,0.28) 64% 71%, transparent 72%);
+  border-radius: 3px !important;
+}
+
+.floating-resize-handle:hover {
+  opacity: 1 !important;
+}
+
+#paletteTab .palette-swatches {
+  display: grid !important;
+  grid-template-columns: repeat(7, 28px) !important;
+  gap: 8px 10px !important;
+  justify-content: start !important;
+  align-items: center !important;
+  width: max-content !important;
+  max-width: 100% !important;
+}
+
+#paletteTab .swatch,
+#paletteTab .preset-swatch {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+}
+
+#paletteTab .palette-section {
+  margin-bottom: 12px !important;
+}
+
+/* === 2026-05-24 fixed floating windows + dock/minimize === */
+.floating-preview-panel,
+#layersTab,
+#paletteTab {
+  position: fixed !important;
+  resize: none !important;
+  overflow: hidden !important;
+  scrollbar-gutter: auto !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+}
+
+.floating-preview-panel {
+  width: 210px !important;
+  z-index: 130 !important;
+}
+
+#layersTab {
+  width: 360px !important;
+  height: 330px !important;
+  min-width: 360px !important;
+  min-height: 330px !important;
+  max-width: none !important;
+  max-height: none !important;
+  padding-bottom: 10px !important;
+}
+
+#paletteTab {
+  width: 344px !important;
+  height: 710px !important;
+  min-width: 344px !important;
+  min-height: 710px !important;
+  max-width: none !important;
+  max-height: none !important;
+  padding-bottom: 10px !important;
+}
+
+.floating-resize-handle {
+  display: none !important;
+}
+
+.floating-panel-heading,
+.floating-preview-header {
+  cursor: move !important;
+}
+
+.floating-window-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin-left: auto !important;
+}
+
+.floating-window-action {
+  width: 20px !important;
+  height: 20px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.055) !important;
+  color: var(--text) !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  font-size: 0.72rem !important;
+  cursor: pointer !important;
+}
+
+.floating-window-action:hover {
+  background: rgba(105, 167, 255, 0.16) !important;
+  border-color: rgba(105, 167, 255, 0.45) !important;
+}
+
+#layersTab.minimized,
+#paletteTab.minimized {
+  width: 150px !important;
+  height: 34px !important;
+  min-width: 150px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+}
+
+#layersTab.minimized > *:not(.floating-panel-heading),
+#paletteTab.minimized > *:not(.floating-panel-heading) {
+  display: none !important;
+}
+
+#layersTab.minimized .floating-panel-heading,
+#paletteTab.minimized .floating-panel-heading {
+  margin: 0 !important;
+  height: 32px !important;
+  border-bottom: 0 !important;
+}
+
+.floating-preview-panel.minimized {
+  width: 128px !important;
+}
+
+#layersTab .layer-action-toolbar {
+  grid-template-columns: repeat(8, 1fr) !important;
+  gap: 6px !important;
+  padding-bottom: 8px !important;
+  flex: 0 0 auto !important;
+}
+
+#layersTab .layer-list {
+  max-height: 218px !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 2px !important;
+}
+
+#layersTab .layer-item {
+  min-height: 70px !important;
+  height: 70px !important;
+}
+
+#paletteTab .active-colors {
+  grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr) !important;
+  gap: 7px !important;
+  margin-bottom: 8px !important;
+}
+
+#paletteTab .active-color-button {
+  height: 24px !important;
+  min-height: 24px !important;
+}
+
+#paletteTab .palette-section {
+  margin-bottom: 10px !important;
+}
+
+#paletteTab .tight-row {
+  margin-bottom: 6px !important;
+}
+
+#paletteTab .palette-swatches {
+  display: grid !important;
+  grid-template-columns: repeat(7, 28px) !important;
+  gap: 8px 10px !important;
+  justify-content: start !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#paletteTab .swatch,
+#paletteTab .preset-swatch {
+  width: 28px !important;
+  height: 28px !important;
+  min-width: 28px !important;
+  min-height: 28px !important;
+}
+
+#paletteTab .palette-builder {
+  margin-top: 4px !important;
+}
+
+#paletteTab .palette-preset-row {
+  margin-bottom: 8px !important;
+}
+
+#paletteTab .palette-wheel {
+  width: 188px !important;
+  height: 188px !important;
+  margin: 10px auto 0 !important;
+}
+
+#paletteTab.dragging,
+#layersTab.dragging,
+.floating-preview-panel.dragging {
+  opacity: 0.94 !important;
+  cursor: move !important;
+}
+
+/* === 2026-05-24 floating window home alignment polish === */
+.floating-preview-panel,
+#layersTab,
+#paletteTab {
+  border-radius: 10px !important;
+  background: rgba(32, 36, 48, 0.965) !important;
+  border: 1px solid rgba(255, 255, 255, 0.13) !important;
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.42) !important;
+}
+
+.floating-preview-header,
+.floating-panel-heading {
+  height: 28px !important;
+  min-height: 28px !important;
+  background: rgba(20, 23, 32, 0.96) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09) !important;
+  color: var(--text) !important;
+}
+
+.floating-preview-header span,
+.floating-panel-heading h2 {
+  font-size: 0.82rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.035em !important;
+  text-transform: uppercase !important;
+}
+
+.floating-preview-panel {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.floating-preview-controls {
+  padding: 8px 10px 6px !important;
+}
+
+.floating-preview-window {
+  width: calc(100% - 20px) !important;
+  margin: 0 10px 10px !important;
+}
+
+#layersTab,
+#paletteTab {
+  overflow: hidden !important;
+  padding: 10px !important;
+}
+
+#layersTab .layer-list {
+  max-height: calc(100% - 84px) !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+#paletteTab .palette-wheel {
+  width: 188px !important;
+  height: 188px !important;
+  margin: 10px auto 0 !important;
+}
+
+
+
+/* === 2026-05-24 preview dock start + palette swatch cleanup === */
+.recent-swatches,
+#paletteTab .recent-swatches {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+#paletteTab .custom-swatches {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+#paletteTab .palette-section {
+  overflow: visible !important;
+}

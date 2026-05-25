@@ -56,7 +56,7 @@
       "#000000", "#ffffff", "#7f7f7f", "#c0c0c0",
       "#ff0000", "#ff8000", "#ffff00", "#00ff00",
       "#00ffff", "#0000ff", "#8000ff", "#ff00ff",
-      "#4b2e2b", "#2b4b32", "#2b374b", "#101322"
+      "#4b2e2b", "#2b4b32"
     ],
     palettePresetColors: [],
     activeCustomSwatch: 0,
@@ -87,7 +87,13 @@
     shortcutCaptureAction: null,
     menuIsOpen: false,
     activeMenuGroup: null,
-    toolPanelOpen: false
+    toolPanelOpen: false,
+    isDraggingPreview: false,
+    previewDragStartX: 0,
+    previewDragStartY: 0,
+    previewStartLeft: 16,
+    previewStartTop: 16,
+    previewMinimized: false
   };
 
   const els = {
@@ -95,6 +101,9 @@
     activeToolLabel: document.getElementById("activeToolLabel"),
     secondaryToolLabel: document.getElementById("secondaryToolLabel"),
     canvasWrap: document.getElementById("canvasWrap"),
+    floatingPreviewPanel: document.getElementById("floatingPreviewPanel"),
+    floatingPreviewHeader: document.getElementById("floatingPreviewHeader"),
+    layerPreviewMinimizeBtn: document.getElementById("layerPreviewMinimizeBtn"),
     toolPanel: document.getElementById("toolPanel"),
     toolPanelToggleBtn: document.getElementById("toolPanelToggleBtn"),
     hideToolPanelBtn: document.getElementById("hideToolPanelBtn"),
@@ -248,7 +257,8 @@
     saveBeforeCloseModal: document.getElementById("saveBeforeCloseModal"),
     saveBeforeCloseMessage: document.getElementById("saveBeforeCloseMessage"),
     saveBeforeCloseSaveBtn: document.getElementById("saveBeforeCloseSaveBtn"),
-    saveBeforeCloseDontSaveBtn: document.getElementById("saveBeforeCloseDontSaveBtn")
+    saveBeforeCloseDontSaveBtn: document.getElementById("saveBeforeCloseDontSaveBtn"),
+    saveBeforeCloseCancelBtn: document.getElementById("saveBeforeCloseCancelBtn")
   };
 
   const shortcutStorageKey = "spritepad_shortcuts_v1";
@@ -1602,11 +1612,12 @@
         item.classList.add("active");
       }
 
-      const name = document.createElement("button");
-      name.className = "animation-list-name";
-      name.type = "button";
-      name.textContent = animation.name;
-      name.title = "Double-click or right-click to rename";
+      const nameInput = document.createElement("input");
+      nameInput.className = "animation-list-name-input";
+      nameInput.type = "text";
+      nameInput.value = animation.name;
+      nameInput.title = "Animation name";
+      nameInput.setAttribute("aria-label", "Animation name");
 
       const meta = document.createElement("div");
       meta.className = "animation-list-meta";
@@ -1631,21 +1642,55 @@
       meta.appendChild(count);
       meta.appendChild(duration);
       meta.appendChild(durationSuffix);
-      item.appendChild(name);
+      item.appendChild(nameInput);
       item.appendChild(meta);
 
-      name.addEventListener("click", function () {
+      item.addEventListener("click", function (event) {
+        if (event.target === nameInput) return;
+        if (event.target === duration) return;
         switchAnimation(i);
       });
 
-      name.addEventListener("dblclick", function (event) {
-        event.preventDefault();
-        renameAnimation(i);
+      nameInput.addEventListener("pointerdown", function (event) {
+        event.stopPropagation();
       });
 
-      name.addEventListener("contextmenu", function (event) {
-        event.preventDefault();
-        renameAnimation(i);
+      nameInput.addEventListener("mousedown", function (event) {
+        event.stopPropagation();
+      });
+
+      nameInput.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+
+      nameInput.addEventListener("dragstart", function (event) {
+        event.stopPropagation();
+      });
+
+      nameInput.addEventListener("change", function () {
+        const cleanedName = nameInput.value.trim();
+        if (cleanedName === "") {
+          nameInput.value = animation.name;
+          return;
+        }
+
+        if (cleanedName === animation.name) return;
+
+        pushUndo();
+        animation.name = cleanedName;
+        if (i === state.currentAnimation) updateAnimationFields();
+        renderDocumentTabs();
+        renderAnimations();
+        updateFrameFields();
+        updateExportPreview();
+      });
+
+      duration.addEventListener("pointerdown", function (event) {
+        event.stopPropagation();
+      });
+
+      duration.addEventListener("mousedown", function (event) {
+        event.stopPropagation();
       });
 
       duration.addEventListener("click", function (event) {
@@ -2096,6 +2141,31 @@
         layer.name = nameInput.value;
       });
 
+      nameInput.addEventListener("pointerdown", function (event) {
+        event.stopPropagation();
+        item.draggable = false;
+      });
+
+      nameInput.addEventListener("mousedown", function (event) {
+        event.stopPropagation();
+      });
+
+      nameInput.addEventListener("click", function (event) {
+        event.stopPropagation();
+      });
+
+      nameInput.addEventListener("dragstart", function (event) {
+        event.stopPropagation();
+      });
+
+      nameInput.addEventListener("blur", function () {
+        item.draggable = true;
+      });
+
+      nameInput.addEventListener("pointerup", function () {
+        item.draggable = true;
+      });
+
       const layerControlRow = document.createElement("div");
       layerControlRow.className = "layer-control-row";
 
@@ -2140,38 +2210,37 @@
         render();
       });
 
-      opacity.addEventListener("pointerdown", function (event) {
+      function disableLayerDragWhileEditingOpacity(event) {
         event.stopPropagation();
-      });
+        item.draggable = false;
+      }
 
-      opacity.addEventListener("mousedown", function (event) {
-        event.stopPropagation();
-      });
+      function enableLayerDragAfterEditingOpacity(event) {
+        if (event) {
+          event.stopPropagation();
+        }
+        item.draggable = true;
+      }
+
+      opacity.addEventListener("pointerdown", disableLayerDragWhileEditingOpacity);
+      opacity.addEventListener("mousedown", disableLayerDragWhileEditingOpacity);
+      opacity.addEventListener("pointerup", enableLayerDragAfterEditingOpacity);
+      opacity.addEventListener("mouseup", enableLayerDragAfterEditingOpacity);
+      opacity.addEventListener("pointercancel", enableLayerDragAfterEditingOpacity);
+      opacity.addEventListener("lostpointercapture", enableLayerDragAfterEditingOpacity);
 
       opacity.addEventListener("dragstart", function (event) {
         event.preventDefault();
         event.stopPropagation();
-      });
-
-      opacityWrap.addEventListener("pointerdown", function (event) {
-        event.stopPropagation();
-      });
-
-      opacityWrap.addEventListener("mousedown", function (event) {
-        event.stopPropagation();
-      });
-
-      opacityWrap.addEventListener("pointerdown", function () {
         item.draggable = false;
       });
 
-      opacityWrap.addEventListener("pointerup", function () {
-        item.draggable = true;
-      });
-
-      opacityWrap.addEventListener("pointercancel", function () {
-        item.draggable = true;
-      });
+      opacityWrap.addEventListener("pointerdown", disableLayerDragWhileEditingOpacity);
+      opacityWrap.addEventListener("mousedown", disableLayerDragWhileEditingOpacity);
+      opacityWrap.addEventListener("pointerup", enableLayerDragAfterEditingOpacity);
+      opacityWrap.addEventListener("mouseup", enableLayerDragAfterEditingOpacity);
+      opacityWrap.addEventListener("pointercancel", enableLayerDragAfterEditingOpacity);
+      opacityWrap.addEventListener("lostpointercapture", enableLayerDragAfterEditingOpacity);
 
       opacityWrap.appendChild(opacity);
       opacityWrap.appendChild(opacityLabel);
@@ -2481,6 +2550,10 @@
   function renderCustomSwatches() {
     if (!els.customSwatches) return;
     els.customSwatches.innerHTML = "";
+
+    if (state.customSwatches.length > 14) {
+      state.customSwatches = state.customSwatches.slice(0, 14);
+    }
 
     for (let i = 0; i < state.customSwatches.length; i++) {
       const color = state.customSwatches[i];
@@ -3336,6 +3409,298 @@
     if (els.layerPreviewZoomLabel) els.layerPreviewZoomLabel.textContent = previewScale + "x";
   }
 
+  function dockFloatingPreviewPanel() {
+    if (!els.floatingPreviewPanel) return;
+
+    const canvasRect = els.canvasWrap.getBoundingClientRect();
+    const panelRect = els.floatingPreviewPanel.getBoundingClientRect();
+    let left = canvasRect.left + 16;
+    let top = canvasRect.bottom - panelRect.height - 16;
+
+    if (top < 84) top = 84;
+
+    state.previewMinimized = false;
+    els.floatingPreviewPanel.classList.remove("minimized");
+    els.floatingPreviewPanel.style.left = left + "px";
+    els.floatingPreviewPanel.style.top = top + "px";
+    els.floatingPreviewPanel.style.right = "auto";
+    els.floatingPreviewPanel.style.bottom = "auto";
+    if (els.layerPreviewMinimizeBtn) els.layerPreviewMinimizeBtn.textContent = "−";
+  }
+
+  function getCanvasAreaRect() {
+    if (els.canvasWrap != null) {
+      return els.canvasWrap.getBoundingClientRect();
+    }
+
+    if (canvas != null) {
+      return canvas.getBoundingClientRect();
+    }
+
+    return {
+      left: 0,
+      right: window.innerWidth,
+      top: 84,
+      bottom: window.innerHeight - 220
+    };
+  }
+
+  function positionPreviewMinimized() {
+    if (!els.floatingPreviewPanel) return;
+
+    const canvasRect = getCanvasAreaRect();
+    const left = canvasRect.left + 16;
+    const top = canvasRect.bottom - 34 - 16;
+
+    els.floatingPreviewPanel.style.left = left + "px";
+    els.floatingPreviewPanel.style.top = top + "px";
+    els.floatingPreviewPanel.style.right = "auto";
+    els.floatingPreviewPanel.style.bottom = "auto";
+  }
+
+  function positionSidePanelMinimized(panel) {
+    if (panel == null) return;
+
+    const canvasRect = getCanvasAreaRect();
+    const minimizedWidth = 150;
+    const minimizedHeight = 34;
+    const edgeGap = 16;
+    const panelGap = 8;
+    const top = canvasRect.bottom - minimizedHeight - edgeGap;
+
+    let left = canvasRect.right - minimizedWidth - edgeGap;
+
+    if (panel === els.layersTab) {
+      left = canvasRect.right - (minimizedWidth * 2) - panelGap - edgeGap;
+    }
+
+    if (left < canvasRect.left + edgeGap) left = canvasRect.left + edgeGap;
+
+    setFloatingSidePanelSize(panel, minimizedWidth, minimizedHeight);
+    setFloatingSidePanelPosition(panel, left, top);
+  }
+
+  function clampFloatingPreviewToCanvas() {
+    return;
+  }
+
+  function setFloatingPreviewMinimized(minimized) {
+    if (!els.floatingPreviewPanel) return;
+
+    state.previewMinimized = minimized;
+
+    if (minimized) {
+      els.floatingPreviewPanel.classList.add("minimized");
+      positionPreviewMinimized();
+      if (els.layerPreviewMinimizeBtn) els.layerPreviewMinimizeBtn.textContent = "+";
+    } else {
+      els.floatingPreviewPanel.classList.remove("minimized");
+      if (els.layerPreviewMinimizeBtn) els.layerPreviewMinimizeBtn.textContent = "−";
+      dockFloatingPreviewPanel();
+    }
+  }
+
+  function beginFloatingPreviewDrag(event) {
+    if (!els.floatingPreviewPanel) return;
+    if (event.target.closest("button")) return;
+
+    event.preventDefault();
+    state.isDraggingPreview = true;
+
+    const panelRect = els.floatingPreviewPanel.getBoundingClientRect();
+
+    state.previewDragStartX = event.clientX;
+    state.previewDragStartY = event.clientY;
+    state.previewStartLeft = panelRect.left;
+    state.previewStartTop = panelRect.top;
+
+    els.floatingPreviewPanel.style.left = state.previewStartLeft + "px";
+    els.floatingPreviewPanel.style.top = state.previewStartTop + "px";
+    els.floatingPreviewPanel.style.right = "auto";
+    els.floatingPreviewPanel.style.bottom = "auto";
+    els.floatingPreviewHeader.setPointerCapture(event.pointerId);
+  }
+
+  function dragFloatingPreview(event) {
+    if (!state.isDraggingPreview) return;
+    if (!els.floatingPreviewPanel) return;
+
+    const nextLeft = state.previewStartLeft + (event.clientX - state.previewDragStartX);
+    const nextTop = state.previewStartTop + (event.clientY - state.previewDragStartY);
+
+    els.floatingPreviewPanel.style.left = nextLeft + "px";
+    els.floatingPreviewPanel.style.top = nextTop + "px";
+  }
+
+  function endFloatingPreviewDrag() {
+    state.isDraggingPreview = false;
+  }
+
+  function setFloatingSidePanelPosition(panel, left, top) {
+    if (panel == null) return;
+
+    panel.style.setProperty("left", left + "px", "important");
+    panel.style.setProperty("top", top + "px", "important");
+    panel.style.setProperty("right", "auto", "important");
+    panel.style.setProperty("bottom", "auto", "important");
+  }
+
+  function setFloatingSidePanelSize(panel, width, height) {
+    if (panel == null) return;
+
+    panel.style.setProperty("width", width + "px", "important");
+    panel.style.setProperty("height", height + "px", "important");
+    panel.style.setProperty("min-width", width + "px", "important");
+    panel.style.setProperty("min-height", height + "px", "important");
+  }
+
+  function getFloatingPanelHomeTop() {
+    const toolRail = document.querySelector(".tool-rail");
+    if (toolRail != null) {
+      const toolRect = toolRail.getBoundingClientRect();
+      return Math.max(72, Math.floor(toolRect.top));
+    }
+
+    if (els.canvasWrap != null) {
+      const canvasRect = els.canvasWrap.getBoundingClientRect();
+      return Math.max(72, Math.floor(canvasRect.top));
+    }
+
+    return 112;
+  }
+
+  function getFloatingPanelCanvasBottom() {
+    if (els.canvasWrap != null) {
+      const canvasRect = els.canvasWrap.getBoundingClientRect();
+      return Math.floor(canvasRect.bottom);
+    }
+
+    return window.innerHeight - 240;
+  }
+
+  function dockFloatingSidePanel(panel) {
+    if (panel == null) return;
+
+    panel.classList.remove("minimized");
+
+    const homeTop = getFloatingPanelHomeTop();
+    const canvasBottom = getFloatingPanelCanvasBottom();
+    const edgeGap = 16;
+    const panelGap = 12;
+    const layersWidth = 360;
+    const paletteWidth = 344;
+    const paletteHeight = Math.max(620, Math.min(710, window.innerHeight - homeTop - edgeGap));
+    const layersHeight = Math.max(330, Math.min(520, canvasBottom - homeTop - edgeGap));
+    const paletteLeft = Math.max(edgeGap, window.innerWidth - paletteWidth - edgeGap);
+    const layersLeft = Math.max(edgeGap, paletteLeft - layersWidth - panelGap);
+
+    if (panel === els.layersTab) {
+      setFloatingSidePanelSize(panel, layersWidth, layersHeight);
+      setFloatingSidePanelPosition(panel, layersLeft, homeTop);
+      return;
+    }
+
+    if (panel === els.paletteTab) {
+      setFloatingSidePanelSize(panel, paletteWidth, paletteHeight);
+      setFloatingSidePanelPosition(panel, paletteLeft, homeTop);
+      return;
+    }
+  }
+
+  function setFloatingSidePanelMinimized(panel, button, minimized) {
+    if (panel == null) return;
+
+    if (minimized) {
+      panel.classList.add("minimized");
+      positionSidePanelMinimized(panel);
+      if (button != null) button.textContent = "+";
+    } else {
+      panel.classList.remove("minimized");
+      dockFloatingSidePanel(panel);
+      if (button != null) button.textContent = "−";
+    }
+  }
+
+  function setupFloatingSideWindow(panel, header) {
+    if (panel == null) return;
+    if (header == null) return;
+    if (panel.dataset.floatingReady === "true") return;
+    panel.dataset.floatingReady = "true";
+
+    const dockBtn = panel.querySelector("[id$='DockBtn']");
+    const minimizeBtn = panel.querySelector("[id$='MinimizeBtn']");
+
+    if (dockBtn != null) {
+      dockBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        dockFloatingSidePanel(panel);
+        if (minimizeBtn != null) minimizeBtn.textContent = "−";
+      });
+    }
+
+    if (minimizeBtn != null) {
+      minimizeBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        setFloatingSidePanelMinimized(panel, minimizeBtn, !panel.classList.contains("minimized"));
+      });
+    }
+
+    header.addEventListener("pointerdown", function (event) {
+      if (event.button !== 0) return;
+      if (event.target.closest("button")) return;
+      event.preventDefault();
+
+      const rect = panel.getBoundingClientRect();
+      setFloatingSidePanelPosition(panel, rect.left, rect.top);
+      panel.classList.add("dragging");
+
+      state.draggingFloatingSidePanel = panel;
+      state.floatingSideStartX = event.clientX;
+      state.floatingSideStartY = event.clientY;
+      state.floatingSideStartLeft = rect.left;
+      state.floatingSideStartTop = rect.top;
+      header.setPointerCapture(event.pointerId);
+    });
+
+    header.addEventListener("pointermove", function (event) {
+      if (state.draggingFloatingSidePanel !== panel) return;
+
+      const nextLeft = state.floatingSideStartLeft + event.clientX - state.floatingSideStartX;
+      const nextTop = state.floatingSideStartTop + event.clientY - state.floatingSideStartY;
+
+      setFloatingSidePanelPosition(panel, nextLeft, nextTop);
+    });
+
+    function finishFloatingSideDrag() {
+      if (state.draggingFloatingSidePanel !== panel) return;
+      panel.classList.remove("dragging");
+      state.draggingFloatingSidePanel = null;
+    }
+
+    header.addEventListener("pointerup", finishFloatingSideDrag);
+    header.addEventListener("pointercancel", finishFloatingSideDrag);
+  }
+
+  function setupFloatingSideWindows() {
+    setupFloatingSideWindow(els.layersTab, document.querySelector(".layer-panel-heading"));
+    setupFloatingSideWindow(els.paletteTab, document.querySelector(".palette-panel-heading"));
+
+    const previewDockBtn = document.getElementById("layerPreviewDockBtn");
+    if (previewDockBtn != null) {
+      previewDockBtn.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        dockFloatingPreviewPanel();
+      });
+    }
+
+    if (els.floatingPreviewPanel != null) dockFloatingPreviewPanel();
+    if (els.layersTab != null) dockFloatingSidePanel(els.layersTab);
+    if (els.paletteTab != null) dockFloatingSidePanel(els.paletteTab);
+  }
+
   function openExportDialog() {
     if (!els.exportModal) {
       downloadSpriteSheet();
@@ -3812,6 +4177,9 @@
     state.secondaryColor = data.secondaryColor || "#ffffff";
     state.palette = data.palette || state.palette;
     state.customSwatches = data.customSwatches || state.customSwatches;
+    if (state.customSwatches.length > 14) {
+      state.customSwatches = state.customSwatches.slice(0, 14);
+    }
     state.animations = [];
     state.frames = [];
     state.selection.active = false;
@@ -4363,6 +4731,36 @@
         updateLayerPreview();
       });
     }
+
+    if (els.layerPreviewMinimizeBtn != null) {
+      els.layerPreviewMinimizeBtn.addEventListener("click", function () {
+        setFloatingPreviewMinimized(!state.previewMinimized);
+      });
+    }
+
+    if (els.floatingPreviewHeader != null) {
+      els.floatingPreviewHeader.addEventListener("pointerdown", beginFloatingPreviewDrag);
+      els.floatingPreviewHeader.addEventListener("pointermove", dragFloatingPreview);
+      els.floatingPreviewHeader.addEventListener("pointerup", endFloatingPreviewDrag);
+      els.floatingPreviewHeader.addEventListener("pointercancel", endFloatingPreviewDrag);
+    }
+
+    setupFloatingSideWindows();
+
+    window.addEventListener("resize", function () {
+      if (els.floatingPreviewPanel != null && els.floatingPreviewPanel.classList.contains("minimized")) {
+        positionPreviewMinimized();
+      }
+
+      if (els.layersTab != null && els.layersTab.classList.contains("minimized")) {
+        positionSidePanelMinimized(els.layersTab);
+      }
+
+      if (els.paletteTab != null && els.paletteTab.classList.contains("minimized")) {
+        positionSidePanelMinimized(els.paletteTab);
+      }
+    });
+
     if (els.exportModalScaleInput != null) {
       els.exportModalScaleInput.addEventListener("input", function () {
         if (els.exportScaleInput != null) els.exportScaleInput.value = els.exportModalScaleInput.value;
@@ -5053,6 +5451,12 @@
       });
     }
 
+    if (els.saveBeforeCloseCancelBtn != null) {
+      els.saveBeforeCloseCancelBtn.addEventListener("click", function () {
+        resolveSaveBeforeCloseDialog("cancel");
+      });
+    }
+
     for (let i = 0; i < els.newSizePresetButtons.length; i++) {
       els.newSizePresetButtons[i].addEventListener("click", function () {
         const size = this.dataset.size;
@@ -5221,6 +5625,8 @@
     if (!documentInfo.dirty) return true;
 
     const choice = await showSaveBeforeCloseDialog(documentInfo.name);
+
+    if (choice === "cancel") return false;
 
     if (choice === "save") {
       const currentIndex = state.currentDocument;
