@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>How to Make a Stencyl Extension</title>
+<style>
+:root {
+    --bg:#f2f2f2;
+    --panel:#ffffff;
+    --panel2:#f7f7f7;
+    --line:#cccccc;
+    --text:#222222;
+    --muted:#666666;
+    --header:#455a6f;
+    --headerDark:#394a5c;
+    --accent:#138a84;
+    --blue:#1c88d9;
+    --blueDark:#1467a6;
+    --good:#eef8e7;
+    --goodLine:#bfd7ac;
+    --warn:#fff6df;
+    --warnLine:#e7d49a;
+    --bad:#fff0f1;
+    --badLine:#e3b8bc;
+    --shadow:rgba(0,0,0,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+a{color:inherit;text-decoration:none}
+code,pre{font-family:Consolas,Monaco,"Courier New",monospace}
+.app{display:grid;grid-template-columns:300px minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow:auto;background:#f7f7f7;border-right:1px solid #bdbdbd}
+.sidebar-header{background:var(--header);color:#fff;padding:16px;border-bottom:1px solid var(--headerDark)}
+.sidebar-header h1{margin:0;font-size:20px;line-height:1.15}
+.sidebar-header .sub{margin-top:5px;font-size:12px;opacity:.9}
+.nav-wrap{padding:12px}
+.nav-title{font-size:12px;font-weight:bold;text-transform:uppercase;color:#fff;background:#7c8692;border:1px solid #67727e;border-radius:4px;padding:5px 8px;margin:8px 0 6px}
+.nav-link{display:block;padding:6px 8px;border-radius:4px;font-size:14px;color:#333}
+.nav-link:hover,.nav-link.active{background:#dfe8f3}
+.main{min-width:0}
+.topbar{background:var(--header);color:#fff;padding:12px 24px;border-bottom:1px solid var(--headerDark)}
+.topbar .title{font-size:22px;font-weight:bold}
+.topbar .subtitle{font-size:13px;margin-top:4px;opacity:.92}
+.top-nav{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:8px;padding:10px 24px;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 7px rgba(0,0,0,.08)}
+.top-nav a{padding:7px 10px;border-radius:5px;font-size:14px;font-weight:bold}
+.top-nav a:hover{background:#dfe8f3}
+.content{padding:24px;max-width:1320px}
+.section{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 2px 8px var(--shadow);margin-bottom:18px;overflow:hidden}
+.section-header{padding:18px 20px;border-bottom:1px solid var(--line);background:var(--panel2)}
+.section-header h2{margin:0;font-size:24px;color:var(--accent)}
+.section-body{padding:20px}
+.template-intro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;background:linear-gradient(135deg,#5d7389,#455a6f);color:#fff;padding:24px;border-radius:8px;border:1px solid var(--headerDark)}
+.template-intro h2{margin:0 0 8px;font-size:30px}
+.template-intro p{margin:0;max-width:850px}
+.download-btn{display:inline-block;padding:12px 16px;border-radius:6px;background:#fff;color:#26394c;font-weight:bold;border:1px solid rgba(255,255,255,.4);white-space:nowrap}
+.download-btn:hover{background:#eaf3fa}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border:1px solid var(--line);border-radius:8px;padding:16px;background:#fafafa}
+.card h3{margin:0 0 8px;font-size:18px}
+.card p:last-child{margin-bottom:0}
+.note{padding:12px 14px;border-radius:8px;border:1px solid #d8d8d8;background:#f9f9f9;margin:14px 0}
+.note.good{background:var(--good);border-color:var(--goodLine)}
+.note.warn{background:var(--warn);border-color:var(--warnLine)}
+.note.bad{background:var(--bad);border-color:var(--badLine)}
+.inline-code{display:inline-block;background:#f0f0f0;border:1px solid #ddd;padding:1px 6px;border-radius:4px;font-family:Consolas,Monaco,"Courier New",monospace;font-size:.95em}
+.tree{background:#20242a;color:#e8edf2;border-radius:7px;padding:14px 16px;white-space:pre;overflow:auto}
+.code-box{margin:12px 0 16px;border:1px solid #d8d8d8;border-radius:6px;background:#f6f6f6;overflow:hidden}
+.code-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#ececec;border-bottom:1px solid #d8d8d8;padding:8px 10px;font-size:12px;color:#444}
+.copy-btn{padding:5px 8px;border-radius:4px;border:1px solid #bdbdbd;background:#fff;cursor:pointer}
+.copy-btn:hover{background:#f2f2f2}
+pre{margin:0;padding:13px;overflow:auto;font-size:13px;line-height:1.5;white-space:pre}
+table{width:100%;border-collapse:collapse;margin:12px 0 16px;background:#fff}
+th,td{border:1px solid #d6d6d6;padding:9px 10px;text-align:left;vertical-align:top}
+th{background:#eef2f5}
+.step-number{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-weight:bold;margin-right:8px}
+.haxe-layout{display:grid;grid-template-columns:minmax(300px,.8fr) minmax(0,1.2fr);gap:18px;align-items:start}
+.haxe-layout .code-box{margin-top:0}
+.connection-list{display:grid;gap:10px}
+.connection-item{border-left:5px solid var(--blue);background:#f4f9fd;padding:11px 13px;border-radius:0 7px 7px 0}
+.connection-item strong{display:block;margin-bottom:4px}
+.anatomy-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(360px,.9fr);gap:18px;align-items:start}
+.anatomy-list{display:grid;gap:10px}
+.anatomy-item{border:1px solid #d7e1ea;background:#f7fbff;border-radius:7px;padding:11px 13px}
+.anatomy-item strong{display:block;color:#1d517f;margin-bottom:4px}
+.field-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.field-card{border:1px solid var(--line);border-radius:7px;background:#fafafa;padding:12px}
+.field-card h3{margin:0 0 7px;font-size:16px}
+.field-code{display:block;background:#eee;border:1px solid #ddd;border-radius:5px;padding:7px;margin:7px 0;font-family:Consolas,Monaco,"Courier New",monospace;font-size:12px;overflow:auto}
+.checklist{padding-left:22px}
+.checklist li{margin:6px 0}
+.block-preview{padding:14px 14px 18px;background:#f6f6f6;overflow-x:auto}
+.block-stack{display:flex;flex-direction:column;align-items:flex-start;gap:4px;min-width:max-content}
+.block-row{display:flex;align-items:center;min-width:max-content}
+.st-block{--blockTop:#23a9f4;--blockMid:#0f91dd;--blockBottom:#0575bd;--blockDark:#005c9a;display:inline-flex;align-items:center;gap:4px;min-height:25px;padding:4px 9px 5px;color:#fff;font-size:12px;font-weight:800;line-height:1;white-space:nowrap;position:relative;background:linear-gradient(to bottom,var(--blockTop),var(--blockMid) 48%,var(--blockBottom));border:1px solid var(--blockDark);border-radius:4px;text-shadow:0 1px 0 rgba(0,0,0,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.36),inset 0 -1px 0 rgba(0,0,0,.18),0 1px 0 rgba(0,0,0,.28)}
+.st-block.red{--blockTop:#ef737a;--blockMid:#dc555e;--blockBottom:#bf3944;--blockDark:#9d2630}
+.st-block.reporter{min-height:21px;padding:3px 9px 4px;border-radius:12px}
+.st-input,.st-text-slot{display:inline-flex;align-items:center;justify-content:center;min-height:19px;padding:2px 7px;border-radius:7px;font-weight:800;color:#222;border:1px solid #8a8a8a;background:linear-gradient(#fff,#e8e8e8);box-shadow:inset 0 1px 1px rgba(255,255,255,.95),0 1px 0 rgba(0,0,0,.22);text-shadow:none}
+.st-input:has(.st-block.reporter){padding:0;border:0;background:transparent;box-shadow:none}
+.copy-source{position:absolute;left:-99999px;top:auto;width:1px;height:1px;overflow:hidden;white-space:pre}
+.reload-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.reload-card{border-radius:8px;padding:15px;border:1px solid var(--line)}
+.reload-card.live{background:var(--good);border-color:var(--goodLine)}
+.reload-card.restart{background:var(--warn);border-color:var(--warnLine)}
+.reload-card h3{margin:0 0 7px}
+.footer{text-align:center;color:#666;padding:18px 0 8px;font-size:13px}
+@media(max-width:1100px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.top-nav{position:relative}}
+@media(max-width:900px){.grid-2,.grid-3,.haxe-layout,.anatomy-layout,.reload-grid,.template-intro{grid-template-columns:1fr}.field-grid{grid-template-columns:1fr 1fr}.download-btn{justify-self:start}}
+@media(max-width:600px){.field-grid{grid-template-columns:1fr}.content{padding:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <h1><a href="https://docs.bittybigstudio.com/">Docs Home</a></h1>
+        <div class="sub">bittyBIG Studio Documentation</div>
+    </div>
+    <div class="nav-wrap">
+        <div class="nav-title">Contents</div>
+        <a class="nav-link" href="#template">Simple Extension Template</a>
+        <a class="nav-link" href="#extension-structure">Extension Structure</a>
+        <a class="nav-link" href="#write-haxe">Write the Haxe</a>
+        <a class="nav-link" href="#blocks-xml">Anatomy of blocks.xml</a>
+        <a class="nav-link" href="#getter-example">Getter Block Example</a>
+        <a class="nav-link" href="#setter-example">Setter Block Example</a>
+        <a class="nav-link" href="#complete-blocks">Complete blocks.xml</a>
+        <a class="nav-link" href="#palette-layout">Organize the Palette</a>
+        <a class="nav-link" href="#test-extension">Test the Extension</a>
+        <a class="nav-link" href="#debugging">Debugging</a>
+    </div>
+</aside>
+
+<main class="main">
+<div class="topbar">
+    <div class="title">How to Make a Stencyl Extension</div>
+    <div class="subtitle">Using the Simple Extension Template</div>
+</div>
+
+<nav class="top-nav">
+    <a href="#extension-structure">Structure</a>
+    <a href="#blocks-xml">Block Anatomy</a>
+    <a href="#palette-layout">Palette</a>
+    <a href="#test-extension">Testing</a>
+    <a href="#debugging">Troubleshooting</a>
+</nav>
+
+<div class="content">
+
+<section class="section" id="template">
+    <div class="section-body">
+        <div class="template-intro">
+            <div>
+                <h2>Simple Extension Template</h2>
+                <p>
+                    The Simple Extension Template is a small working Stencyl extension containing one shared value,
+                    one getter block, and one setter block. Use it as the starting point for a new extension instead
+                    of rebuilding the folder structure and XML files from nothing.
+                </p>
+            </div>
+            <a class="download-btn" href="SimpleExtensionTemplate.zip" download>Download Template</a>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="extension-structure">
+    <div class="section-header"><h2><span class="step-number">1</span>Understand the Extension Structure</h2></div>
+    <div class="section-body">
+        <p>The Simple Extension Template uses this complete folder structure:</p>
+
+        <div class="tree">Simple Extension Template/
+├── src/
+│   └── scripts/
+│       └── Example.hx
+├── blocks.xml
+├── icon.png
+├── include.nmml
+├── include.xml
+├── info.txt
+├── README.md
+└── stencyl-addons.xml</div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>Files used to build the extension</h3>
+                <p><span class="inline-code">src/</span> contains the Haxe source code.</p>
+                <p><span class="inline-code">blocks.xml</span> defines block wording, inputs, shape, return type, and generated Haxe.</p>
+                <p><span class="inline-code">stencyl-addons.xml</span> places the blocks into the Stencyl palette.</p>
+            </div>
+            <div class="card">
+                <h3>Supporting files</h3>
+                <p><span class="inline-code">include.xml</span> and <span class="inline-code">include.nmml</span> tell the build system what the extension includes.</p>
+                <p><span class="inline-code">info.txt</span>, <span class="inline-code">icon.png</span>, and <span class="inline-code">README.md</span> provide identifying information, an icon, and instructions.</p>
+            </div>
+        </div>
+
+        <div class="note good">
+            <strong>Most extension work happens in three places:</strong>
+            <span class="inline-code">src/scripts/Example.hx</span>,
+            <span class="inline-code">blocks.xml</span>, and
+            <span class="inline-code">stencyl-addons.xml</span>.
+        </div>
+    </div>
+</section>
+
+<section class="section" id="write-haxe">
+    <div class="section-header"><h2><span class="step-number">2</span>Write the Haxe Script</h2></div>
+    <div class="section-body">
+        <p>
+            The Haxe file contains the actual data and functions used by the extension.
+            The blocks do not contain the system itself; they generate calls into this class.
+        </p>
+
+        <div class="haxe-layout">
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Element</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="inline-code">src/scripts/Example.hx</span></td>
+                            <td>The location of the Haxe source file inside the extension.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="inline-code">package scripts;</span></td>
+                            <td>Matches the <span class="inline-code">scripts</span> package folder inside <span class="inline-code">src</span>.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="inline-code">class Example</span></td>
+                            <td>Defines the class. The class name must match the filename <span class="inline-code">Example.hx</span>.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="inline-code">public static var</span></td>
+                            <td>Creates shared data that can be accessed without first creating an instance of the class.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="inline-code">public static function</span></td>
+                            <td>Creates a function that <span class="inline-code">blocks.xml</span> can call directly.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="inline-code">(e:String)</span></td>
+                            <td>Defines a function parameter. This setter accepts one String value named <span class="inline-code">e</span>.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="inline-code">:String</span></td>
+                            <td>Declares that the getter returns text.</td>
+                        </tr>
+                        <tr>
+                            <td><span class="inline-code">:Void</span></td>
+                            <td>Declares that the setter performs an action and returns no value.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="code-box">
+                <div class="code-bar"><span>src/scripts/Example.hx</span><button class="copy-btn">Copy</button></div>
+                <pre>package scripts;
+
+class Example
+{
+    public static var example:String = &quot;HelloWorld!&quot;;
+
+    public static function exampleGetter():String
+    {
+        return example;
+    }
+
+    public static function exampleSetter(e:String):Void
+    {
+        example = e;
+    }
+}</pre>
+            </div>
+        </div>
+
+        <div class="note">
+            The full function path used by a block is
+            <span class="inline-code">scripts.Example.exampleGetter()</span>:
+            package, class, function, and function call.
+        </div>
+    </div>
+</section>
+
+<section class="section" id="blocks-xml">
+    <div class="section-header"><h2><span class="step-number">3</span>Set Up blocks.xml</h2></div>
+    <div class="section-body">
+        <p>
+            Every custom block is defined in <span class="inline-code">blocks.xml</span>.
+            The file begins with the XML declaration, then places every block inside one
+            <span class="inline-code">&lt;palette&gt;</span> element.
+        </p>
+
+        <div class="code-box">
+            <div class="code-bar"><span>Basic block template</span><button class="copy-btn">Copy</button></div>
+            <pre>&lt;block tag=&quot;prefix-action-name&quot;
+    spec=&quot;Do Something with %0&quot;
+    help=&quot;Explains what the block does.&quot;
+    code=&quot;scripts.ClassName.functionName(~);&quot;
+    type=&quot;action&quot; color=&quot;cyan&quot; returns=&quot;void&quot;&gt;
+    &lt;fields&gt;
+        &lt;string order=&quot;0&quot;/&gt;
+    &lt;/fields&gt;
+&lt;/block&gt;</pre>
+        </div>
+
+        <h3>Block attributes</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="inline-code">&lt;block&gt;</span></td>
+                    <td>Contains the complete definition for one Stencyl block.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">tag</span></td>
+                    <td>The permanent internal ID. Use a unique prefix and lowercase hyphenated wording, such as <span class="inline-code">example-setter</span>.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">spec</span></td>
+                    <td>The words shown directly on the block. Inputs appear as <span class="inline-code">%0</span>, <span class="inline-code">%1</span>, and so on.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">help</span></td>
+                    <td>The tooltip shown in Stencyl. State what the block changes or returns.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">code</span></td>
+                    <td>The Haxe generated by the block. Each <span class="inline-code">~</span> is replaced by one field value.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">type</span></td>
+                    <td><span class="inline-code">action</span> creates a command block. <span class="inline-code">normal</span> creates a value or boolean block.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">color</span></td>
+                    <td>Sets the block's Stencyl color, such as <span class="inline-code">cyan</span>.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">returns</span></td>
+                    <td>Declares what Stencyl receives: <span class="inline-code">void</span>, <span class="inline-code">string</span>, <span class="inline-code">number</span>, or <span class="inline-code">boolean</span>.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>The fields section</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Element</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="inline-code">&lt;fields&gt;</span></td>
+                    <td>Contains every input shown on the block. A block with no inputs can use <span class="inline-code">&lt;fields&gt;&lt;/fields&gt;</span>.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">&lt;string&gt;</span>, <span class="inline-code">&lt;number&gt;</span>, etc.</td>
+                    <td>The field element chooses the type of input Stencyl displays and passes into the generated Haxe.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">order="0"</span></td>
+                    <td>Identifies the first field. <span class="inline-code">order="1"</span> identifies the second field, and so on.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">%0</span> in <span class="inline-code">spec</span></td>
+                    <td>Controls where field 0 appears visually in the block sentence.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">~</span> in <span class="inline-code">code</span></td>
+                    <td>The first <span class="inline-code">~</span> receives field 0, the second receives field 1, and so on.</td>
+                </tr>
+                <tr>
+                    <td><span class="inline-code">;</span></td>
+                    <td>Action blocks generate complete statements and end with a semicolon. Getter and boolean blocks are inserted into other expressions and do not.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note good">
+            <strong>Field 0 connects three places:</strong>
+            <span class="inline-code">%0</span> in the visible block wording,
+            <span class="inline-code">order="0"</span> in the field definition,
+            and the first <span class="inline-code">~</span> in the generated Haxe.
+        </div>
+
+        <h3>Available field types</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Example</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Number</td>
+                    <td><span class="inline-code">&lt;number order="0"/&gt;</span></td>
+                    <td>Provides a numeric input. Common Haxe types are <span class="inline-code">Float</span> and <span class="inline-code">Int</span>.</td>
+                </tr>
+                <tr>
+                    <td>String</td>
+                    <td><span class="inline-code">&lt;string order="0"/&gt;</span></td>
+                    <td>Provides a String input for names, labels, and other text.</td>
+                </tr>
+                <tr>
+                    <td>Text</td>
+                    <td><span class="inline-code">&lt;text order="0"/&gt;</span></td>
+                    <td>Provides another text-entry field and is passed to Haxe as a String.</td>
+                </tr>
+                <tr>
+                    <td>Actor</td>
+                    <td><span class="inline-code">&lt;actor order="0"/&gt;</span></td>
+                    <td>Accepts a Stencyl actor value. The Haxe parameter normally uses <span class="inline-code">Actor</span>.</td>
+                </tr>
+                <tr>
+                    <td>Image</td>
+                    <td><span class="inline-code">&lt;image order="0"/&gt;</span></td>
+                    <td>Accepts a Stencyl image. Rendering code commonly receives it as <span class="inline-code">BitmapData</span>.</td>
+                </tr>
+                <tr>
+                    <td>Color</td>
+                    <td><span class="inline-code">&lt;color order="0"/&gt;</span></td>
+                    <td>Displays Stencyl's color picker and supplies a packed integer color value.</td>
+                </tr>
+                <tr>
+                    <td>Code Block</td>
+                    <td><span class="inline-code">&lt;CODE_BLOCK order="0"/&gt;</span></td>
+                    <td>Accepts nested blocks inside an advanced wrapper block.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Dropdown fields</h3>
+        <div class="grid-2">
+            <div>
+                <div class="code-box">
+                    <div class="code-bar"><span>Dropdown that supplies Strings</span><button class="copy-btn">Copy</button></div>
+                    <pre>&lt;dropdown order=&quot;0&quot;&gt;
+    &lt;choices&gt;
+        &lt;c text=&quot;Centered&quot; code=&quot;&amp;quot;Centered&amp;quot;&quot;/&gt;
+        &lt;c text=&quot;Smooth Centered&quot; code=&quot;&amp;quot;Smooth Centered&amp;quot;&quot;/&gt;
+    &lt;/choices&gt;
+&lt;/dropdown&gt;</pre>
+                </div>
+                <p>
+                    The visible label is stored in <span class="inline-code">text</span>.
+                    The generated value is stored in <span class="inline-code">code</span>.
+                    String quotes are written as <span class="inline-code">&amp;quot;</span> because they are inside XML.
+                </p>
+            </div>
+            <div>
+                <div class="code-box">
+                    <div class="code-bar"><span>Dropdown that supplies booleans</span><button class="copy-btn">Copy</button></div>
+                    <pre>&lt;dropdown order=&quot;0&quot;&gt;
+    &lt;choices&gt;
+        &lt;c text=&quot;On&quot; code=&quot;true&quot;/&gt;
+        &lt;c text=&quot;Off&quot; code=&quot;false&quot;/&gt;
+    &lt;/choices&gt;
+&lt;/dropdown&gt;</pre>
+                </div>
+                <p>
+                    Boolean and numeric dropdown values are emitted without String quotes.
+                    This dropdown sends the Haxe values <span class="inline-code">true</span> or
+                    <span class="inline-code">false</span>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="getter-example">
+    <div class="section-header"><h2><span class="step-number">4</span>Getter Block Example</h2></div>
+    <div class="section-body">
+        <div class="grid-2">
+            <div class="code-box">
+                <div class="code-bar"><span>Getter definition</span><button class="copy-btn">Copy</button></div>
+                <pre>&lt;block tag=&quot;example-getter&quot;
+    spec=&quot;Get Value of Example&quot;
+    help=&quot;Returns the current Example text.&quot;
+    code=&quot;scripts.Example.exampleGetter()&quot;
+    type=&quot;normal&quot; color=&quot;cyan&quot; returns=&quot;string&quot;&gt;
+    &lt;fields&gt;&lt;/fields&gt;
+&lt;/block&gt;</pre>
+            </div>
+            <div class="card">
+                <h3>What makes it a getter</h3>
+                <ul class="checklist">
+                    <li>It uses <span class="inline-code">type="normal"</span>.</li>
+                    <li>It uses <span class="inline-code">returns="string"</span>.</li>
+                    <li>The Haxe function returns <span class="inline-code">String</span>.</li>
+                    <li>The function call includes <span class="inline-code">()</span>.</li>
+                    <li>The generated code does not end with a semicolon.</li>
+                    <li>It has no fields because the function has no parameters.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="note bad">
+            <strong>Incorrect:</strong> <span class="inline-code">scripts.Example.exampleGetter</span><br/>
+            Without parentheses, the generated code references the function instead of calling it.
+        </div>
+    </div>
+</section>
+
+<section class="section" id="setter-example">
+    <div class="section-header"><h2><span class="step-number">5</span>Setter Block Example</h2></div>
+    <div class="section-body">
+        <div class="grid-2">
+            <div class="code-box">
+                <div class="code-bar"><span>Setter definition</span><button class="copy-btn">Copy</button></div>
+                <pre>&lt;block tag=&quot;example-setter&quot;
+    spec=&quot;Set Example to %0&quot;
+    help=&quot;Sets the current Example text.&quot;
+    code=&quot;scripts.Example.exampleSetter(~);&quot;
+    type=&quot;action&quot; color=&quot;cyan&quot; returns=&quot;void&quot;&gt;
+    &lt;fields&gt;
+        &lt;string order=&quot;0&quot;/&gt;
+    &lt;/fields&gt;
+&lt;/block&gt;</pre>
+            </div>
+            <div class="card">
+                <h3>What makes it a setter</h3>
+                <ul class="checklist">
+                    <li>It uses <span class="inline-code">type="action"</span>.</li>
+                    <li>It uses <span class="inline-code">returns="void"</span>.</li>
+                    <li>The Haxe function returns <span class="inline-code">Void</span>.</li>
+                    <li>The generated function call ends with a semicolon.</li>
+                    <li>The block includes one String input with <span class="inline-code">order="0"</span>.</li>
+                    <li><span class="inline-code">%0</span> and the first <span class="inline-code">~</span> both refer to that field.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="complete-blocks">
+    <div class="section-header"><h2><span class="step-number">6</span>Complete blocks.xml</h2></div>
+    <div class="section-body">
+        <p>
+            Both block definitions live inside the same
+            <span class="inline-code">&lt;palette&gt;</span> element.
+        </p>
+        <div class="code-box">
+            <div class="code-bar"><span>blocks.xml</span><button class="copy-btn">Copy</button></div>
+            <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;palette&gt;
+    &lt;block tag=&quot;example-getter&quot;
+        spec=&quot;Get Value of Example&quot;
+        help=&quot;Returns the current Example text.&quot;
+        code=&quot;scripts.Example.exampleGetter()&quot;
+        type=&quot;normal&quot; color=&quot;cyan&quot; returns=&quot;string&quot;&gt;
+        &lt;fields&gt;&lt;/fields&gt;
+    &lt;/block&gt;
+
+    &lt;block tag=&quot;example-setter&quot;
+        spec=&quot;Set Example to %0&quot;
+        help=&quot;Sets the current Example text.&quot;
+        code=&quot;scripts.Example.exampleSetter(~);&quot;
+        type=&quot;action&quot; color=&quot;cyan&quot; returns=&quot;void&quot;&gt;
+        &lt;fields&gt;
+            &lt;string order=&quot;0&quot;/&gt;
+        &lt;/fields&gt;
+    &lt;/block&gt;
+&lt;/palette&gt;</pre>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="palette-layout">
+    <div class="section-header"><h2><span class="step-number">7</span>How to Organize the Blocks in the Palette</h2></div>
+    <div class="section-body">
+        <p>
+            <span class="inline-code">stencyl-addons.xml</span> does not define what a block does.
+            It controls where defined blocks appear in Stencyl and the order in which they are shown.
+        </p>
+
+        <div class="code-box">
+            <div class="code-bar"><span>stencyl-addons.xml</span><button class="copy-btn">Copy</button></div>
+            <pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;stencyl-addons&gt;
+    &lt;palette-addon target=&quot;stencyl-behavior-palette&quot;&gt;
+
+        &lt;category title=&quot;Simple Extension Template&quot; color=&quot;cyan&quot;&gt;
+
+            &lt;section title=&quot;Example&quot;&gt;
+                &lt;header title=&quot;Values&quot; /&gt;
+                &lt;block tag=&quot;example-getter&quot; /&gt;
+                &lt;block tag=&quot;example-setter&quot; /&gt;
+            &lt;/section&gt;
+
+        &lt;/category&gt;
+    &lt;/palette-addon&gt;
+&lt;/stencyl-addons&gt;</pre>
+        </div>
+
+        <table>
+            <thead><tr><th>Element</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td><span class="inline-code">&lt;category&gt;</span></td><td>Creates the top-level extension category in the Stencyl palette.</td></tr>
+                <tr><td><span class="inline-code">&lt;section&gt;</span></td><td>Groups blocks by a major feature or responsibility.</td></tr>
+                <tr><td><span class="inline-code">&lt;header&gt;</span></td><td>Adds a smaller labeled divider inside a section.</td></tr>
+                <tr><td><span class="inline-code">&lt;block tag="..." /&gt;</span></td><td>Places a block already defined in <span class="inline-code">blocks.xml</span>.</td></tr>
+            </tbody>
+        </table>
+
+        <div class="note good">
+            The tag must match exactly in both files. A block defined as
+            <span class="inline-code">tag="example-getter"</span> is placed with
+            <span class="inline-code">&lt;block tag="example-getter" /&gt;</span>.
+        </div>
+    </div>
+</section>
+
+<section class="section" id="test-extension">
+    <div class="section-header"><h2><span class="step-number">8</span>Test and Reload the Extension</h2></div>
+    <div class="section-body">
+        <div class="reload-grid">
+            <div class="reload-card live">
+                <h3>Haxe script changes</h3>
+                <p>
+                    Changes inside files under <span class="inline-code">src/</span> can be saved and tested during
+                    the current Stencyl session as long as the function names and block-facing function signatures do not change.
+                </p>
+                <p>
+                    Edit the Haxe, save it, and test the game again.
+                </p>
+            </div>
+
+            <div class="reload-card restart">
+                <h3>XML changes</h3>
+                <p>
+                    Changes to <span class="inline-code">blocks.xml</span>,
+                    <span class="inline-code">stencyl-addons.xml</span>, or the other extension XML files require a full restart of Stencyl.
+                </p>
+                <p>
+                    If the block definition changed, remove the old placed block and drag in a fresh copy after restarting.
+                </p>
+            </div>
+        </div>
+
+        <div class="note warn">
+            Changing a Haxe function name or its parameters also requires updating the matching
+            <span class="inline-code">code</span> in <span class="inline-code">blocks.xml</span>.
+            Because the XML changed, restart Stencyl afterward.
+        </div>
+
+        <h3>Expected test</h3>
+        <p>The copy button below copies the actual Stencyl block XML.</p>
+
+        <div class="code-box">
+            <div class="code-bar"><span>Expected test blocks</span><button class="copy-btn">Copy</button></div>
+            <div class="block-preview">
+                <div class="block-stack">
+                    <div class="block-row">
+                        <div class="st-block red">
+                            Print
+                            <span class="st-input"><span class="st-block reporter">Get Value of Example</span></span>
+                        </div>
+                    </div>
+                    <div class="block-row">
+                        <div class="st-block">Set Example to <span class="st-text-slot">OOGA BOOGA</span></div>
+                    </div>
+                    <div class="block-row">
+                        <div class="st-block red">
+                            Print
+                            <span class="st-input"><span class="st-block reporter">Get Value of Example</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <pre class="copy-source">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;copy format=&quot;1&quot;&gt;
+    &lt;vars/&gt;
+    &lt;group eventID=&quot;-1&quot; id=&quot;-1&quot;&gt;
+        &lt;print comment=&quot;false&quot; x=&quot;0&quot; y=&quot;0&quot;&gt;
+            &lt;example-getter comment=&quot;false&quot; id=&quot;0&quot; x=&quot;0&quot; y=&quot;0&quot;/&gt;
+        &lt;/print&gt;
+        &lt;example-setter comment=&quot;false&quot; x=&quot;0&quot; y=&quot;0&quot;&gt;
+            &lt;int id=&quot;0&quot; val=&quot;OOGA BOOGA&quot;/&gt;
+        &lt;/example-setter&gt;
+        &lt;print comment=&quot;false&quot; x=&quot;0&quot; y=&quot;0&quot;&gt;
+            &lt;example-getter comment=&quot;false&quot; id=&quot;0&quot; x=&quot;0&quot; y=&quot;0&quot;/&gt;
+        &lt;/print&gt;
+    &lt;/group&gt;
+&lt;/copy&gt;</pre>
+        </div>
+
+        <div class="grid-2">
+            <div class="card"><h3>First output</h3><p><span class="inline-code">HelloWorld!</span></p></div>
+            <div class="card"><h3>Second output</h3><p><span class="inline-code">OOGA BOOGA</span></p></div>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="debugging">
+    <div class="section-header"><h2><span class="step-number">9</span>Debug the Generated Code</h2></div>
+    <div class="section-body">
+        <table>
+            <thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td>Missing semicolon error</td>
+                    <td>An action block's generated code does not end with <span class="inline-code">;</span>.</td>
+                    <td>Add the semicolon inside the block's <span class="inline-code">code</span> attribute.</td>
+                </tr>
+                <tr>
+                    <td>Prints <span class="inline-code">exampleGetter</span></td>
+                    <td>The function was referenced instead of called, or Stencyl is using an old placed block.</td>
+                    <td>Use <span class="inline-code">exampleGetter()</span>, restart if XML changed, and replace the placed block.</td>
+                </tr>
+                <tr>
+                    <td>Return type error</td>
+                    <td>The Haxe return type and XML <span class="inline-code">returns</span> value disagree.</td>
+                    <td>Match <span class="inline-code">String</span> with <span class="inline-code">returns="string"</span>, and so on.</td>
+                </tr>
+                <tr>
+                    <td>Block missing from the palette</td>
+                    <td>The tag is missing or misspelled in <span class="inline-code">stencyl-addons.xml</span>.</td>
+                    <td>Copy the exact tag from <span class="inline-code">blocks.xml</span>, then restart Stencyl.</td>
+                </tr>
+                <tr>
+                    <td>Arguments arrive in the wrong order</td>
+                    <td>The field orders and <span class="inline-code">~</span> positions do not match the Haxe function parameters.</td>
+                    <td>Trace field 0, field 1, and each placeholder through the generated function call.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            When Stencyl reports an error in generated scene code, inspect the generated Haxe line.
+            That line shows exactly what the XML produced.
+        </div>
+    </div>
+</section>
+
+<div class="footer">bittyBIG Studio — How to Make a Stencyl Extension</div>
+</div>
+</main>
+</div>
+
+<script>
+(function(){
+    document.querySelectorAll(".copy-btn").forEach(function(button){
+        button.addEventListener("click",function(){
+            var box=button.closest(".code-box");
+            if(!box)return;
+            var source=box.querySelector("pre");
+            if(!source)return;
+            navigator.clipboard.writeText(source.innerText).then(function(){
+                var old=button.textContent;
+                button.textContent="Copied";
+                setTimeout(function(){button.textContent=old},1200);
+            });
+        });
+    });
+
+    var links=Array.from(document.querySelectorAll(".nav-link"));
+    var targets=links.map(function(link){
+        var href=link.getAttribute("href");
+        return href&&href.charAt(0)==="#"?document.querySelector(href):null;
+    });
+
+    function updateActive(){
+        var best=-1,bestTop=-Infinity;
+        targets.forEach(function(target,index){
+            if(!target)return;
+            var top=target.getBoundingClientRect().top;
+            if(top<=110&&top>bestTop){bestTop=top;best=index}
+        });
+        links.forEach(function(link,index){link.classList.toggle("active",index===best)});
+    }
+
+    window.addEventListener("scroll",updateActive,{passive:true});
+    updateActive();
+})();
+</script>
+</body>
+</html>
