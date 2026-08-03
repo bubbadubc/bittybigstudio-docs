@@ -1,0 +1,2326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="icon" type="image/png" href="../favicon.png">
+<title>bittyBIG Easy Input System Documentation</title>
+<style>
+
+		:root
+		{
+			--bg: #f2f2f2;
+			--panel: #ffffff;
+			--panel-2: #f7f7f7;
+			--line: #cccccc;
+			--text: #222222;
+			--muted: #666666;
+			--header: #455a6f;
+			--headerText: #ffffff;
+			--accent: #1c88d9;
+			--accentDark: #1467a6;
+			--accentLight: #d8ecfb;
+			--danger: #d5525d;
+			--dangerDark: #ab3842;
+			--success: #7ab34a;
+			--successDark: #5e9234;
+			--shadow: rgba(0, 0, 0, 0.12);
+			--gold: #ffb52a;
+		}
+
+		*
+		{
+			box-sizing: border-box;
+		}
+
+		html
+		{
+			scroll-behavior: smooth;
+			scroll-padding-top: 72px;
+		}
+
+		[id]
+		{
+			scroll-margin-top: 72px;
+		}
+
+		body
+		{
+			margin: 0;
+			background: var(--bg);
+			color: var(--text);
+			font-family: Arial, Helvetica, sans-serif;
+			line-height: 1.45;
+		}
+
+		a
+		{
+			color: inherit;
+			text-decoration: none;
+		}
+
+		button,
+		input
+		{
+			font: inherit;
+		}
+
+		.app
+		{
+			display: grid;
+			grid-template-columns: 310px minmax(0, 1fr);
+			min-height: 100vh;
+		}
+
+		/* Sidebar */
+		.sidebar
+		{
+			position: sticky;
+			top: 0;
+			height: 100vh;
+			overflow: auto;
+			background: #f7f7f7;
+			border-right: 1px solid #bdbdbd;
+			padding: 0;
+		}
+
+		.sidebar-header
+		{
+			background: var(--header);
+			color: var(--headerText);
+			padding: 16px;
+			border-bottom: 1px solid #394a5c;
+		}
+
+		.sidebar-header h1
+		{
+			margin: 0;
+			font-size: 20px;
+			line-height: 1.15;
+		}
+
+		.sidebar-header h1 a
+		{
+			color: var(--headerText);
+			text-decoration: none;
+		}
+
+		.sidebar-header h1 a:hover
+		{
+			text-decoration: underline;
+		}
+
+		.sidebar-header .sub
+		{
+			margin-top: 5px;
+			font-size: 12px;
+			opacity: 0.9;
+		}
+
+
+		.nav-group
+		{
+			padding: 12px 14px 4px;
+		}
+
+		.nav-title
+		{
+			font-size: 13px;
+			font-weight: bold;
+			color: #333333;
+			text-transform: uppercase;
+			margin: 0 0 8px;
+		}
+
+		.nav-list
+		{
+			display: grid;
+			gap: 4px;
+			margin-bottom: 8px;
+		}
+
+		.nav-link
+		{
+			display: block;
+			padding: 7px 8px;
+			border-radius: 4px;
+			font-size: 14px;
+			color: #333333;
+		}
+
+		.nav-link:hover,
+		.nav-link.active
+		{
+			background: #dfe8f3;
+			color: #000000;
+		}
+
+		.nav-mini-title
+		{
+			font-size: 11px;
+			font-weight: bold;
+			color: #666666;
+			text-transform: uppercase;
+			padding: 8px 8px 2px;
+		}
+
+		.nav-sub
+		{
+			padding-left: 12px;
+			border-left: 2px solid #d0d0d0;
+			margin-left: 6px;
+		}
+
+		/* Main */
+		.main
+		{
+			min-width: 0;
+		}
+
+		.topbar
+		{
+			background: var(--header);
+			color: var(--headerText);
+			padding: 12px 24px;
+			border-bottom: 1px solid #394a5c;
+		}
+
+		.topbar .title
+		{
+			font-size: 22px;
+			font-weight: bold;
+		}
+
+		.topbar .subtitle
+		{
+			font-size: 13px;
+			margin-top: 4px;
+			opacity: 0.92;
+		}
+		.top-nav
+		{
+			position: sticky;
+			top: 0;
+			z-index: 30;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			padding: 10px 24px;
+			background: #ffffff;
+			border-bottom: 1px solid var(--line);
+			box-shadow: 0 2px 7px rgba(0,0,0,0.08);
+		}
+
+		.top-nav a
+		{
+			display: inline-block;
+			padding: 7px 10px;
+			border-radius: 5px;
+			font-size: 14px;
+			font-weight: bold;
+			color: #333333;
+		}
+
+		.top-nav a:hover
+		{
+			background: #dfe8f3;
+		}
+
+		.left-glossary-nav
+		{
+			position: static;
+			top: auto;
+			width: auto;
+			margin: 12px;
+		}
+
+		.left-glossary-nav .cat
+		{
+			margin-bottom: 18px;
+		}
+
+		.left-glossary-nav .cat-title
+		{
+			font-size: 11px;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 0.04em;
+			color: #ffffff;
+			background: #7c8692;
+			border: 1px solid #67727e;
+			border-radius: 4px;
+			padding: 4px 7px;
+			margin: 12px 0 6px;
+		}
+
+		.left-glossary-nav .glossary-main-title
+		{
+			font-size: 16px;
+			font-weight: bold;
+			text-transform: uppercase;
+			letter-spacing: 0.04em;
+			color: #ffffff;
+			background: #455a6f;
+			border: 1px solid #394a5c;
+			border-radius: 4px;
+			padding: 9px 10px;
+			margin: 0 0 10px;
+		}
+
+		.left-glossary-nav .cat > .cat-title:first-child
+		{
+			font-size: 14px;
+			background: #455a6f;
+			border-color: #394a5c;
+			padding: 7px 9px;
+			margin: 0 0 8px;
+		}
+
+		.left-glossary-nav a
+		{
+			display: block;
+			padding: 5px 8px;
+			border-radius: 4px;
+			font-size: 14px;
+			color: #333333;
+		}
+
+		.left-glossary-nav a:hover
+		{
+			background: #dfe8f3;
+		}
+
+
+		.content
+		{
+			padding: 24px;
+			max-width: 1300px;
+		}
+
+		.section
+		{
+			background: var(--panel);
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			box-shadow: 0 2px 8px var(--shadow);
+			margin-bottom: 18px;
+			overflow: hidden;
+		}
+
+		.section-header
+		{
+			padding: 18px 20px;
+			border-bottom: 1px solid var(--line);
+			background: var(--panel-2);
+		}
+
+		.section-header h2
+		{
+			margin: 0;
+			font-size: 24px;
+			color: #138a84;
+		}
+
+		.section-body
+		{
+			padding: 20px;
+		}
+
+		p
+		{
+			margin-top: 0;
+		}
+
+		.hero-box
+		{
+			background: linear-gradient(135deg, #5d7389, #455a6f);
+			color: white;
+			padding: 24px;
+			border-radius: 8px;
+			border: 1px solid #394a5c;
+		}
+
+		.hero-box h2
+		{
+			margin: 0 0 10px;
+			font-size: 34px;
+			color: white;
+		}
+
+		.hero-box p
+		{
+			margin: 0 0 16px;
+			font-size: 16px;
+			max-width: 900px;
+		}
+
+		.hero-buttons
+		{
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+
+		.btn
+		{
+			display: inline-block;
+			padding: 10px 14px;
+			border-radius: 6px;
+			border: 1px solid rgba(255,255,255,0.22);
+			background: rgba(255,255,255,0.12);
+			color: white;
+			cursor: pointer;
+		}
+
+		.btn:hover
+		{
+			background: rgba(255,255,255,0.22);
+		}
+
+		.grid-2
+		{
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 16px;
+		}
+
+		.grid-3
+		{
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			gap: 16px;
+		}
+
+		.grid-4
+		{
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 16px;
+		}
+
+		.info-card
+		{
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			padding: 16px;
+			background: #fafafa;
+		}
+
+		.info-card h3
+		{
+			margin: 0 0 8px;
+			font-size: 18px;
+		}
+
+		.note
+		{
+			padding: 12px 14px;
+			border-radius: 8px;
+			border: 1px solid #d8d8d8;
+			background: #f9f9f9;
+			margin: 12px 0;
+		}
+
+		.note.good
+		{
+			background: #eef8e7;
+			border-color: #bfd7ac;
+		}
+
+		.note.warn
+		{
+			background: #fff6df;
+			border-color: #e7d49a;
+		}
+
+		.inline-code
+		{
+			display: inline-block;
+			background: #f0f0f0;
+			border: 1px solid #dddddd;
+			padding: 2px 6px;
+			border-radius: 4px;
+			font-family: Consolas, Monaco, "Courier New", monospace;
+			font-size: 0.95em;
+		}
+
+		/* Tabs */
+		.tabs
+		{
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			margin-bottom: 16px;
+		}
+
+		.tab-button
+		{
+			padding: 8px 12px;
+			border: 1px solid #bdbdbd;
+			border-radius: 6px;
+			background: #f7f7f7;
+			cursor: pointer;
+		}
+
+		.tab-button.active
+		{
+			background: #dfe8f3;
+			border-color: #9fb8d4;
+			font-weight: bold;
+		}
+
+		.tab-panel
+		{
+			display: none;
+		}
+
+		.tab-panel.active
+		{
+			display: block;
+		}
+
+		/* Stencyl-like block visuals */
+		.block-stack
+		{
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0;
+			margin: 8px 0 14px;
+			overflow-x: auto;
+			overflow-y: visible;
+			padding: 6px 8px 10px 4px;
+		}
+
+		.block-row
+		{
+			display: flex;
+			flex-wrap: nowrap;
+			align-items: center;
+			gap: 0;
+			min-width: max-content;
+			overflow: visible;
+		}
+
+		.st-block
+		{
+			--blockTop: #23a9f4;
+			--blockMid: #0f91dd;
+			--blockBottom: #0575bd;
+			--blockDark: #005c9a;
+			--blockCutout: #f2f2f2;
+
+			display: inline-flex;
+			flex-wrap: nowrap;
+			align-items: center;
+			gap: 4px;
+			min-height: 22px;
+			padding: 3px 8px 4px;
+			color: #ffffff;
+			font-family: Arial, Helvetica, sans-serif;
+			font-weight: 800;
+			font-size: 11px;
+			line-height: 1;
+			white-space: nowrap;
+			position: relative;
+			vertical-align: middle;
+			background: linear-gradient(to bottom, var(--blockTop) 0%, var(--blockMid) 48%, var(--blockBottom) 100%);
+			border: 1px solid var(--blockDark);
+			border-bottom-color: #004a7c;
+			border-radius: 4px;
+			text-shadow: 0 1px 0 rgba(0,0,0,0.22);
+			box-shadow:
+				inset 0 1px 0 rgba(255,255,255,0.36),
+				inset 0 -1px 0 rgba(0,0,0,0.18),
+				0 1px 0 rgba(0,0,0,0.28);
+		}
+
+		.block-stack .st-block
+		{
+			--blockCutout: #ffffff;
+		}
+
+		.generated-block-preview .st-block
+		{
+			--blockCutout: #f6f6f6;
+		}
+
+		.faq-block-image .st-block
+		{
+			--blockCutout: #fafafa;
+		}
+
+		.st-block::before
+		{
+			content: "";
+			position: absolute;
+			left: 28px;
+			top: -1px;
+			width: 22px;
+			height: 6px;
+			background: var(--blockCutout);
+			border-left: 1px solid var(--blockDark);
+			border-right: 1px solid var(--blockDark);
+			border-bottom: 1px solid var(--blockDark);
+			border-radius: 0 0 5px 5px;
+			box-shadow: inset 0 -1px 0 rgba(0,0,0,0.12);
+		}
+
+		.st-block::after
+		{
+			content: "";
+			position: absolute;
+			left: 28px;
+			bottom: -6px;
+			width: 22px;
+			height: 6px;
+			background: linear-gradient(to bottom, var(--blockMid) 0%, var(--blockBottom) 100%);
+			border-left: 1px solid var(--blockDark);
+			border-right: 1px solid var(--blockDark);
+			border-bottom: 1px solid #004a7c;
+			border-radius: 0 0 5px 5px;
+			box-shadow: 0 1px 0 rgba(0,0,0,0.28);
+		}
+
+
+		/* When command blocks are stacked, the upper block's bottom connector should appear inside the lower block's top notch. */
+		.block-stack .block-row + .block-row .st-block::before,
+		.generated-block-preview .block-row + .block-row .st-block::before
+		{
+			background: linear-gradient(to bottom, #0f91dd 0%, #0575bd 100%);
+			border-left-color: #005c9a;
+			border-right-color: #005c9a;
+			border-bottom-color: #004a7c;
+		}
+
+		.block-stack .block-row:has(.st-block.blue) + .block-row .st-block::before,
+		.generated-block-preview .block-row:has(.st-block.blue) + .block-row .st-block::before
+		{
+			background: linear-gradient(to bottom, #0f91dd 0%, #0575bd 100%);
+			border-left-color: #005c9a;
+			border-right-color: #005c9a;
+			border-bottom-color: #004a7c;
+		}
+
+		.block-stack .block-row:has(.st-block.red) + .block-row .st-block::before,
+		.generated-block-preview .block-row:has(.st-block.red) + .block-row .st-block::before
+		{
+			background: linear-gradient(to bottom, #dc555e 0%, #bf3944 100%);
+			border-left-color: #9d2630;
+			border-right-color: #9d2630;
+			border-bottom-color: #862029;
+		}
+
+		.block-stack .block-row:has(.st-block.green) + .block-row .st-block::before,
+		.generated-block-preview .block-row:has(.st-block.green) + .block-row .st-block::before
+		{
+			background: linear-gradient(to bottom, #75ad42 0%, #5e9230 100%);
+			border-left-color: #4e7b27;
+			border-right-color: #4e7b27;
+			border-bottom-color: #3f681e;
+		}
+
+		.block-stack .block-row:has(.st-block.gray) + .block-row .st-block::before,
+		.generated-block-preview .block-row:has(.st-block.gray) + .block-row .st-block::before
+		{
+			background: linear-gradient(to bottom, #808b97 0%, #66717e 100%);
+			border-left-color: #53606c;
+			border-right-color: #53606c;
+			border-bottom-color: #45515c;
+		}
+
+		.st-block.blue
+		{
+			--blockTop: #23a9f4;
+			--blockMid: #0f91dd;
+			--blockBottom: #0575bd;
+			--blockDark: #005c9a;
+		}
+
+		.st-block.red
+		{
+			--blockTop: #ef737a;
+			--blockMid: #dc555e;
+			--blockBottom: #bf3944;
+			--blockDark: #9d2630;
+		}
+
+		.st-block.green
+		{
+			--blockTop: #93cc5d;
+			--blockMid: #75ad42;
+			--blockBottom: #5e9230;
+			--blockDark: #4e7b27;
+		}
+
+		.st-block.gray
+		{
+			--blockTop: #9aa4af;
+			--blockMid: #808b97;
+			--blockBottom: #66717e;
+			--blockDark: #53606c;
+		}
+
+		.st-block.reporter
+		{
+			min-height: 20px;
+			padding: 3px 9px 4px;
+			border-radius: 12px;
+			box-shadow:
+				inset 0 1px 0 rgba(255,255,255,0.34),
+				inset 0 -1px 0 rgba(0,0,0,0.18),
+				0 1px 0 rgba(0,0,0,0.24);
+		}
+
+		.st-block.reporter::before,
+		.st-block.reporter::after
+		{
+			content: none;
+		}
+
+		.st-block.boolean
+		{
+			min-height: 21px;
+			padding: 3px 15px 4px;
+			border-radius: 0;
+			clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 50%, calc(100% - 12px) 100%, 12px 100%, 0 50%);
+		}
+
+		.st-block.boolean::before,
+		.st-block.boolean::after
+		{
+			content: none;
+		}
+
+		.st-input,
+		.st-dropdown,
+		.st-text
+		{
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 18px;
+			padding: 1px 6px;
+			border-radius: 6px;
+			font-weight: 800;
+			color: #222222;
+			border: 1px solid #8a8a8a;
+			box-shadow:
+				inset 0 1px 1px rgba(255,255,255,0.95),
+				0 1px 0 rgba(0,0,0,0.22);
+			vertical-align: middle;
+			text-shadow: none;
+			white-space: nowrap;
+		}
+
+		.st-input
+		{
+			min-width: 22px;
+			background: linear-gradient(#ffffff, #e8e8e8);
+		}
+
+		.st-dropdown
+		{
+			min-width: 32px;
+			background: linear-gradient(#ffffff, #e5e5e5);
+			padding-right: 20px;
+			position: relative;
+		}
+
+		.st-dropdown::after
+		{
+			content: "";
+			position: absolute;
+			right: 6px;
+			top: 50%;
+			transform: translateY(-35%);
+			width: 0;
+			height: 0;
+			border-left: 5px solid transparent;
+			border-right: 5px solid transparent;
+			border-top: 6px solid #666666;
+		}
+
+		.st-text
+		{
+			background: linear-gradient(#fff6c9, #f3d874);
+		}
+
+		.st-input .st-block.reporter,
+		.st-dropdown .st-block.reporter,
+		.st-text .st-block.reporter
+		{
+			margin: -2px -5px;
+		}
+
+		.st-input:has(.st-block.reporter),
+		.st-dropdown:has(.st-block.reporter),
+		.st-text:has(.st-block.reporter)
+		{
+			padding: 0;
+			border: 0;
+			background: transparent;
+			box-shadow: none;
+			min-width: 0;
+		}
+
+		.generated-block-preview,
+		.faq-block-image
+		{
+			overflow-x: auto;
+			overflow-y: visible;
+			padding-bottom: 10px;
+		}
+
+		.generated-block-preview .block-row,
+		.faq-block-image.block-row,
+		.faq-block-image .block-row
+		{
+			flex-wrap: nowrap;
+			min-width: max-content;
+		}
+
+		.block-card
+		{
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: #fafafa;
+			padding: 16px;
+			margin-bottom: 14px;
+		}
+
+		.block-card h3
+		{
+			margin: 0 0 8px;
+			font-size: 19px;
+		}
+
+		.block-meta
+		{
+			font-size: 13px;
+			color: var(--muted);
+			margin-bottom: 4px;
+		}
+
+		.block-card > .block-row
+		{
+			margin: -2px 0 14px;
+		}
+
+		.block-desc
+		{
+			margin-bottom: 12px;
+		}
+
+		.code-toggle
+		{
+			display: inline-block;
+			padding: 7px 10px;
+			border-radius: 5px;
+			border: 1px solid #b8c7d8;
+			background: #edf4fb;
+			color: #1d517f;
+			cursor: pointer;
+			font-size: 13px;
+			font-weight: bold;
+			margin-top: 4px;
+		}
+
+		.code-toggle:hover
+		{
+			background: #dfeefa;
+		}
+
+		.code-box
+		{
+			display: block;
+			margin-top: 10px;
+			border: 1px solid #d8d8d8;
+			border-radius: 6px;
+			background: #f6f6f6;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		.code-box.open
+		{
+			display: block;
+		}
+
+		.code-bar
+		{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			background: #ececec;
+			border-bottom: 1px solid #d8d8d8;
+			padding: 8px 10px;
+			font-size: 12px;
+			color: #444444;
+		}
+
+		.copy-btn
+		{
+			padding: 5px 8px;
+			border-radius: 4px;
+			border: 1px solid #bdbdbd;
+			background: #ffffff;
+			cursor: pointer;
+			font-size: 12px;
+		}
+
+		.copy-btn:hover
+		{
+			background: #f2f2f2;
+		}
+
+		pre
+		{
+			margin: 0;
+			padding: 12px;
+			overflow: auto;
+			font-family: Consolas, Monaco, "Courier New", monospace;
+			font-size: 13px;
+			line-height: 1.5;
+		}
+
+		/* Glossary style */
+		.glossary-layout
+		{
+			display: block;
+		}
+
+		.glossary-sidebar
+		{
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: #f7f7f7;
+			padding: 12px;
+			align-self: start;
+			position: sticky;
+			top: 18px;
+		}
+
+		.glossary-sidebar h3
+		{
+			margin: 0 0 10px;
+			font-size: 16px;
+		}
+
+		.glossary-sidebar .cat
+		{
+			margin-bottom: 12px;
+		}
+
+		.glossary-sidebar .cat-title
+		{
+			font-size: 13px;
+			font-weight: bold;
+			text-transform: uppercase;
+			color: #444444;
+			margin-bottom: 6px;
+		}
+
+		.glossary-sidebar a
+		{
+			display: block;
+			padding: 5px 6px;
+			border-radius: 4px;
+			font-size: 14px;
+		}
+
+		.glossary-sidebar a:hover
+		{
+			background: #dfe8f3;
+		}
+
+		.left-glossary-nav .cat-title,
+		.left-glossary-nav .cat > .cat-title:first-child
+		{
+			color: #ffffff;
+		}
+
+		.term-list
+		{
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: #fafafa;
+			padding: 14px 16px;
+			margin-bottom: 18px;
+		}
+
+		.term-list p
+		{
+			margin: 0 0 8px;
+		}
+
+		.term-list p:last-child
+		{
+			margin-bottom: 0;
+		}
+
+		/* Interactive setup builder */
+		.viewport-demo
+		{
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: #fafafa;
+			padding: 16px;
+		}
+
+		.demo-controls
+		{
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+			gap: 10px;
+			margin-bottom: 14px;
+		}
+
+		.screen-controls
+		{
+			grid-template-columns: repeat(auto-fit, minmax(150px, 220px));
+			margin-top: -4px;
+			padding-top: 10px;
+			border-top: 1px solid #e5e5e5;
+		}
+
+		.screen-controls label
+		{
+			color: #777777;
+		}
+
+		.screen-controls input
+		{
+			background: #f7f7f7;
+		}
+
+		.demo-controls label,
+		.viewport-row label
+		{
+			display: grid;
+			gap: 4px;
+			font-size: 12px;
+			color: #555555;
+		}
+
+		.demo-controls input,
+		.viewport-row input
+		{
+			width: 100%;
+			padding: 8px 9px;
+			border: 1px solid #bebebe;
+			border-radius: 5px;
+			background: #ffffff;
+		}
+
+		.builder-layout
+		{
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) 360px;
+			gap: 16px;
+			align-items: start;
+		}
+
+		.demo-screen
+		{
+			position: relative;
+			width: 100%;
+			aspect-ratio: 16 / 9;
+			background:
+				linear-gradient(45deg, rgba(0,0,0,0.04) 25%, transparent 25%),
+				linear-gradient(-45deg, rgba(0,0,0,0.04) 25%, transparent 25%),
+				linear-gradient(45deg, transparent 75%, rgba(0,0,0,0.04) 75%),
+				linear-gradient(-45deg, transparent 75%, rgba(0,0,0,0.04) 75%);
+			background-size: 24px 24px;
+			background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+			border: 1px solid #bcbcbc;
+			border-radius: 8px;
+			overflow: hidden;
+		}
+
+		.demo-display-area
+		{
+			position: absolute;
+			border: 2px dashed #1f7dcc;
+			background: rgba(31, 125, 204, 0.08);
+			overflow: hidden;
+		}
+
+		.demo-viewport
+		{
+			position: absolute;
+			border: 2px solid #6ca73c;
+			background: rgba(122, 179, 74, 0.18);
+			color: #294019;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: bold;
+			font-size: 13px;
+			text-align: center;
+			padding: 4px;
+		}
+
+		.demo-readout,
+		.pixel-readout
+		{
+			margin-top: 12px;
+			font-size: 14px;
+			color: #444444;
+		}
+
+		.viewport-editor
+		{
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: #ffffff;
+			padding: 12px;
+		}
+
+		.viewport-editor h3,
+		.pixel-panel h3,
+		.generated-code h3
+		{
+			margin: 0 0 10px;
+			font-size: 16px;
+		}
+
+		.viewport-row
+		{
+			display: grid;
+			grid-template-columns: 42px repeat(4, 1fr);
+			gap: 8px;
+			align-items: end;
+			padding: 9px 0;
+			border-top: 1px solid #eeeeee;
+		}
+
+		.viewport-row:first-of-type
+		{
+			border-top: 0;
+			padding-top: 0;
+		}
+
+		.viewport-id
+		{
+			font-weight: bold;
+			font-size: 13px;
+			color: #333333;
+			padding-bottom: 8px;
+		}
+
+		.pixel-panel,
+		.generated-code
+		{
+			margin-top: 14px;
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			background: #ffffff;
+			padding: 12px;
+		}
+
+		.pixel-list
+		{
+			margin: 0;
+			padding-left: 0;
+			list-style: none;
+		}
+
+		.pixel-list li
+		{
+			padding: 4px 0;
+			border-bottom: 1px solid #eeeeee;
+		}
+
+		.pixel-list li:last-child
+		{
+			border-bottom: 0;
+		}
+
+		.generated-code .code-box
+		{
+			display: block;
+			margin-top: 0;
+		}
+
+		.generated-block-preview
+		{
+			padding: 10px;
+			background: #f6f6f6;
+			min-height: 80px;
+		}
+
+		.copy-source
+		{
+			position: absolute;
+			left: -99999px;
+			top: auto;
+			width: 1px;
+			height: 1px;
+			overflow: hidden;
+			white-space: pre;
+		}
+
+
+		/* Balanced FAQ Cards */
+		.faq-list
+		{
+			display: grid;
+			gap: 10px;
+		}
+
+		.faq-item
+		{
+			border: 1px solid #d8d8d8;
+			border-radius: 7px;
+			background: #fafafa;
+			padding: 11px 13px;
+		}
+
+		.faq-line
+		{
+			margin: 0 0 6px;
+		}
+
+		.faq-line:last-child
+		{
+			margin-bottom: 0;
+		}
+
+		.faq-block-image
+		{
+			margin: 8px 0 9px;
+		}
+
+		.faq-list a
+		{
+			color: var(--accentDark);
+			font-weight: bold;
+			text-decoration: underline;
+		}
+
+		.faq-label
+		{
+			display: inline-block;
+			min-width: 68px;
+			font-weight: bold;
+			color: #138a84;
+		}
+
+		/* Footer */
+		.footer
+		{
+			text-align: center;
+			padding: 18px 0 6px;
+			color: #666666;
+			font-size: 13px;
+		}
+
+		/* Mobile */
+		@media (max-width: 1100px)
+		{
+			.app
+			{
+				grid-template-columns: 1fr;
+			}
+
+			.sidebar
+			{
+				position: relative;
+				height: auto;
+			}
+
+			.top-nav
+			{
+				position: relative;
+				top: auto;
+			}
+
+			.glossary-layout
+			{
+				grid-template-columns: 1fr;
+			}
+
+			.glossary-sidebar
+			{
+				position: relative;
+				top: 0;
+			}
+		}
+
+		@media (max-width: 900px)
+		{
+			.grid-2,
+			.grid-3,
+			.grid-4,
+			.demo-controls,
+			.builder-layout
+			{
+				grid-template-columns: 1fr;
+			}
+		}
+	
+
+		/* Easy Input documentation additions */
+		.st-block.event-hat
+		{
+			border-radius: 16px 5px 4px 4px;
+			padding-left: 14px;
+		}
+
+		.st-block.event-hat::before
+		{
+			content: none;
+		}
+
+		.event-reporters
+		{
+			display: flex;
+			flex-wrap: wrap;
+			gap: 7px;
+			margin: 10px 0 4px;
+		}
+
+		.event-reporters .st-block
+		{
+			--blockCutout: #fafafa;
+		}
+
+		.event-menu-path
+		{
+			display: inline-block;
+			padding: 5px 8px;
+			border: 1px solid #c4ccd5;
+			border-radius: 5px;
+			background: #eef2f6;
+			font-weight: bold;
+		}
+
+		.flow-row
+		{
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 8px;
+			margin: 12px 0;
+		}
+
+		.flow-node
+		{
+			padding: 8px 10px;
+			border: 1px solid #b8c7d8;
+			border-radius: 6px;
+			background: #edf4fb;
+			font-weight: bold;
+		}
+
+		.flow-arrow
+		{
+			color: #657585;
+			font-weight: bold;
+		}
+
+		.support-table
+		{
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 10px;
+		}
+
+		.support-table th,
+		.support-table td
+		{
+			padding: 9px 10px;
+			border: 1px solid var(--line);
+			text-align: left;
+			vertical-align: top;
+		}
+
+		.support-table th
+		{
+			background: #e8edf2;
+		}
+
+		.glossary-category-title
+		{
+			margin: 24px 0 10px;
+			padding-bottom: 7px;
+			border-bottom: 1px solid var(--line);
+			color: #333333;
+		}
+
+		.glossary-category-title:first-child
+		{
+			margin-top: 0;
+		}
+
+		.simple-list
+		{
+			margin: 0;
+			padding-left: 22px;
+		}
+
+		.simple-list li + li
+		{
+			margin-top: 6px;
+		}
+
+		.inline-link
+		{
+			color: var(--accentDark);
+			font-weight: bold;
+			text-decoration: underline;
+		}
+
+</style>
+</head>
+<body>
+
+<div class="app">
+<aside class="sidebar">
+	<div class="sidebar-header">
+		<h1><a href="https://docs.bittybigstudio.com/">Docs Home</a></h1>
+		<div class="sub">bittyBIG Studio Documentation</div>
+	</div>
+	<div class="glossary-sidebar left-glossary-nav">
+<div class="glossary-main-title">Block Glossary</div>
+<div class="cat">
+<div class="cat-title">Action Maps</div>
+<div class="cat-title">Setters</div>
+<a href="#block-bbinput-set-action-binding">Set Action Binding</a>
+<a href="#block-bbinput-set-active-action-map">Set Active Action Map</a>
+<a href="#block-bbinput-remove-input-binding">Remove Input Binding</a>
+<a href="#block-bbinput-clear-action-map">Clear Action Map</a>
+<div class="cat-title">Getters</div>
+<a href="#block-bbinput-get-active-action-map">Get Active Action Map</a>
+<a href="#block-bbinput-get-bound-action">Get Bound Action</a>
+<a href="#block-bbinput-action-map-exists">Action Map Exists?</a>
+</div>
+<div class="cat">
+<div class="cat-title">Input</div>
+<div class="cat-title">Setters</div>
+<a href="#block-bbinput-receive-action-events-in-this-actor">Receive Action Events in This Actor</a>
+<a href="#block-bbinput-set-digital-vector">Set Digital Vector</a>
+<div class="cat-title">Getters</div>
+<a href="#block-bbinput-action-state">Get Action State</a>
+<a href="#block-bbinput-input-state">Get Input State</a>
+<a href="#block-bbinput-get-analog-value">Get Analog Value</a>
+<a href="#block-bbinput-get-digital-vector">Get Digital Vector</a>
+</div>
+<div class="cat">
+<div class="cat-title">Controllers</div>
+<div class="cat-title">Getters</div>
+<a href="#block-bbinput-controller-connected">Controller Connected?</a>
+<a href="#block-bbinput-connected-controller-count">Connected Controller Count</a>
+<a href="#block-bbinput-get-controller-name">Get Controller Name</a>
+<a href="#block-bbinput-get-controller-id">Get Controller ID</a>
+</div>
+<div class="cat">
+<div class="cat-title">Event Data</div>
+<div class="cat-title">Getters</div>
+<a href="#block-bbinput-current-action">Current Action</a>
+<a href="#block-bbinput-current-input-name">Current Input Name</a>
+<a href="#block-bbinput-current-input-phase">Current Input Phase</a>
+<a href="#block-bbinput-current-analog-input">Current Analog Input</a>
+<a href="#block-bbinput-current-analog-value">Current Analog Value</a>
+<a href="#block-bbinput-current-controller-port">Current Controller Port</a>
+<a href="#block-bbinput-current-controller-name">Current Controller Name</a>
+<a href="#block-bbinput-current-controller-id">Current Controller ID</a>
+<a href="#block-bbinput-current-controller-connected">Current Controller Is Connected</a>
+</div>
+<div class="cat">
+<div class="cat-title">Events</div>
+<a href="#event-any-input">Any Button</a>
+<a href="#event-controller">Controller Connected</a>
+<a href="#event-analog">Analog Input</a>
+</div></div>
+</aside>
+
+<main class="main">
+	<div class="topbar">
+		<div class="title">bittyBIG Easy Input System</div>
+		<div class="subtitle">Setup guide, action maps, controller events, examples, and block glossary</div>
+	</div>
+
+	<nav class="top-nav">
+		<a href="#overview">Overview</a>
+		<a href="#project-setup">Project Setup</a>
+		<a href="#quick-start">Quick Start Guide</a>
+		<a href="#action-maps">Action Maps</a>
+		<a href="#events">Events</a>
+		<a href="#glossary">Block Glossary</a>
+		<a href="#troubleshooting">FAQs</a>
+		<a href="#release-notes">Release Notes</a>
+		<a href="https://discord.gg/BR3WJM4zfG">Support</a>
+	</nav>
+
+	<div class="content">
+		<section class="section doc-section" id="overview">
+			<div class="section-body">
+				<div class="hero-box">
+					<h2>Easy Input System</h2>
+					<p>
+						The bittyBIG Easy Input System gives Stencyl projects one global controller-input layer.
+						It translates common controllers into consistent position-based input names, stores named Action Maps,
+						tracks button and action state per controller port, and exposes controller, button, and analog events.
+					</p>
+					<div class="hero-buttons">
+						<a class="btn" href="#project-setup">Project Setup</a>
+						<a class="btn" href="#quick-start">Quick Start Guide</a>
+						<a class="btn" href="#events">Events</a>
+						<a class="btn" href="#glossary">Block Glossary</a>
+						<a class="btn" href="#troubleshooting">FAQs</a>
+						<a class="btn" href="https://discord.gg/BR3WJM4zfG">Support</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="project-setup">
+			<div class="section-header"><h2>Project Setup in Stencyl</h2></div>
+			<div class="section-body">
+				<p>
+					The extension loads globally. You do not attach an Input Manager or Action Map behavior to every scene,
+					and there is no separate initialization block.
+				</p>
+
+				<div class="grid-2">
+					<div class="info-card">
+						<h3>1. Install the extension</h3>
+						<ol>
+							<li>Place the extension folder in Stencyl's <span class="inline-code">engine-extensions</span> folder.</li>
+							<li>Keep the folder name as <span class="inline-code">bittybig-easy-input-system</span>.</li>
+							<li>Restart Stencyl so the extension files and event menu are reloaded.</li>
+						</ol>
+					</div>
+
+					<div class="info-card">
+						<h3>2. Enable it for the game</h3>
+						<ol>
+							<li>Open the game in Stencyl.</li>
+							<li>Enable <strong>bittyBIG Easy Input System</strong> in the game's Extensions settings.</li>
+							<li>Reopen the project if Stencyl asks to reload extension blocks.</li>
+						</ol>
+					</div>
+				</div>
+
+				<div class="note good">
+					<strong>Ready check:</strong> the palette should contain four tabs:
+					<strong>Action Maps</strong>, <strong>Input</strong>, <strong>Controllers</strong>, and <strong>Event Data</strong>.
+					The Add Event menu should contain a separate <strong>bittyBIG Easy Input System</strong> section.
+				</div>
+
+				<div class="note warn">
+					<strong>Do not rename the extension folder with spaces.</strong>
+					Stencyl uses the folder name while generating conditional Haxe code. Spaces can compile the extension's event registration out of the game.
+				</div>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="quick-start">
+			<div class="section-header"><h2>Quick Start Guide</h2></div>
+			<div class="section-body">
+				<p>
+					Start by creating one named Action Map, assigning a few universal inputs, and making that map active.
+					Action Maps are created automatically when they are first used.
+				</p>
+
+				
+<div class="block-stack">
+	<div class="block-row"><div class="st-block blue">Set Action <span class="st-text">Jump</span> to <span class="st-dropdown">Button South</span> for Action Map <span class="st-text">Gameplay</span></div></div>
+	<div class="block-row"><div class="st-block blue">Set Action <span class="st-text">Pause</span> to <span class="st-dropdown">Start</span> for Action Map <span class="st-text">Gameplay</span></div></div>
+	<div class="block-row"><div class="st-block blue">Set Active Action Map to <span class="st-text">Gameplay</span></div></div>
+</div>
+
+
+				<div class="note good">
+					<strong>What this creates:</strong> pressing the bottom face button produces the action
+					<span class="inline-code">Jump</span>, and pressing Start produces
+					<span class="inline-code">Pause</span>, while the <span class="inline-code">Gameplay</span> map is active.
+				</div>
+
+				<h3>Receive the action in a scene behavior</h3>
+				<ol>
+					<li>Add a Stencyl Custom Event named <span class="inline-code">JumpPressed</span>.</li>
+					<li>Add another named <span class="inline-code">JumpReleased</span> when release logic is needed.</li>
+					<li>Place the gameplay logic inside those Custom Events.</li>
+				</ol>
+
+				<div class="flow-row">
+					<div class="flow-node">Button South</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">Gameplay Action Map</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">Jump</div>
+					<div class="flow-arrow">→</div>
+					<div class="flow-node">JumpPressed / JumpReleased</div>
+				</div>
+
+				<div class="grid-2">
+					<div class="info-card">
+						<h3>Read the action continuously</h3>
+						<div class="block-row"><div class="st-block blue boolean">Action <span class="st-text">Jump</span> is <span class="st-dropdown">Down</span> for Controller Port <span class="st-input">0</span></div></div>
+						<p>Use <strong>Down</strong> for held movement or continuous behavior. Use <strong>Pressed</strong> and <strong>Released</strong> for one-update checks.</p>
+					</div>
+
+					<div class="info-card">
+						<h3>Read the physical input directly</h3>
+						<div class="block-row"><div class="st-block blue boolean">Input <span class="st-dropdown">Button South</span> is <span class="st-dropdown">Pressed</span> for Controller Port <span class="st-input">0</span></div></div>
+						<p>This bypasses the Action Map and checks the universal controller input itself.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="action-maps">
+			<div class="section-header"><h2>Action Maps</h2></div>
+			<div class="section-body">
+				<p>
+					An Action Map converts controller inputs into game-specific action names.
+					The active map stays selected as scenes change until another map is activated.
+				</p>
+
+				<div class="grid-2">
+					<div class="info-card">
+						<h3>Create and update maps</h3>
+						<p>
+							Using <strong>Set Action Binding</strong> creates the named map when needed.
+							Binding the same input again replaces its previous action inside that map.
+						</p>
+					</div>
+
+					<div class="info-card">
+						<h3>Switch game contexts</h3>
+						<p>
+							Use separate maps such as <span class="inline-code">Gameplay</span>,
+							<span class="inline-code">Menu</span>, and <span class="inline-code">Vehicle</span>.
+							Only the active map resolves input into actions.
+						</p>
+					</div>
+				</div>
+
+				<table class="support-table">
+					<thead>
+						<tr><th>Action Map</th><th>Universal Input</th><th>Action</th></tr>
+					</thead>
+					<tbody>
+						<tr><td>Gameplay</td><td>Button South</td><td>Jump</td></tr>
+						<tr><td>Gameplay</td><td>Start</td><td>Pause</td></tr>
+						<tr><td>Menu</td><td>Button South</td><td>Confirm</td></tr>
+						<tr><td>Menu</td><td>Button East</td><td>Cancel</td></tr>
+					</tbody>
+				</table>
+
+				<div class="note">
+					<strong>Event naming:</strong> mapped actions are delivered as the action name plus the phase.
+					For an action named <span class="inline-code">Jump</span>, the generated Custom Events are
+					<span class="inline-code">JumpPressed</span> and <span class="inline-code">JumpReleased</span>.
+				</div>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="actor-actions">
+			<div class="section-header"><h2>Receiving Actions in Actors</h2></div>
+			<div class="section-body">
+				<p>
+					Scene behaviors receive mapped action Custom Events automatically.
+					Actors opt in so the system does not shout every action to every actor in the scene.
+				</p>
+
+				<div class="block-stack">
+					<div class="block-row"><div class="st-block blue">Receive bittyBIG Action Events in this Actor</div></div>
+				</div>
+
+				<ol>
+					<li>Place this block once in the actor behavior's <strong>Created</strong> event.</li>
+					<li>Add Custom Events such as <span class="inline-code">JumpPressed</span> to that actor behavior.</li>
+					<li>The actor will then receive mapped actions while it is registered and active.</li>
+				</ol>
+
+				<div class="note good">
+					<strong>Current Action:</strong> inside mapped action logic, use the
+					<strong>Current Action</strong> reporter to retrieve the base action name without the
+					Pressed or Released suffix.
+				</div>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="input-values">
+			<div class="section-header"><h2>Analog Input and Digital Vectors</h2></div>
+			<div class="section-body">
+				<div class="grid-2">
+					<div class="info-card">
+						<h3>Analog values</h3>
+						<div class="block-row"><div class="st-block blue reporter">Get <span class="st-dropdown">Left Stick X</span> for Controller Port <span class="st-input">0</span></div></div>
+						<p>Stick axes return values from <strong>-1 to 1</strong>. Trigger reporters return values from <strong>0 to 1</strong>.</p>
+					</div>
+
+					<div class="info-card">
+						<h3>Digital vectors</h3>
+						<p>A digital vector combines a negative action and positive action into one number.</p>
+						<div class="block-row"><div class="st-block blue">Set Digital Vector <span class="st-text">Move X</span> Negative Action <span class="st-text">Move Left</span> Positive Action <span class="st-text">Move Right</span> for Action Map <span class="st-text">Gameplay</span></div></div>
+						<div style="margin-top:10px;"><div class="block-row"><div class="st-block blue reporter">Get Digital Vector <span class="st-text">Move X</span> for Controller Port <span class="st-input">0</span></div></div></div>
+					</div>
+				</div>
+
+				<table class="support-table">
+					<thead><tr><th>Held actions</th><th>Digital vector result</th></tr></thead>
+					<tbody>
+						<tr><td>Negative action only</td><td>-1</td></tr>
+						<tr><td>Positive action only</td><td>1</td></tr>
+						<tr><td>Neither action, or both actions</td><td>0</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="events">
+			<div class="section-header"><h2>Input Events</h2></div>
+			<div class="section-body">
+				<p>
+					Open <span class="event-menu-path">Add Event → Extensions → bittyBIG Easy Input System</span>.
+					These events are for input routing, rebinding screens, multiplayer assignment, diagnostics, and other advanced workflows.
+				</p>
+
+				<div class="block-card" id="event-any-input">
+					<h3>Any Button</h3>
+					<div class="block-meta">Add Event → Extensions → bittyBIG Easy Input System</div>
+					
+<div class="block-row">
+	<div class="st-block red event-hat">When Any Input is <span class="st-dropdown">Pressed</span></div>
+</div>
+<div class="event-reporters">
+	<div class="st-block blue reporter">Input Name</div>
+	<div class="st-block blue reporter">Input Phase</div>
+	<div class="st-block blue reporter">Controller Port</div>
+	<div class="st-block blue reporter">Controller Name</div>
+	<div class="st-block blue reporter">Controller ID</div>
+</div>
+
+					<div class="block-desc">
+						Runs when a controller input is pressed or released. Mapped inputs report their universal name.
+						Unsupported or unmapped buttons can report their raw numeric input value.
+					</div>
+					<div class="note">
+						<strong>Current Action is available here.</strong> When the active Action Map resolves this input,
+						the Current Action reporter contains the mapped action before the Any Input callback runs.
+						Unassigned raw input returns empty text.
+					</div>
+				</div>
+
+				<div class="block-card" id="event-controller">
+					<h3>Controller Connected</h3>
+					<div class="block-meta">Add Event → Extensions → bittyBIG Easy Input System</div>
+					
+<div class="block-row">
+	<div class="st-block red event-hat">When a Controller <span class="st-dropdown">Connects</span></div>
+</div>
+<div class="event-reporters">
+	<div class="st-block blue reporter">Controller Port</div>
+	<div class="st-block blue reporter">Controller Name</div>
+	<div class="st-block blue reporter">Controller ID</div>
+	<div class="st-block blue boolean">Connected</div>
+</div>
+
+					<div class="block-desc">
+						Runs once for the controller port whose connection state changed.
+						Use the attached reporters to identify the exact device and assigned port.
+					</div>
+				</div>
+
+				<div class="block-card" id="event-analog">
+					<h3>Analog Input</h3>
+					<div class="block-meta">Add Event → Extensions → bittyBIG Easy Input System</div>
+					
+<div class="block-row">
+	<div class="st-block red event-hat">When an Analog Input Changes</div>
+</div>
+<div class="event-reporters">
+	<div class="st-block blue reporter">Analog Input</div>
+	<div class="st-block blue reporter">Analog Value</div>
+	<div class="st-block blue reporter">Controller Port</div>
+	<div class="st-block blue reporter">Controller Name</div>
+	<div class="st-block blue reporter">Controller ID</div>
+</div>
+
+					<div class="block-desc">
+						Runs when a stick axis or trigger changes enough to pass the analog event threshold.
+					</div>
+				</div>
+
+				<div class="note good">
+					<strong>Attached reporters are local to the callback.</strong>
+					Use them inside the event when you need data from that exact invocation.
+					The Event Data palette contains shared Current Event Data reporters for reusable logic and mapped action events.
+				</div>
+
+				<div class="note warn">
+					<strong>Raw fallback is event-only.</strong>
+					A raw numeric button reported by Any Button is not added to normal Input State tracking or Action Maps.
+					It is provided so unsupported controller buttons can still be identified.
+				</div>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="controllers">
+			<div class="section-header"><h2>Controllers and Ports</h2></div>
+			<div class="section-body">
+				<p>
+					The system supports controller ports <strong>0 through 3</strong>.
+					A newly detected controller is assigned to the first empty port.
+				</p>
+
+				<table class="support-table">
+					<thead><tr><th>Detected controller</th><th>Mapping path</th></tr></thead>
+					<tbody>
+						<tr><td>Xbox and XInput controllers</td><td>XInput preset</td></tr>
+						<tr><td>DualSense, DualShock, or PlayStation-named controllers</td><td>PS5-style preset</td></tr>
+						<tr><td>Nintendo Switch Pro controllers</td><td>Switch Pro preset</td></tr>
+						<tr><td>HTML5 browser gamepads</td><td>HTML Gamepad mapping path</td></tr>
+						<tr><td>Unknown native controller names</td><td>XInput fallback, with raw Any Button reporting for buttons the preset does not translate</td></tr>
+					</tbody>
+				</table>
+
+				<h3>Universal face-button names</h3>
+				<table class="support-table">
+					<thead><tr><th>Physical position</th><th>Universal name</th></tr></thead>
+					<tbody>
+						<tr><td>Bottom</td><td>Button South</td></tr>
+						<tr><td>Right</td><td>Button East</td></tr>
+						<tr><td>Left</td><td>Button West</td></tr>
+						<tr><td>Top</td><td>Button North</td></tr>
+					</tbody>
+				</table>
+
+				<div class="note">
+					<strong>HTML5 note:</strong> browsers may not expose a gamepad until the game has focus and the user presses a controller button.
+				</div>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="glossary">
+			<div class="section-header"><h2>Block Glossary</h2></div>
+			<div class="section-body">
+				<p>
+					The glossary follows the same order as the Stencyl palette:
+					commands first, getters after them, with the generated Haxe call shown under each block.
+				</p>
+				<h3 class="glossary-category-title" id="cat-action-maps">Action Maps</h3>
+<h4>Setters</h4>
+
+<div class="block-card" id="block-bbinput-set-action-binding">
+	<h3>Set Action Binding</h3>
+	<div class="block-meta">Action Maps → Setters</div>
+	<div class="block-row"><div class="st-block blue">Set Action <span class="st-text"></span> to <span class="st-dropdown">Button South</span> for Action Map <span class="st-text"></span></div></div>
+	<div class="block-desc">Assigns the selected universal input to an action in the named Action Map. The Action Map is created automatically if it does not exist.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-set-action-binding">Copy</button>
+	</div>
+	<pre id="code-bbinput-set-action-binding">scripts.BittyInputBlocks.setActionBinding(~,~,~);</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-set-active-action-map">
+	<h3>Set Active Action Map</h3>
+	<div class="block-meta">Action Maps → Setters</div>
+	<div class="block-row"><div class="st-block blue">Set Active Action Map to <span class="st-text"></span></div></div>
+	<div class="block-desc">Makes the named Action Map the map used to translate input into actions.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-set-active-action-map">Copy</button>
+	</div>
+	<pre id="code-bbinput-set-active-action-map">scripts.BittyInputBlocks.setActiveActionMap(~);</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-remove-input-binding">
+	<h3>Remove Input Binding</h3>
+	<div class="block-meta">Action Maps → Setters</div>
+	<div class="block-row"><div class="st-block blue">Remove <span class="st-dropdown">Button South</span> from Action Map <span class="st-text"></span></div></div>
+	<div class="block-desc">Removes the selected universal input from the named Action Map.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-remove-input-binding">Copy</button>
+	</div>
+	<pre id="code-bbinput-remove-input-binding">scripts.BittyInputBlocks.removeInputBinding(~,~);</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-clear-action-map">
+	<h3>Clear Action Map</h3>
+	<div class="block-meta">Action Maps → Setters</div>
+	<div class="block-row"><div class="st-block blue">Clear Action Map <span class="st-text"></span></div></div>
+	<div class="block-desc">Removes every input-to-action assignment from the named Action Map without deleting other maps.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-clear-action-map">Copy</button>
+	</div>
+	<pre id="code-bbinput-clear-action-map">scripts.BittyInputBlocks.clearActionMap(~);</pre>
+</div>
+</div>
+<h4>Getters</h4>
+
+<div class="block-card" id="block-bbinput-get-active-action-map">
+	<h3>Get Active Action Map</h3>
+	<div class="block-meta">Action Maps → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Get Active Action Map</div></div>
+	<div class="block-desc">Returns the name of the currently active Action Map.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-get-active-action-map">Copy</button>
+	</div>
+	<pre id="code-bbinput-get-active-action-map">scripts.BittyInputBlocks.getActiveActionMap()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-get-bound-action">
+	<h3>Get Bound Action</h3>
+	<div class="block-meta">Action Maps → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Get Action assigned to <span class="st-dropdown">Button South</span> in Action Map <span class="st-text"></span></div></div>
+	<div class="block-desc">Returns the action assigned to the selected input in the named Action Map, or an empty string when unassigned.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-get-bound-action">Copy</button>
+	</div>
+	<pre id="code-bbinput-get-bound-action">scripts.BittyInputBlocks.getBoundAction(~,~)</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-action-map-exists">
+	<h3>Action Map Exists?</h3>
+	<div class="block-meta">Action Maps → Getters</div>
+	<div class="block-row"><div class="st-block blue boolean">Action Map <span class="st-text"></span> exists</div></div>
+	<div class="block-desc">Returns true if the named Action Map has been created.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-action-map-exists">Copy</button>
+	</div>
+	<pre id="code-bbinput-action-map-exists">scripts.BittyInputBlocks.actionMapExists(~)</pre>
+</div>
+</div>
+<h3 class="glossary-category-title" id="cat-input">Input</h3>
+<h4>Setters</h4>
+
+<div class="block-card" id="block-bbinput-receive-action-events-in-this-actor">
+	<h3>Receive Action Events in This Actor</h3>
+	<div class="block-meta">Input → Setters</div>
+	<div class="block-row"><div class="st-block blue">Receive bittyBIG Action Events in this Actor</div></div>
+	<div class="block-desc">Registers this actor to receive mapped action custom events such as JumpPressed and JumpReleased. Add it once in the actor&#x27;s Created event.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-receive-action-events-in-this-actor">Copy</button>
+	</div>
+	<pre id="code-bbinput-receive-action-events-in-this-actor">scripts.BittyInputBlocks.receiveActionEventsInActor(actor);</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-set-digital-vector">
+	<h3>Set Digital Vector</h3>
+	<div class="block-meta">Input → Setters</div>
+	<div class="block-row"><div class="st-block blue">Set Digital Vector <span class="st-text"></span> Negative Action <span class="st-text"></span> Positive Action <span class="st-text"></span> for Action Map <span class="st-text"></span></div></div>
+	<div class="block-desc">Creates or replaces a digital vector. The vector returns -1 for the negative action, 1 for the positive action, and 0 when neither or both are held.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-set-digital-vector">Copy</button>
+	</div>
+	<pre id="code-bbinput-set-digital-vector">scripts.BittyInputBlocks.setDigitalVector(~,~,~,~);</pre>
+</div>
+</div>
+<h4>Getters</h4>
+
+<div class="block-card" id="block-bbinput-action-state">
+	<h3>Get Action State</h3>
+	<div class="block-meta">Input → Getters</div>
+	<div class="block-row"><div class="st-block blue boolean">Action <span class="st-text"></span> is <span class="st-dropdown">Down</span> for Controller Port <span class="st-input"></span></div></div>
+	<div class="block-desc">Returns whether an action is down, was pressed this frame, or was released this frame for the selected controller port.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-action-state">Copy</button>
+	</div>
+	<pre id="code-bbinput-action-state">scripts.BittyInputBlocks.getActionState(~,~,~)</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-input-state">
+	<h3>Get Input State</h3>
+	<div class="block-meta">Input → Getters</div>
+	<div class="block-row"><div class="st-block blue boolean">Input <span class="st-dropdown">Button South</span> is <span class="st-dropdown">Down</span> for Controller Port <span class="st-input"></span></div></div>
+	<div class="block-desc">Returns whether a universal input is down, was pressed this frame, or was released this frame for the selected controller port.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-input-state">Copy</button>
+	</div>
+	<pre id="code-bbinput-input-state">scripts.BittyInputBlocks.getInputState(~,~,~)</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-get-analog-value">
+	<h3>Get Analog Value</h3>
+	<div class="block-meta">Input → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Get <span class="st-dropdown">Left Stick X</span> for Controller Port <span class="st-input"></span></div></div>
+	<div class="block-desc">Returns the current analog value for a stick axis or trigger. Stick axes use -1 to 1. Triggers use 0 to 1.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-get-analog-value">Copy</button>
+	</div>
+	<pre id="code-bbinput-get-analog-value">scripts.BittyInputBlocks.getAnalogValue(~,~)</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-get-digital-vector">
+	<h3>Get Digital Vector</h3>
+	<div class="block-meta">Input → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Get Digital Vector <span class="st-text"></span> for Controller Port <span class="st-input"></span></div></div>
+	<div class="block-desc">Returns the current -1, 0, or 1 value of the named digital vector using the active Action Map.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-get-digital-vector">Copy</button>
+	</div>
+	<pre id="code-bbinput-get-digital-vector">scripts.BittyInputBlocks.getDigitalVector(~,~)</pre>
+</div>
+</div>
+<h3 class="glossary-category-title" id="cat-controllers">Controllers</h3>
+<h4>Getters</h4>
+
+<div class="block-card" id="block-bbinput-controller-connected">
+	<h3>Controller Connected?</h3>
+	<div class="block-meta">Controllers → Getters</div>
+	<div class="block-row"><div class="st-block blue boolean">Controller is connected at Port <span class="st-input"></span></div></div>
+	<div class="block-desc">Returns true if a controller is currently assigned to the selected controller port.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-controller-connected">Copy</button>
+	</div>
+	<pre id="code-bbinput-controller-connected">scripts.BittyInputBlocks.isControllerConnected(~)</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-connected-controller-count">
+	<h3>Connected Controller Count</h3>
+	<div class="block-meta">Controllers → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Connected Controller Count</div></div>
+	<div class="block-desc">Returns the number of currently connected controllers.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-connected-controller-count">Copy</button>
+	</div>
+	<pre id="code-bbinput-connected-controller-count">scripts.BittyInputBlocks.getConnectedControllerCount()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-get-controller-name">
+	<h3>Get Controller Name</h3>
+	<div class="block-meta">Controllers → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Get Controller Name for Port <span class="st-input"></span></div></div>
+	<div class="block-desc">Returns the connected controller name for the selected port, or an empty string when the port is empty.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-get-controller-name">Copy</button>
+	</div>
+	<pre id="code-bbinput-get-controller-name">scripts.BittyInputBlocks.getControllerName(~)</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-get-controller-id">
+	<h3>Get Controller ID</h3>
+	<div class="block-meta">Controllers → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Get Controller ID for Port <span class="st-input"></span></div></div>
+	<div class="block-desc">Returns the internal device identifier assigned to the selected controller port.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-get-controller-id">Copy</button>
+	</div>
+	<pre id="code-bbinput-get-controller-id">scripts.BittyInputBlocks.getControllerID(~)</pre>
+</div>
+</div>
+<h3 class="glossary-category-title" id="cat-event-data">Event Data</h3>
+<h4>Getters</h4>
+
+<div class="block-card" id="block-bbinput-current-action">
+	<h3>Current Action</h3>
+	<div class="block-meta">Event Data → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Current Action</div></div>
+	<div class="block-desc">Returns the mapped action currently being delivered, such as Jump. Use it inside a mapped action custom event.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-current-action">Copy</button>
+	</div>
+	<pre id="code-bbinput-current-action">scripts.BittyInputBlocks.getCurrentAction()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-current-input-name">
+	<h3>Current Input Name</h3>
+	<div class="block-meta">Event Data → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Current Input Name</div></div>
+	<div class="block-desc">Returns the universal input name associated with the current Any Input event.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-current-input-name">Copy</button>
+	</div>
+	<pre id="code-bbinput-current-input-name">scripts.BittyInputBlocks.getCurrentInputName()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-current-input-phase">
+	<h3>Current Input Phase</h3>
+	<div class="block-meta">Event Data → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Current Input Phase</div></div>
+	<div class="block-desc">Returns Pressed or Released for the current Any Input event.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-current-input-phase">Copy</button>
+	</div>
+	<pre id="code-bbinput-current-input-phase">scripts.BittyInputBlocks.getCurrentInputPhase()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-current-analog-input">
+	<h3>Current Analog Input</h3>
+	<div class="block-meta">Event Data → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Current Analog Input</div></div>
+	<div class="block-desc">Returns the analog input name associated with the current Analog Input Changes event.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-current-analog-input">Copy</button>
+	</div>
+	<pre id="code-bbinput-current-analog-input">scripts.BittyInputBlocks.getCurrentAnalogInput()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-current-analog-value">
+	<h3>Current Analog Value</h3>
+	<div class="block-meta">Event Data → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Current Analog Value</div></div>
+	<div class="block-desc">Returns the new analog value associated with the current Analog Input Changes event.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-current-analog-value">Copy</button>
+	</div>
+	<pre id="code-bbinput-current-analog-value">scripts.BittyInputBlocks.getCurrentAnalogValue()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-current-controller-port">
+	<h3>Current Controller Port</h3>
+	<div class="block-meta">Event Data → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Current Controller Port</div></div>
+	<div class="block-desc">Returns the controller port associated with the current input, action, analog, connect, or disconnect event.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-current-controller-port">Copy</button>
+	</div>
+	<pre id="code-bbinput-current-controller-port">scripts.BittyInputBlocks.getCurrentControllerPort()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-current-controller-name">
+	<h3>Current Controller Name</h3>
+	<div class="block-meta">Event Data → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Current Controller Name</div></div>
+	<div class="block-desc">Returns the controller name associated with the current event.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-current-controller-name">Copy</button>
+	</div>
+	<pre id="code-bbinput-current-controller-name">scripts.BittyInputBlocks.getCurrentControllerName()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-current-controller-id">
+	<h3>Current Controller ID</h3>
+	<div class="block-meta">Event Data → Getters</div>
+	<div class="block-row"><div class="st-block blue reporter">Current Controller ID</div></div>
+	<div class="block-desc">Returns the internal device identifier associated with the current event.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-current-controller-id">Copy</button>
+	</div>
+	<pre id="code-bbinput-current-controller-id">scripts.BittyInputBlocks.getCurrentControllerID()</pre>
+</div>
+</div>
+
+<div class="block-card" id="block-bbinput-current-controller-connected">
+	<h3>Current Controller Is Connected</h3>
+	<div class="block-meta">Event Data → Getters</div>
+	<div class="block-row"><div class="st-block blue boolean">Current Controller is Connected</div></div>
+	<div class="block-desc">Returns true when the current Controller Connection event is a connection and false when it is a disconnection.</div>
+	
+<div class="code-box">
+	<div class="code-bar">
+		<span>Code</span>
+		<button class="copy-btn" data-copy-target="code-bbinput-current-controller-connected">Copy</button>
+	</div>
+	<pre id="code-bbinput-current-controller-connected">scripts.BittyInputBlocks.getCurrentControllerConnected()</pre>
+</div>
+</div>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="troubleshooting">
+			<div class="section-header"><h2>FAQs and Troubleshooting</h2></div>
+			<div class="section-body">
+				<div class="faq-list">
+					<div class="faq-item">
+						<p class="faq-line"><span class="faq-label">Problem:</span> The extension blocks or Add Event entries do not appear.</p>
+						<p class="faq-line"><span class="faq-label">Solution:</span> Confirm the extension is enabled, the folder is named <span class="inline-code">bittybig-easy-input-system</span>, and Stencyl was restarted.</p>
+					</div>
+
+					<div class="faq-item">
+						<p class="faq-line"><span class="faq-label">Problem:</span> A mapped action Custom Event does not run.</p>
+						<p class="faq-line"><span class="faq-label">Solution:</span> Confirm the correct Action Map is active, the input is assigned in that map, and the Custom Event exactly matches <span class="inline-code">ActionNamePressed</span> or <span class="inline-code">ActionNameReleased</span>.</p>
+					</div>
+
+					<div class="faq-item">
+						<p class="faq-line"><span class="faq-label">Problem:</span> A scene behavior receives the action, but an actor behavior does not.</p>
+						<p class="faq-line"><span class="faq-label">Solution:</span> Put <strong>Receive bittyBIG Action Events in this Actor</strong> in the actor's Created event.</p>
+					</div>
+
+					<div class="faq-item">
+						<p class="faq-line"><span class="faq-label">Problem:</span> An unusual controller button reports a number instead of a name.</p>
+						<p class="faq-line"><span class="faq-label">Solution:</span> The current controller preset did not translate that button. The Any Button event is exposing the raw input value so the controller can be diagnosed.</p>
+					</div>
+
+					<div class="faq-item">
+						<p class="faq-line"><span class="faq-label">Problem:</span> A controller is connected, but my logic reads the wrong port.</p>
+						<p class="faq-line"><span class="faq-label">Solution:</span> Use the Controller Connected event or controller getter blocks to confirm the assigned port. Controllers use the first empty port when detected.</p>
+					</div>
+
+					<div class="faq-item">
+						<p class="faq-line"><span class="faq-label">Problem:</span> Current Event Data seems to change during nested or additional input processing.</p>
+						<p class="faq-line"><span class="faq-label">Solution:</span> Use the reporters attached directly to the Add Event callback when the value must belong to that exact invocation.</p>
+					</div>
+				</div>
+
+				<div class="note">
+					For support, include the target platform, controller name, controller ID, assigned port,
+					and the Input Name reported by the Any Button event.
+				</div>
+			</div>
+		</section>
+
+		<section class="section doc-section" id="release-notes">
+			<div class="section-header"><h2>Release Notes</h2></div>
+			<div class="section-body">
+				<h3>Current documented build</h3>
+				<ul class="simple-list">
+					<li>Global extension-owned input runtime; no per-scene manager behavior required.</li>
+					<li>Named Action Maps that remain active across scene changes.</li>
+					<li>Mapped action Custom Events for scene behaviors and registered actors.</li>
+					<li>Any Button, Controller Connected, and Analog Input Add Event entries with attached reporter blocks.</li>
+					<li>Current Action available during mapped action handling and the Any Button event.</li>
+					<li>Raw Any Button fallback for unsupported or unmapped controller buttons.</li>
+					<li>Palette organized into Action Maps, Input, Controllers, and Event Data.</li>
+				</ul>
+
+				<h3>Current controller presets</h3>
+				<p>PS5-style, XInput, Switch Pro, and HTML Gamepad mappings are included.</p>
+
+				<div class="note warn">
+					<strong>Planned, not currently included:</strong> user-editable controller presets.
+				</div>
+			</div>
+		</section>
+
+		<div class="footer">&copy; 2026 bittyBIG Studio. All rights reserved.</div>
+	</div>
+</main>
+</div>
+
+
+<script>
+	document.querySelectorAll(".copy-btn").forEach(function(button)
+	{
+		button.addEventListener("click", function()
+		{
+			var target = document.getElementById(button.getAttribute("data-copy-target"));
+			if(target == null) return;
+
+			var text = target.innerText;
+			navigator.clipboard.writeText(text).then(function()
+			{
+				var oldText = button.innerText;
+				button.innerText = "Copied";
+				setTimeout(function(){ button.innerText = oldText; }, 1200);
+			});
+		});
+	});
+
+	var sidebarLinks = Array.from(document.querySelectorAll(".left-glossary-nav a[href^='#']"));
+	var observedSections = sidebarLinks
+		.map(function(link){ return document.querySelector(link.getAttribute("href")); })
+		.filter(function(section){ return section != null; });
+
+	if("IntersectionObserver" in window)
+	{
+		var observer = new IntersectionObserver(function(entries)
+		{
+			entries.forEach(function(entry)
+			{
+				if(!entry.isIntersecting) return;
+				sidebarLinks.forEach(function(link){ link.classList.remove("active"); });
+				var active = sidebarLinks.find(function(link)
+				{
+					return link.getAttribute("href") === "#" + entry.target.id;
+				});
+				if(active != null) active.classList.add("active");
+			});
+		}, { rootMargin: "-20% 0px -70% 0px" });
+
+		observedSections.forEach(function(section){ observer.observe(section); });
+	}
+</script>
+
+</body>
+</html>
