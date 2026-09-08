@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<link rel="icon" type="image/png" href="favicon.png">
+	<title>bittyBIG Engine — Product Vision</title>
+	<style>
+		:root {
+			--bg:#f2f2f2;
+			--panel:#ffffff;
+			--panel2:#f7f7f7;
+			--line:#cccccc;
+			--text:#222222;
+			--muted:#666666;
+			--header:#455a6f;
+			--headerText:#ffffff;
+			--accent:#1c88d9;
+			--accentDark:#1467a6;
+			--accentLight:#d8ecfb;
+			--teal:#138a84;
+			--tealLight:#e9f7f5;
+			--purple:#69419a;
+			--purpleLight:#f1ebf8;
+			--gold:#ffb52a;
+			--shadow:rgba(0,0,0,.12);
+		}
+
+		* { box-sizing:border-box; }
+		html { scroll-behavior:smooth; scroll-padding-top:72px; }
+		[id] { scroll-margin-top:72px; }
+		body {
+			margin:0;
+			background:var(--bg);
+			color:var(--text);
+			font-family:Arial, Helvetica, sans-serif;
+			line-height:1.5;
+		}
+		a { color:inherit; text-decoration:none; }
+		.app { display:grid; grid-template-columns:300px minmax(0,1fr); min-height:100vh; }
+
+		.sidebar {
+			position:sticky;
+			top:0;
+			height:100vh;
+			overflow:auto;
+			background:#f7f7f7;
+			border-right:1px solid #bdbdbd;
+		}
+		.sidebar-header { background:var(--header); color:white; padding:16px; border-bottom:1px solid #394a5c; }
+		.sidebar-header h1 { margin:0; font-size:20px; }
+		.sidebar-header .sub { margin-top:5px; font-size:12px; opacity:.9; }
+		.nav-group { padding:12px 14px 4px; }
+		.nav-title { font-size:13px; font-weight:bold; color:#333; text-transform:uppercase; margin:0 0 8px; }
+		.nav-list { display:grid; gap:4px; margin-bottom:12px; }
+		.nav-link { display:block; padding:7px 8px; border-radius:4px; font-size:14px; color:#333; }
+		.nav-link:hover { background:#dfe8f3; color:#000; }
+
+		.main { min-width:0; }
+		.topbar { background:var(--header); color:white; padding:12px 24px; border-bottom:1px solid #394a5c; }
+		.topbar .title { font-size:22px; font-weight:bold; }
+		.topbar .subtitle { font-size:13px; margin-top:4px; opacity:.92; }
+		.top-nav {
+			position:sticky;
+			top:0;
+			z-index:30;
+			display:flex;
+			flex-wrap:wrap;
+			gap:8px;
+			padding:10px 24px;
+			background:#fff;
+			border-bottom:1px solid var(--line);
+			box-shadow:0 2px 7px rgba(0,0,0,.08);
+		}
+		.top-nav a { padding:7px 10px; border-radius:5px; font-size:14px; font-weight:bold; color:#333; }
+		.top-nav a:hover { background:#dfe8f3; }
+		.content { padding:24px; max-width:1300px; }
+
+		.hero {
+			background:linear-gradient(135deg,#5d7389,#455a6f);
+			color:white;
+			padding:30px;
+			border-radius:9px;
+			border:1px solid #394a5c;
+			box-shadow:0 2px 8px var(--shadow);
+			margin-bottom:18px;
+		}
+		.hero h1 { margin:0 0 4px; font-size:40px; line-height:1.1; }
+		.hero .tagline { color:var(--gold); font-size:20px; font-weight:bold; margin-bottom:16px; }
+		.hero p { max-width:980px; font-size:17px; margin:0 0 14px; }
+		.status { display:inline-block; padding:5px 10px; border-radius:999px; background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.28); font-size:12px; font-weight:bold; }
+
+		.section {
+			background:var(--panel);
+			border:1px solid var(--line);
+			border-radius:8px;
+			box-shadow:0 2px 8px var(--shadow);
+			margin-bottom:18px;
+			overflow:hidden;
+		}
+		.section-header { padding:17px 20px; border-bottom:1px solid var(--line); background:var(--panel2); }
+		.section-header h2 { margin:0; color:var(--teal); font-size:24px; }
+		.section-body { padding:20px; }
+		.section-body > :last-child { margin-bottom:0; }
+
+		.lead { font-size:18px; }
+		.grid-2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+		.grid-3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+		.card { border:1px solid var(--line); border-radius:8px; padding:16px; background:#fafafa; }
+		.card h3 { margin:0 0 8px; font-size:18px; }
+		.card p { margin:0; color:#555; }
+		.card strong { color:#222; }
+
+		.promise {
+			padding:16px 18px;
+			border-left:5px solid var(--teal);
+			background:var(--tealLight);
+			border-radius:6px;
+			font-size:18px;
+			font-weight:bold;
+		}
+
+		.program-flow {
+			display:grid;
+			grid-template-columns:1fr auto 1.15fr auto 1fr;
+			gap:10px;
+			align-items:stretch;
+		}
+		.flow-box { border:1px solid var(--line); border-radius:8px; padding:18px; background:#fafafa; }
+		.flow-box h3 { margin:0 0 8px; font-size:18px; }
+		.flow-box.core { background:var(--purpleLight); border-color:#cbb7df; }
+		.flow-arrow { display:flex; align-items:center; justify-content:center; font-size:26px; color:var(--purple); font-weight:bold; }
+		.flow-list { margin:0; padding-left:18px; color:#555; }
+
+		ul { margin-top:8px; }
+		li + li { margin-top:6px; }
+		code { background:#f0f0f0; border:1px solid #ddd; border-radius:4px; padding:2px 5px; font-family:Consolas, Monaco, monospace; }
+
+		table { width:100%; border-collapse:collapse; font-size:14px; }
+		th, td { padding:10px 11px; border:1px solid #d4d4d4; text-align:left; vertical-align:top; }
+		th { background:var(--purple); color:white; }
+		tbody tr:nth-child(even) { background:#f8f8f8; }
+		.gate { font-weight:bold; white-space:nowrap; }
+
+		.note { padding:13px 15px; border-radius:7px; border:1px solid #d8d8d8; background:#f9f9f9; margin-top:14px; }
+		.note.good { background:#eef8e7; border-color:#bfd7ac; }
+		.note.warn { background:#fff6df; border-color:#e7d49a; }
+		.note.purple { background:var(--purpleLight); border-color:#cbb7df; }
+
+		.footer { text-align:center; padding:18px 0 6px; color:#666; font-size:13px; }
+
+		@media (max-width:1100px) {
+			.app { grid-template-columns:1fr; }
+			.sidebar { position:relative; height:auto; }
+			.top-nav { position:relative; }
+		}
+		@media (max-width:800px) {
+			.grid-2,.grid-3 { grid-template-columns:1fr; }
+			.program-flow { grid-template-columns:1fr; }
+			.flow-arrow { transform:rotate(90deg); min-height:20px; }
+			.hero h1 { font-size:32px; }
+			.content { padding:14px; }
+		}
+	</style>
+</head>
+<body>
+<div class="app" id="top">
+	<aside class="sidebar">
+		<div class="sidebar-header">
+			<h1><a href="index.html">Docs Home</a></h1>
+			<div class="sub">bittyBIG Engine — Product Vision</div>
+		</div>
+		<div class="nav-group">
+			<div class="nav-title">bittyBIG Engine</div>
+			<div class="nav-list">
+				<a class="nav-link" href="#overview">Overview</a>
+				<a class="nav-link" href="#principles">Core Principles</a>
+				<a class="nav-link" href="#architecture">Blocks + Code</a>
+				<a class="nav-link" href="#world">2D + 3D</a>
+				<a class="nav-link" href="#lightweight">Lightweight Doctrine</a>
+				<a class="nav-link" href="#roadmap">Roadmap</a>
+				<a class="nav-link" href="#current">Current Focus</a>
+				<a class="nav-link" href="#independent">Independent Development</a>
+			</div>
+			<div class="nav-title">Links</div>
+			<div class="nav-list">
+				<a class="nav-link" href="index.html">All Documentation</a>
+				<a class="nav-link" href="https://www.bittybigstudio.com/">bittyBIG Studio</a>
+				<a class="nav-link" href="https://discord.gg/BR3WJM4zfG">Contact / Support</a>
+			</div>
+		</div>
+	</aside>
+
+	<main class="main">
+		<div class="topbar">
+			<div class="title">bittyBIG Engine</div>
+			<div class="subtitle">Product vision, core principles, and development direction</div>
+		</div>
+		<nav class="top-nav">
+			<a href="#overview">Overview</a>
+			<a href="#architecture">Blocks + Code</a>
+			<a href="#roadmap">Roadmap</a>
+			<a href="#independent">Independent Development</a>
+			<a href="index.html">Docs Home</a>
+		</nav>
+
+		<div class="content">
+			<section class="hero" id="overview">
+				<h1>bittyBIG Engine</h1>
+				<div class="tagline">bitty Ideas, BIG fun!</div>
+				<p><strong>A lightweight 2D/3D game engine built around a professional visual scripting workflow where blocks and editable code are two seamless views of the same program.</strong></p>
+				<p>The engine is being designed around fast iteration, direct manipulation, compact projects, and a visual programming workflow powerful enough for serious development without forcing users to choose between blocks and code.</p>
+				<span class="status">Concept / Active Development — September 2026</span>
+			</section>
+
+			<section class="section">
+				<div class="section-header"><h2>At a glance</h2></div>
+				<div class="section-body">
+					<div class="grid-2">
+						<div class="card"><h3>Blocks are the center</h3><p>The palette, editor, runtime, scene tools, properties, assets, and 2D/3D systems exist to make visual scripting fast and powerful.</p></div>
+						<div class="card"><h3>Blocks and code are equal</h3><p>Users can move between a visual representation and readable editable code without switching project modes or losing work.</p></div>
+						<div class="card"><h3>2D and 3D belong together</h3><p>Sprites, models, lights, cameras, UI, collision, and sprite-based entities in XYZ space can live in the same scene and project.</p></div>
+						<div class="card"><h3>Lightweight by default</h3><p>Small runtime, small project files, minimal hidden duplication, fast startup, fast editing, and intentional allocations are design constraints from day one.</p></div>
+					</div>
+					<div class="promise" style="margin-top:16px;">Primary promise: build gameplay quickly with visual logic, drop into code whenever that is faster, and return to blocks without breaking the project.</div>
+				</div>
+			</section>
+
+			<section class="section" id="principles">
+				<div class="section-header"><h2>Core principles</h2></div>
+				<div class="section-body">
+					<div class="grid-3">
+						<div class="card"><h3>One program, two views</h3><p>Blocks and code represent one shared program model. Neither side is a disposable export of the other.</p></div>
+						<div class="card"><h3>Professional visual scripting</h3><p>Friendly and readable, but dense enough for serious projects. The visual language is intentionally not modeled after Scratch or Blockly.</p></div>
+						<div class="card"><h3>Direct manipulation</h3><p>If something is spatial, users should be able to place, move, rotate, scale, and inspect it visually before running the game.</p></div>
+						<div class="card"><h3>Fast iteration</h3><p>Blocks, custom blocks, properties, scenes, and assets should refresh without unnecessary full-engine restarts wherever practical.</p></div>
+						<div class="card"><h3>No silent data loss</h3><p>If code no longer maps cleanly to blocks, preserve it, explain the mismatch, and offer repair or custom-code options.</p></div>
+						<div class="card"><h3>AI-friendly structure</h3><p>What the user sees should correspond cleanly to code and data so humans and tools can reason about the same program.</p></div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section" id="architecture">
+				<div class="section-header"><h2>One program, two seamless views</h2></div>
+				<div class="section-body">
+					<p class="lead">The editor is built around a shared typed program representation. Blocks and code are projections of the same underlying logic wherever possible.</p>
+					<div class="program-flow">
+						<div class="flow-box">
+							<h3>Block View</h3>
+							<ul class="flow-list"><li>Drag and snap</li><li>Palette and search</li><li>Zoom and navigation</li><li>Events and custom blocks</li></ul>
+						</div>
+						<div class="flow-arrow">↔</div>
+						<div class="flow-box core">
+							<h3>Shared Program Model</h3>
+							<ul class="flow-list"><li>Typed nodes / AST</li><li>Stable IDs and references</li><li>Event and function signatures</li><li>Metadata and source mapping</li></ul>
+						</div>
+						<div class="flow-arrow">↔</div>
+						<div class="flow-box">
+							<h3>Code View</h3>
+							<ul class="flow-list"><li>Readable editable code</li><li>Ctrl+F and diagnostics</li><li>Symbol navigation</li><li>Generated boilerplate folded away</li></ul>
+						</div>
+					</div>
+					<div class="note purple"><strong>Example:</strong> change <code>CubeCount = 30</code> to <code>CubeCount = 50</code> in either view and the same underlying program node becomes 50. The other view updates from that shared source of truth.</div>
+					<div class="note"><strong>Custom-code escape hatch:</strong> if a code edit cannot be represented visually, the engine should preserve the code and show an explicit Custom / Modified Code node instead of deleting or mangling it.</div>
+				</div>
+			</section>
+
+			<section class="section" id="world">
+				<div class="section-header"><h2>Unified 2D + 3D world</h2></div>
+				<div class="section-body">
+					<p>bittyBIG Engine is intended to use common concepts—entities, transforms, components, properties, events, and functions—rather than treating 2D and 3D as unrelated products.</p>
+					<div class="grid-2">
+						<div class="card">
+							<h3>Entity core</h3>
+							<p>ID / name, transform, properties, parent / children, and scripts / behaviors.</p>
+						</div>
+						<div class="card">
+							<h3>Optional components</h3>
+							<p>2D sprite renderer, 3D model renderer, sprite-in-3D plane, 2D or 3D collision, camera, light, audio source, and more.</p>
+						</div>
+					</div>
+					<p style="margin-top:16px;">The same project can support pure 2D games, 2.5D platformers, true 3D top-down games, and 2D sprite actors moving through a real 3D environment.</p>
+				</div>
+			</section>
+
+			<section class="section" id="lightweight">
+				<div class="section-header"><h2>Lightweight doctrine</h2></div>
+				<div class="section-body">
+					<p class="lead"><strong>“Super, super, super lightweight.”</strong> This is a design constraint, not a late optimization pass.</p>
+					<ul>
+						<li>No redundant updates or draw calls without a reason.</li>
+						<li>Avoid per-frame allocations in hot paths.</li>
+						<li>Share immutable data and resources where possible.</li>
+						<li>Keep editor-only systems out of shipped builds.</li>
+						<li>Avoid hidden project duplication and oversized generated assets.</li>
+						<li>Prefer simple ownership boundaries over convenience layers that duplicate state.</li>
+						<li>Build instrumentation early: frame time, memory, draw calls, asset size, and build size.</li>
+					</ul>
+				</div>
+			</section>
+
+			<section class="section" id="roadmap">
+				<div class="section-header"><h2>Development roadmap</h2></div>
+				<div class="section-body">
+					<p>The roadmap is intentionally ordered around proving the unique core first. The goal is not to build a giant engine before proving that the block/code workflow feels excellent.</p>
+					<table>
+						<thead><tr><th>Milestone</th><th>Primary proof</th><th>User-visible result</th><th>Gate</th></tr></thead>
+						<tbody>
+							<tr><td>0</td><td>Foundation rules</td><td>Project spec + legal/runtime boundary</td><td class="gate">Start</td></tr>
+							<tr><td>1</td><td>Shared program model</td><td>Typed logic exists without either UI</td><td class="gate">Core</td></tr>
+							<tr><td>2</td><td>Code editor view</td><td>Readable editable code from the model</td><td class="gate">Core</td></tr>
+							<tr><td>3</td><td>Block editor view</td><td>Professional blocks render/edit the same model</td><td class="gate">Core</td></tr>
+							<tr><td>4</td><td>Two-way sync</td><td>Edit either side and preserve intent</td><td class="gate">Proof</td></tr>
+							<tr><td>5</td><td>Custom blocks</td><td>Reusable user-authored logic components</td><td class="gate">Power</td></tr>
+							<tr><td>6</td><td>Properties / events</td><td>Fast typed data + clean event signatures</td><td class="gate">Power</td></tr>
+							<tr><td>7</td><td>Project / assets</td><td>Small, inspectable project structure</td><td class="gate">Base</td></tr>
+							<tr><td>8</td><td>2D scene + runtime</td><td>Build and play a tiny 2D game</td><td class="gate">MVP</td></tr>
+							<tr><td>9</td><td>Core systems</td><td>Input / audio / camera / render integration</td><td class="gate">MVP</td></tr>
+							<tr><td>10</td><td>3D runtime</td><td>3D entities move and play in XYZ</td><td class="gate">3D</td></tr>
+							<tr><td>11</td><td>3D scene editor</td><td>Visually author a playable 3D / 2.5D room</td><td class="gate">3D</td></tr>
+							<tr><td>12</td><td>Build / productization</td><td>Export, package, docs, updater</td><td class="gate">Ship</td></tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section" id="current">
+				<div class="section-header"><h2>Current development focus</h2></div>
+				<div class="section-body">
+					<div class="note good"><strong>Current target: Milestone 1 — Shared Program Model.</strong></div>
+					<ol>
+						<li>Define the smallest program-node set needed to reproduce the current spinning-cube proof: variables, literals, assignment, loops, calls, events, arithmetic, and conditionals.</li>
+						<li>Represent that behavior as pure structured data with stable IDs.</li>
+						<li>Serialize and reload it without changing meaning or IDs.</li>
+						<li>Generate readable code from it.</li>
+						<li>Change <code>CubeCount 30 → 50</code> through the code representation and confirm the structured model updates.</li>
+						<li>Only then render the same model as the first bittyBIG visual blocks.</li>
+					</ol>
+				</div>
+			</section>
+
+			<section class="section" id="independent">
+				<div class="section-header"><h2>Independent development &amp; relationship to Stencyl</h2></div>
+				<div class="section-body">
+					<p>bittyBIG Engine is an independently designed editor and engine project. It is not intended to be a clone of Stencyl's desktop IDE or proprietary toolset.</p>
+					<p>The current working assumption is that publicly available Stencyl Haxe runtime code may be studied and, where the applicable open-source license permits it, potentially used as an initial runtime foundation or reference. Proprietary Stencyl desktop editor/toolset code is not assumed reusable or redistributable.</p>
+					<p>The bittyBIG editor is being designed as its own product around a separately documented architecture: a shared program model, professional block/code dual editing, unified 2D/3D scene authoring, compact project structure, and lightweight runtime ownership.</p>
+					<div class="note warn"><strong>Development boundary:</strong> any third-party code used by bittyBIG Engine must follow its applicable license, and proprietary editor/toolset code is outside the project's assumed implementation base unless separate written permission or licensing terms explicitly allow otherwise.</div>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-body">
+					<div class="promise">Working definition of success: a developer can think in blocks, think in code, or mix both without paying a workflow penalty—and can build either a tiny 2D game or a true 3D game without dragging around a giant engine they do not need.</div>
+				</div>
+			</section>
+
+			<div class="footer">&copy; 2026 bittyBIG Studio. All rights reserved. &nbsp;•&nbsp; Working product vision — September 7, 2026</div>
+		</div>
+	</main>
+</div>
+</body>
+</html>
