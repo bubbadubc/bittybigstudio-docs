@@ -19,12 +19,9 @@
 			--accent: #1c88d9;
 			--accentDark: #1467a6;
 			--accentLight: #d8ecfb;
-			--danger: #d5525d;
-			--dangerDark: #ab3842;
-			--success: #7ab34a;
-			--successDark: #5e9234;
 			--shadow: rgba(0, 0, 0, 0.12);
 			--gold: #ffb52a;
+			--teal: #138a84;
 		}
 
 		*
@@ -58,12 +55,6 @@
 			text-decoration: none;
 		}
 
-		button,
-		input
-		{
-			font: inherit;
-		}
-
 		.app
 		{
 			display: grid;
@@ -71,7 +62,6 @@
 			min-height: 100vh;
 		}
 
-		/* Sidebar */
 		.sidebar
 		{
 			position: sticky;
@@ -80,7 +70,6 @@
 			overflow: auto;
 			background: #f7f7f7;
 			border-right: 1px solid #bdbdbd;
-			padding: 0;
 		}
 
 		.sidebar-header
@@ -101,7 +90,6 @@
 		.sidebar-header h1 a
 		{
 			color: var(--headerText);
-			text-decoration: none;
 		}
 
 		.sidebar-header h1 a:hover
@@ -162,7 +150,6 @@
 			padding: 8px 8px 2px;
 		}
 
-		/* Main */
 		.main
 		{
 			min-width: 0;
@@ -245,7 +232,7 @@
 		{
 			margin: 0;
 			font-size: 24px;
-			color: #138a84;
+			color: var(--teal);
 		}
 
 		.section-body
@@ -310,17 +297,69 @@
 			font-size: 13px;
 		}
 
+		.engine-card
+		{
+			border: 1px solid #b8d8f0;
+			border-radius: 8px;
+			padding: 20px;
+			background: linear-gradient(135deg, #f7fbff, #edf6fc);
+		}
+
+		.engine-card h3
+		{
+			margin: 0 0 6px;
+			font-size: 26px;
+			color: #1d517f;
+		}
+
+		.engine-tagline
+		{
+			font-size: 16px;
+			font-weight: bold;
+			color: #b87800;
+			margin-bottom: 12px;
+		}
+
+		.engine-card p
+		{
+			max-width: 1000px;
+			color: #444444;
+		}
+
+		.engine-status
+		{
+			display: inline-block;
+			margin-bottom: 12px;
+			padding: 4px 8px;
+			border-radius: 999px;
+			border: 1px solid #b8d8f0;
+			background: var(--accentLight);
+			color: var(--accentDark);
+			font-size: 12px;
+			font-weight: bold;
+		}
+
+		.engine-link
+		{
+			display: inline-block;
+			padding: 10px 14px;
+			border-radius: 6px;
+			border: 1px solid #b8c7d8;
+			background: #edf4fb;
+			color: #1d517f;
+			font-size: 13px;
+			font-weight: bold;
+		}
+
+		.engine-link:hover
+		{
+			background: #dfeefa;
+		}
+
 		.grid-2
 		{
 			display: grid;
 			grid-template-columns: 1fr 1fr;
-			gap: 16px;
-		}
-
-		.grid-3
-		{
-			display: grid;
-			grid-template-columns: repeat(3, 1fr);
 			gap: 16px;
 		}
 
@@ -338,36 +377,10 @@
 			font-size: 18px;
 		}
 
-		.install-mini
-		{
-			margin-top: 16px;
-		}
-
 		.info-card p
 		{
 			color: #555555;
 			margin-bottom: 12px;
-		}
-
-		.note
-		{
-			padding: 12px 14px;
-			border-radius: 8px;
-			border: 1px solid #d8d8d8;
-			background: #f9f9f9;
-			margin: 12px 0;
-		}
-
-		.note.good
-		{
-			background: #eef8e7;
-			border-color: #bfd7ac;
-		}
-
-		.note.warn
-		{
-			background: #fff6df;
-			border-color: #e7d49a;
 		}
 
 		.inline-code
@@ -418,7 +431,6 @@
 			border-top: 1px solid var(--line);
 		}
 
-
 		.asset-icon-frame
 		{
 			display: flex;
@@ -457,11 +469,6 @@
 			background: var(--accent);
 		}
 
-		.doc-card.placeholder .doc-card-top
-		{
-			background: #808b97;
-		}
-
 		.doc-card-body
 		{
 			display: flex;
@@ -480,27 +487,6 @@
 		{
 			margin: 0 0 14px;
 			color: #555555;
-		}
-
-		.status
-		{
-			display: inline-block;
-			align-self: flex-start;
-			margin-bottom: 10px;
-			padding: 4px 8px;
-			border-radius: 999px;
-			border: 1px solid #b8d8f0;
-			background: var(--accentLight);
-			color: var(--accentDark);
-			font-size: 12px;
-			font-weight: bold;
-		}
-
-		.placeholder .status
-		{
-			background: #eeeeee;
-			border-color: #d8d8d8;
-			color: #666666;
 		}
 
 		.card-actions
@@ -536,43 +522,13 @@
 			border-color: #d8d8d8;
 		}
 
-		.card-link.disabled:hover
+		.note
 		{
-			background: #e6e6e6;
-		}
-
-		.link-list
-		{
-			display: grid;
-			gap: 8px;
-		}
-
-		.project-link
-		{
-			display: block;
-			border: 1px solid var(--line);
-			border-radius: 7px;
-			background: #fafafa;
-			padding: 12px 13px;
-		}
-
-		.project-link:hover
-		{
-			background: #dfe8f3;
-		}
-
-		.project-link strong
-		{
-			display: block;
-			margin-bottom: 3px;
-			color: #222222;
-		}
-
-		.project-link span
-		{
-			display: block;
-			color: #555555;
-			font-size: 14px;
+			padding: 12px 14px;
+			border-radius: 8px;
+			border: 1px solid #e7d49a;
+			background: #fff6df;
+			margin: 16px 0 0;
 		}
 
 		.footer
@@ -585,56 +541,22 @@
 
 		@media (max-width: 1100px)
 		{
-			.app
-			{
-				grid-template-columns: 1fr;
-			}
-
-			.sidebar
-			{
-				position: relative;
-				height: auto;
-			}
-
-			.top-nav
-			{
-				position: relative;
-				top: auto;
-			}
+			.app { grid-template-columns: 1fr; }
+			.sidebar { position: relative; height: auto; }
+			.top-nav { position: relative; top: auto; }
 		}
 
 		@media (max-width: 900px)
 		{
-			.grid-2,
-			.grid-3
-			{
-				grid-template-columns: 1fr;
-			}
-
-			.asset-card-content
-			{
-				grid-template-columns: 92px minmax(0, 1fr);
-			}
-
-			.asset-icon-frame
-			{
-				width: 92px;
-				height: 92px;
-			}
+			.grid-2 { grid-template-columns: 1fr; }
+			.asset-card-content { grid-template-columns: 92px minmax(0, 1fr); }
+			.asset-icon-frame { width: 92px; height: 92px; }
 		}
 
 		@media (max-width: 560px)
 		{
-			.asset-card-content
-			{
-				grid-template-columns: 1fr;
-			}
-
-			.asset-icon-frame
-			{
-				width: 110px;
-				height: 110px;
-			}
+			.asset-card-content { grid-template-columns: 1fr; }
+			.asset-icon-frame { width: 110px; height: 110px; }
 		}
 	</style>
 </head>
@@ -650,6 +572,7 @@
 			<div class="nav-title">Docs Home</div>
 			<div class="nav-list">
 				<a class="nav-link" href="#overview">Overview</a>
+				<a class="nav-link" href="#engine">bittyBIG Engine</a>
 				<a class="nav-link" href="#documentation">Assets</a>
 			</div>
 
@@ -659,10 +582,15 @@
 				<a class="nav-link" href="https://discord.gg/BR3WJM4zfG">Contact / Support</a>
 			</div>
 
+			<div class="nav-mini-title">bittyBIG Engine</div>
+			<div class="nav-list">
+				<a class="nav-link" href="bittybig-engine.html">Product Vision &amp; Roadmap</a>
+			</div>
+
 			<div class="nav-mini-title">Stencyl</div>
 			<div class="nav-list">
 				<a class="nav-link" href="dynamic-camera-documentation.html">Dynamic Camera System</a>
-				<a class="nav-link" href="https://docs.bittybigstudio.com/stencyl-easy-input.html">Easy Input System</a>
+				<a class="nav-link" href="stencyl-easy-input.html">Easy Input System</a>
 				<a class="nav-link" href="https://docs.bittybigstudio.com/audio-fx-extension/">Audio FX Extension</a>
 				<a class="nav-link" href="https://docs.bittybigstudio.com/dpi-awareness-extension/">DPI Aware Extension</a>
 				<a class="nav-link" href="https://docs.bittybigstudio.com/platformer-kit-2d/">2D Platformer Kit</a>
@@ -680,6 +608,7 @@
 
 		<nav class="top-nav">
 			<a href="#overview">Overview</a>
+			<a href="#engine">bittyBIG Engine</a>
 			<a href="#documentation">Assets</a>
 			<a href="dynamic-camera-documentation.html#interactive-demo">Viewport Tester</a>
 			<a href="https://discord.gg/BR3WJM4zfG">Contact / Support</a>
@@ -691,14 +620,29 @@
 					<div class="hero-box">
 						<h2>bittyBIG Studio Assets and Documentation</h2>
 						<p>
-							This is the main asset and documentation hub for bittyBIG Studio tools, extensions, and game development resources.
-							Start with the available assets below, then check back as new tools, extensions, and support pages are added.
+							This is the main asset and documentation hub for bittyBIG Studio tools, extensions, game development resources, and the developing bittyBIG Engine.
 						</p>
 						<div class="hero-buttons">
+							<a class="btn compact-btn" href="bittybig-engine.html">Explore bittyBIG Engine</a>
 							<a class="btn compact-btn" href="https://discord.gg/BR3WJM4zfG">Contact / Support</a>
 						</div>
 					</div>
+				</div>
+			</section>
 
+			<section class="section" id="engine">
+				<div class="section-header">
+					<h2>bittyBIG Engine</h2>
+				</div>
+				<div class="section-body">
+					<div class="engine-card">
+						<div class="engine-status">Concept / Active Development</div>
+						<h3>bittyBIG Engine</h3>
+						<div class="engine-tagline">bitty Ideas, BIG fun!</div>
+						<p><strong>A lightweight 2D/3D game engine built around a professional visual scripting workflow where blocks and editable code are two seamless views of the same program.</strong></p>
+						<p>The project is focused on fast visual scripting, seamless block/code editing, unified 2D and 3D authoring, compact project structure, direct scene manipulation, and a runtime designed to stay intentionally lightweight.</p>
+						<a class="engine-link" href="bittybig-engine.html">Read the Product Vision &amp; Roadmap</a>
+					</div>
 				</div>
 			</section>
 
@@ -712,18 +656,11 @@
 					<div class="grid-2 stencyl-installation">
 						<div class="info-card">
 							<h3>Installing an Extension</h3>
-							<p>
-								Download the extension folder, place it in Stencyl’s <span class="inline-code">engine-extensions</span> folder,
-								then restart Stencyl. Enable it from your project’s Extensions settings.
-							</p>
+							<p>Download the extension folder, place it in Stencyl’s <span class="inline-code">engine-extensions</span> folder, then restart Stencyl. Enable it from your project’s Extensions settings.</p>
 						</div>
-
 						<div class="info-card">
 							<h3>Installing a Behavior</h3>
-							<p>
-								Import the behavior into your Stencyl project, attach it to the correct actor or scene,
-								then adjust the exposed settings in the Inspector.
-							</p>
+							<p>Import the behavior into your Stencyl project, attach it to the correct actor or scene, then adjust the exposed settings in the Inspector.</p>
 						</div>
 					</div>
 
@@ -733,18 +670,10 @@
 							<div class="doc-card-body">
 								<h3>Dynamic Camera System</h3>
 								<div class="asset-card-content">
-									<div class="asset-icon-frame">
-										<img class="asset-icon" src="dynamic-camera-icon.png" alt="Dynamic Camera System icon" onerror="this.remove()">
-									</div>
+									<div class="asset-icon-frame"><img class="asset-icon" src="dynamic-camera-icon.png" alt="Dynamic Camera System icon" onerror="this.remove()"></div>
 									<div>
-										<p>
-											A flexible multi-camera and viewport system for Stencyl with zoom, rotation, split-screen,
-											picture-in-picture, screen shake, tracking modes, and display controls.
-										</p>
-										<p>
-											Interactive documentation, block glossary, quick start examples, viewport setup builder,
-											troubleshooting, and release notes.
-										</p>
+										<p>A flexible multi-camera and viewport system for Stencyl with zoom, rotation, split-screen, picture-in-picture, screen shake, tracking modes, and display controls.</p>
+										<p>Interactive documentation, block glossary, quick start examples, viewport setup builder, troubleshooting, and release notes.</p>
 									</div>
 								</div>
 								<div class="card-actions">
@@ -759,22 +688,15 @@
 							<div class="doc-card-body">
 								<h3>Easy Input System</h3>
 								<div class="asset-card-content">
-									<div class="asset-icon-frame">
-										<img class="asset-icon" src="input-system-icon.png" alt="Easy Input System icon" onerror="this.remove()">
-									</div>
+									<div class="asset-icon-frame"><img class="asset-icon" src="input-system-icon.png" alt="Easy Input System icon" onerror="this.remove()"></div>
 									<div>
-										<p>
-											A controller and input management system for Stencyl that standardizes gamepad input,
-											supports presets, and simplifies multi-player input setup.
-										</p>
-										<p>
-											Future documentation for controller mapping, presets, HTML5 input support, and player input setup.
-										</p>
+										<p>A controller and input management system for Stencyl that standardizes gamepad input, supports presets, and simplifies multi-player input setup.</p>
+										<p>Documentation for controller mapping, presets, HTML5 input support, and player input setup.</p>
 									</div>
 								</div>
 								<div class="card-actions">
-									<a class="card-link enabled" href="https://bittybigstudio.itch.io/bittybig-easy-input-system-for-stencyl">Get It Here</a>
-									<a class="card-link enabled" href="https://docs.bittybigstudio.com/stencyl-easy-input.html">Open Documentation</a>
+									<a class="card-link" href="https://bittybigstudio.itch.io/bittybig-easy-input-system-for-stencyl">Get It Here</a>
+									<a class="card-link" href="stencyl-easy-input.html">Open Documentation</a>
 								</div>
 							</div>
 						</article>
@@ -784,17 +706,10 @@
 							<div class="doc-card-body">
 								<h3>Audio FX Extension</h3>
 								<div class="asset-card-content">
-									<div class="asset-icon-frame">
-										<img class="asset-icon" src="audio-fx-icon.png" alt="Audio FX Extension icon" onerror="this.remove()">
-									</div>
+									<div class="asset-icon-frame"><img class="asset-icon" src="audio-fx-icon.png" alt="Audio FX Extension icon" onerror="this.remove()"></div>
 									<div>
-										<p>
-											An audio effects extension for Stencyl with channel routing, EQ, delay, filters,
-											presets, and reusable effect controls.
-										</p>
-										<p>
-											Future documentation for sound routing, effects, presets, delay, EQ, filters, and Windows setup notes.
-										</p>
+										<p>An audio effects extension for Stencyl with channel routing, EQ, delay, filters, presets, and reusable effect controls.</p>
+										<p>Future documentation for sound routing, effects, presets, delay, EQ, filters, and Windows setup notes.</p>
 									</div>
 								</div>
 								<div class="card-actions">
@@ -809,17 +724,10 @@
 							<div class="doc-card-body">
 								<h3>DPI Aware Extension</h3>
 								<div class="asset-card-content">
-									<div class="asset-icon-frame">
-										<img class="asset-icon" src="dpi-aware-icon.png" alt="DPI Aware Extension icon" onerror="this.remove()">
-									</div>
+									<div class="asset-icon-frame"><img class="asset-icon" src="dpi-aware-icon.png" alt="DPI Aware Extension icon" onerror="this.remove()"></div>
 									<div>
-										<p>
-											A Windows-focused Stencyl extension that improves DPI scaling behavior and helps games
-											display more consistently across different monitor scale settings.
-										</p>
-										<p>
-											Windows DPI behavior, manifest setup, fullscreen notes, troubleshooting, and compatibility guidance.
-										</p>
+										<p>A Windows-focused Stencyl extension that improves DPI scaling behavior and helps games display more consistently across different monitor scale settings.</p>
+										<p>Windows DPI behavior, manifest setup, fullscreen notes, troubleshooting, and compatibility guidance.</p>
 									</div>
 								</div>
 								<div class="card-actions">
@@ -834,17 +742,10 @@
 							<div class="doc-card-body">
 								<h3>2D Platformer Kit</h3>
 								<div class="asset-card-content">
-									<div class="asset-icon-frame">
-										<img class="asset-icon" src="platformer-kit-icon.png" alt="2D Platformer Kit icon" onerror="this.remove()">
-									</div>
+									<div class="asset-icon-frame"><img class="asset-icon" src="platformer-kit-icon.png" alt="2D Platformer Kit icon" onerror="this.remove()"></div>
 									<div>
-										<p>
-											A ready-to-use 2D platformer foundation for Stencyl with premade movement,
-											actors, effects, audio, and a testing scene.
-										</p>
-										<p>
-											Setup notes, included behaviors, actor examples, testing guidance, and customization details.
-										</p>
+										<p>A ready-to-use 2D platformer foundation for Stencyl with premade movement, actors, effects, audio, and a testing scene.</p>
+										<p>Setup notes, included behaviors, actor examples, testing guidance, and customization details.</p>
 									</div>
 								</div>
 								<div class="card-actions">
@@ -859,17 +760,10 @@
 							<div class="doc-card-body">
 								<h3>2D Movement Behavior Pack</h3>
 								<div class="asset-card-content">
-									<div class="asset-icon-frame">
-										<img class="asset-icon" src="movement-pack-icon.png" alt="2D Movement Behavior Pack icon" onerror="this.remove()">
-									</div>
+									<div class="asset-icon-frame"><img class="asset-icon" src="movement-pack-icon.png" alt="2D Movement Behavior Pack icon" onerror="this.remove()"></div>
 									<div>
-										<p>
-											A collection of reusable 2D movement behaviors for Stencyl, including movement,
-											jumping, and tuning options for common game styles.
-										</p>
-										<p>
-											Setup guides, behavior examples, jump and movement tuning, and readable Stencyl workflow notes.
-										</p>
+										<p>A collection of reusable 2D movement behaviors for Stencyl, including movement, jumping, and tuning options for common game styles.</p>
+										<p>Setup guides, behavior examples, jump and movement tuning, and readable Stencyl workflow notes.</p>
 									</div>
 								</div>
 								<div class="card-actions">
@@ -884,38 +778,25 @@
 							<div class="doc-card-body">
 								<h3>Creating Stencyl Extensions</h3>
 								<div class="asset-card-content">
-									<div class="asset-icon-frame">
-										<img class="asset-icon" src="extension-template-icon.png" alt="Simple Extension Template icon" onerror="this.remove()">
-									</div>
+									<div class="asset-icon-frame"><img class="asset-icon" src="extension-template-icon.png" alt="Simple Extension Template icon" onerror="this.remove()"></div>
 									<div>
-										<p>
-											A simple starter extension template for building custom Stencyl extensions without
-											having to recreate the folder structure and base files from scratch.
-										</p>
-										<p>
-											A practical guide to extension folder structure, Haxe scripts, custom block anatomy,
-											field types, palette organization, testing, and debugging.
-										</p>
+										<p>A simple starter extension template for building custom Stencyl extensions without having to recreate the folder structure and base files from scratch.</p>
+										<p>A practical guide to extension folder structure, Haxe scripts, custom block anatomy, field types, palette organization, testing, and debugging.</p>
 									</div>
 								</div>
 								<div class="card-actions">
-									<a class="card-link" href="Simple Extension Template.zip">Download Template</a>
+									<a class="card-link" href="SimpleExtensionTemplate.zip">Download Template</a>
 									<a class="card-link" href="stencyl-extension-template-guide.html">Open Documentation</a>
 								</div>
 							</div>
 						</article>
 					</div>
 
-					<div class="note warn">
-						<strong>Note:</strong> More assets coming soon.
-					</div>
+					<div class="note"><strong>Note:</strong> More assets coming soon.</div>
 				</div>
 			</section>
 
-
-			<div class="footer">
-				&copy; 2026 bittyBIG Studio. All rights reserved.
-			</div>
+			<div class="footer">&copy; 2026 bittyBIG Studio. All rights reserved.</div>
 		</div>
 	</main>
 </div>
