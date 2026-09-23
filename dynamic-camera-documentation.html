@@ -2203,8 +2203,10 @@
 <a href="#block-cameras-get-camera-grid-y-1">Get Camera Grid Y</a>
 <a href="#block-cameras-get-camera-target-grid-x-1">Get Camera Target Grid X</a>
 <a href="#block-cameras-get-camera-target-grid-y-1">Get Camera Target Grid Y</a>
-<div class="cat-title">Scene Bounds</div>
+<div class="cat-title">Scene</div>
 <a href="#block-cameras-set-camera-scene-lock-1">Set Camera Scene Lock</a>
+<a href="#block-cameras-set-background-layer-repeat-1">Set Background Layer Repeat</a>
+<a href="#block-cameras-set-background-layer-anchor-1">Set Background Layer Anchor</a>
 </div>
 <div class="cat">
 <div class="cat-title">Viewports</div>
@@ -2635,10 +2637,16 @@
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Camera Target Grid Y</h3><div class="glossary-entry-desc">Returns the zero-based Grid-Based camera row the camera is currently moving toward.</div></div><div class="block-card glossary-demo-card" id="block-cameras-get-camera-target-grid-y-1"><div class="block-row">
 <div class="st-block blue reporter">Get Target Grid Y for Camera ID <span class="st-input"></span></div>
 </div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-cameras-get-camera-target-grid-y-1">Copy</button></div><pre id="pre-block-cameras-get-camera-target-grid-y-1">scripts.BittyCameraBlocks.getCameraTargetGridY(~)</pre></div></div></div>
-<h4 class="glossary-subcategory-title">Scene Bounds</h4><div class="glossary-group-meta">Cameras → Scene Bounds</div>
+<h4 class="glossary-subcategory-title">Scene</h4><div class="glossary-group-meta">Cameras → Scene</div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Camera Scene Lock</h3><div class="glossary-entry-desc">Locks or unlocks the camera from being limited to the scene bounds.</div></div><div class="block-card glossary-demo-card" id="block-cameras-set-camera-scene-lock-1"><div class="block-row">
 <div class="st-block blue">Set Camera ID <span class="st-input"></span> Scene Lock to <span class="st-dropdown">Lock Camera To Scene</span></div>
 </div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-cameras-set-camera-scene-lock-1">Copy</button></div><pre id="pre-block-cameras-set-camera-scene-lock-1">scripts.BittyCameraBlocks.setCameraSceneLock(~,~);</pre></div></div></div>
+<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Repeat</h3><div class="glossary-entry-desc">Overrides Stencyl's Repeat setting for this background layer in bittyBIG. If this block is not used, Stencyl's Repeat setting is preserved: off = none, on = both. Horizontal and Vertical repeat only the selected axis.</div></div><div class="block-card glossary-demo-card" id="block-cameras-set-background-layer-repeat-1"><div class="block-row">
+<div class="st-block blue">Set repeat to <span class="st-dropdown">None</span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div>
+</div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-cameras-set-background-layer-repeat-1">Copy</button></div><pre id="pre-block-cameras-set-background-layer-repeat-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerRepeatMode(~,~,~);</pre></div></div></div>
+<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Anchor</h3><div class="glossary-entry-desc">Sets this background layer's positional anchor in bittyBIG. X and Y are clamped from 0 to 1: 0 = left/top, 0.5 = center, 1 = right/bottom. Default is 0,0.</div></div><div class="block-card glossary-demo-card" id="block-cameras-set-background-layer-anchor-1"><div class="block-row">
+<div class="st-block blue">Set background anchor X <span class="st-input"></span> Y <span class="st-input"></span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div>
+</div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-cameras-set-background-layer-anchor-1">Copy</button></div><pre id="pre-block-cameras-set-background-layer-anchor-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerAnchor(~,~,~,~);</pre></div></div></div>
 <h3 class="glossary-category-title" id="cat-viewports">Viewports</h3>
 <h4 class="glossary-subcategory-title">Setup</h4><div class="glossary-group-meta">Viewports → Setup</div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Create Viewport</h3><div class="glossary-entry-desc">Creates a Viewport that defines where a camera image will be drawn on the Game Image.</div></div><div class="block-card glossary-demo-card" id="block-viewports-create-viewport-1"><div class="block-row">
@@ -2899,6 +2907,12 @@
 </div>
 </details>
 <details class="faq-item">
+<summary class="faq-issue">Scene Background Layer Anchoring</summary>
+<div class="faq-details">
+<p>Use <strong>Set Background Layer Anchor</strong> to control how a Stencyl scene background image is registered inside its logical parallax surface. X and Y use normalized values from 0 to 1: <strong>0,0</strong> is top-left, <strong>0.5,0.5</strong> is centered, and <strong>0.5,1</strong> is bottom-center. Layers with no override default to <strong>0,0</strong>.</p>
+</div>
+</details>
+<details class="faq-item">
 <summary class="faq-issue">Debugging Camera State</summary>
 <div class="faq-details">
 <div class="block-row faq-block-image">
@@ -2910,7 +2924,7 @@
 </div>
 </div>
 </section>
-<section class="section doc-section collapsible-section collapsed" data-search="release notes v 1.0 v 2.0 development trail changelog cached backgrounds tile world renderer dirty updates animated backgrounds html5 seams debug drawing renderer independence jitter camera suite" id="release-notes">
+<section class="section doc-section collapsible-section collapsed" data-search="release notes v 1.0 v 2.0 development trail changelog cached backgrounds tile world renderer dirty updates animated backgrounds html5 seams debug drawing renderer independence jitter camera suite scene center zoom parallax anchor repeat rotation unified subpixel residual" id="release-notes">
 <div class="section-header">
 <button class="section-toggle" type="button" aria-expanded="false">
 <h2>Release Notes</h2>
@@ -3015,6 +3029,38 @@
 <li>Static tiles and Stencyl backgrounds are now presented through bittyBIG-controlled camera/render paths instead of depending on Stencyl's camera transform for each viewport.</li>
 <li>Stencyl remains responsible for the editor, actors, behaviors, scene setup, assets, animation state, and normal gameplay workflow.</li>
 <li><strong>Result:</strong> bittyBIG owns substantially more of the runtime camera/output behavior without requiring users to abandon Stencyl's creation pipeline.</li>
+</ul>
+
+<p><strong>Scene-Centered Camera / Zoom-Aware Parallax — Implemented</strong></p>
+<ul>
+<li>Scene limiting now clamps the resolved camera center itself, so the camera's actual center stays authoritative at scene edges.</li>
+<li>Background movement is calculated from the resolved camera center relative to the scene center, and Stencyl's stored scroll factor is converted to a zoom-aware effective factor so the same logical travel span is preserved as the visible camera size changes.</li>
+<li>Smooth clamp-center presentation compensates for the parity-matched raster source sizes used during zoom.</li>
+<li><strong>Result:</strong> backgrounds stay aligned with the camera and scene edges through movement and smooth zoom without edge drift or clamp jitter.</li>
+</ul>
+
+<p><strong>Background Repeat / Anchor Controls — Implemented</strong></p>
+<ul>
+<li>Background repeat can be overridden per layer as None, Horizontal, Vertical, or Both while leaving Stencyl's own Repeat setting untouched when no override is used.</li>
+<li>Repeating backgrounds prepare only the minimum number of source copies needed for coverage; the previous extra safety copy is not added.</li>
+<li>Background positional anchoring is stored per layer with normalized X/Y values from 0 to 1. Layers without an override default to 0,0.</li>
+<li><strong>Result:</strong> background preparation and registration are explicit per-layer controls without introducing another rendering path.</li>
+</ul>
+
+<p><strong>Unified Rotation / Flip Presentation Path — Implemented</strong></p>
+<ul>
+<li>Rotation no longer switches to a separate capture bitmap, separate world renderer, or separate transformed-camera presentation path.</li>
+<li>Ordered layers, backgrounds, zoom, scene clamping, parallax, and smoothing now run through the same normal rendering path first.</li>
+<li>Rotation and flipping are applied only at the final presentation stage.</li>
+<li><strong>Result:</strong> rotation inherits the same rendering behavior and fixes as ordinary rendering and zoom instead of maintaining parallel special cases.</li>
+</ul>
+
+<p><strong>Pixel-Aligned World Raster + Fractional Presentation Residual — Implemented</strong></p>
+<ul>
+<li>The rasterized world / tile camera origin is split into a pixel-aligned raster position and a fractional remainder.</li>
+<li>The world is rendered at the stable pixel-aligned origin, while the fractional remainder is preserved and applied at final presentation.</li>
+<li>Rasterized world layers with non-1.0 scroll factors are compensated so their parallax rate remains correct when the shared final residual is applied.</li>
+<li><strong>Result:</strong> the subtle main tile-layer shimmer is removed during ordinary camera movement and at the ends of zoom transitions while smooth fractional movement is preserved.</li>
 </ul>
 </div>
 
