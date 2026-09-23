@@ -1,0 +1,114 @@
+name: Update Dynamic Camera Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/update-camera-docs.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Patch camera documentation
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("dynamic-camera-documentation.html")
+          text = path.read_text(encoding="utf-8")
+
+          def replace_once(source: str, target: str, label: str) -> None:
+              global text
+              count = text.count(source)
+              if count != 1:
+                  raise SystemExit(f"{label}: expected exactly 1 match, found {count}")
+              text = text.replace(source, target, 1)
+
+          replace_once(
+              '<div class="cat-title">Scene Bounds</div>\n<a href="#block-cameras-set-camera-scene-lock-1">Set Camera Scene Lock</a>',
+              '<div class="cat-title">Scene</div>\n<a href="#block-cameras-set-camera-scene-lock-1">Set Camera Scene Lock</a>\n<a href="#block-cameras-set-background-layer-repeat-1">Set Background Layer Repeat</a>\n<a href="#block-cameras-set-background-layer-anchor-1">Set Background Layer Anchor</a>',
+              "scene sidebar"
+          )
+
+          replace_once(
+              '<h4 class="glossary-subcategory-title">Scene Bounds</h4><div class="glossary-group-meta">Cameras → Scene Bounds</div>',
+              '<h4 class="glossary-subcategory-title">Scene</h4><div class="glossary-group-meta">Cameras → Scene</div>',
+              "scene glossary heading"
+          )
+
+          scene_lock_end = '''<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Camera Scene Lock</h3><div class="glossary-entry-desc">Locks or unlocks the camera from being limited to the scene bounds.</div></div><div class="block-card glossary-demo-card" id="block-cameras-set-camera-scene-lock-1"><div class="block-row">
+<div class="st-block blue">Set Camera ID <span class="st-input"></span> Scene Lock to <span class="st-dropdown">Lock Camera To Scene</span></div>
+</div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-cameras-set-camera-scene-lock-1">Copy</button></div><pre id="pre-block-cameras-set-camera-scene-lock-1">scripts.BittyCameraBlocks.setCameraSceneLock(~,~);</pre></div></div></div>
+<h3 class="glossary-category-title" id="cat-viewports">Viewports</h3>'''
+
+          scene_blocks = '''<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Camera Scene Lock</h3><div class="glossary-entry-desc">Locks or unlocks the camera from being limited to the scene bounds.</div></div><div class="block-card glossary-demo-card" id="block-cameras-set-camera-scene-lock-1"><div class="block-row">
+<div class="st-block blue">Set Camera ID <span class="st-input"></span> Scene Lock to <span class="st-dropdown">Lock Camera To Scene</span></div>
+</div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-cameras-set-camera-scene-lock-1">Copy</button></div><pre id="pre-block-cameras-set-camera-scene-lock-1">scripts.BittyCameraBlocks.setCameraSceneLock(~,~);</pre></div></div></div>
+<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Repeat</h3><div class="glossary-entry-desc">Overrides Stencyl's repeat setting for this background layer in bittyBIG. If this block is not used, Stencyl's Repeat setting is preserved: off = none, on = both. Horizontal and Vertical repeat only the selected axis.</div></div><div class="block-card glossary-demo-card" id="block-cameras-set-background-layer-repeat-1"><div class="block-row">
+<div class="st-block blue">Set repeat to <span class="st-dropdown">None</span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div>
+</div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-cameras-set-background-layer-repeat-1">Copy</button></div><pre id="pre-block-cameras-set-background-layer-repeat-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerRepeatMode(~,~,~);</pre></div></div></div>
+<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Anchor</h3><div class="glossary-entry-desc">Sets this background layer's positional anchor in bittyBIG. X and Y are clamped from 0 to 1: 0 = left/top, 0.5 = center, 1 = right/bottom. Default is 0,0.</div></div><div class="block-card glossary-demo-card" id="block-cameras-set-background-layer-anchor-1"><div class="block-row">
+<div class="st-block blue">Set background anchor X <span class="st-input"></span> Y <span class="st-input"></span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div>
+</div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-cameras-set-background-layer-anchor-1">Copy</button></div><pre id="pre-block-cameras-set-background-layer-anchor-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerAnchor(~,~,~,~);</pre></div></div></div>
+<h3 class="glossary-category-title" id="cat-viewports">Viewports</h3>'''
+
+          replace_once(scene_lock_end, scene_blocks, "scene block glossary")
+
+          renderer_independence = '''<p><strong>Renderer Independence — Major V2.0 Step Implemented</strong></p>
+<ul>
+<li>Static tiles and Stencyl backgrounds are now presented through bittyBIG-controlled camera/render paths instead of depending on Stencyl's camera transform for each viewport.</li>
+<li>Stencyl remains responsible for the editor, actors, behaviors, scene setup, assets, animation state, and normal gameplay workflow.</li>
+<li><strong>Result:</strong> bittyBIG owns substantially more of the runtime camera/output behavior without requiring users to abandon Stencyl's creation pipeline.</li>
+</ul>'''
+
+          renderer_updates = '''<p><strong>Scene-Centered Background Alignment — Implemented</strong></p>
+<ul>
+<li>Background positioning is solved from the resolved camera center relative to the scene center, including scene-edge clamps and zoom-aware Stencyl scroll factors.</li>
+<li>Repeating layers prepare only the minimum required copies. Per-layer anchors use normalized X/Y values from 0 to 1; layers with no anchor override default to 0,0.</li>
+<li><strong>Result:</strong> background layers keep predictable parallax and intentional overscan alignment through camera movement and zoom.</li>
+</ul>
+
+<p><strong>Unified Rotation / Flip Presentation — Implemented</strong></p>
+<ul>
+<li>Rotation and flipping no longer switch to separate capture or world-render paths.</li>
+<li>The normal camera, world, background, zoom, clamp, ordering, and presentation path completes first; rotation and flip are applied only at final viewport presentation.</li>
+<li><strong>Result:</strong> transformed viewports inherit the same rendering behavior and fixes as untransformed viewports.</li>
+</ul>
+
+<p><strong>Subpixel World Presentation — Implemented</strong></p>
+<ul>
+<li>Rasterized world and tile layers use a pixel-aligned camera origin while the fractional camera remainder is preserved for final presentation.</li>
+<li>Rasterized world layers with non-1.0 scroll factors compensate for the shared presentation residual so their parallax rate remains unchanged.</li>
+<li><strong>Result:</strong> tile and world movement remains smooth without the subtle raster shimmer previously visible during movement and zoom.</li>
+</ul>
+
+<p><strong>Renderer Independence — Major V2.0 Step Implemented</strong></p>
+<ul>
+<li>Static tiles and Stencyl backgrounds are now presented through bittyBIG-controlled camera/render paths instead of depending on Stencyl's camera transform for each viewport.</li>
+<li>Stencyl remains responsible for the editor, actors, behaviors, scene setup, assets, animation state, and normal gameplay workflow.</li>
+<li><strong>Result:</strong> bittyBIG owns substantially more of the runtime camera/output behavior without requiring users to abandon Stencyl's creation pipeline.</li>
+</ul>'''
+
+          replace_once(renderer_independence, renderer_updates, "V2 renderer notes")
+
+          path.write_text(text, encoding="utf-8")
+          PY
+
+      - name: Commit documentation update
+        shell: bash
+        run: |
+          git config user.name "bittyBIG Docs Update"
+          git config user.email "actions@users.noreply.github.com"
+          git rm .github/workflows/update-camera-docs.yml
+          git add dynamic-camera-documentation.html
+          git commit -m "Document camera renderer and background anchor updates"
+          git push origin main
