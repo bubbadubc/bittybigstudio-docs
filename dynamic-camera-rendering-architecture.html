@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="icon" type="image/png" href="favicon.png">
+<title>bittyBIG Dynamic Camera — Rendering Architecture</title>
+<style>
+:root{--bg:#f2f2f2;--panel:#fff;--line:#ccc;--text:#222;--muted:#666;--header:#455a6f;--accent:#138a84;--code:#f0f0f0;--good:#eef8e7;--goodline:#bfd7ac}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.5}.top{background:var(--header);color:#fff;padding:18px 24px}.top h1{margin:0;font-size:26px}.top p{margin:5px 0 0;opacity:.92}.wrap{max-width:1100px;margin:0 auto;padding:20px}.back{display:inline-block;margin-bottom:14px;color:#1467a6;font-weight:bold;text-decoration:none}.section{background:var(--panel);border:1px solid var(--line);border-radius:7px;margin-bottom:14px;overflow:hidden}.section h2{margin:0;padding:12px 16px;background:#f7f7f7;border-bottom:1px solid var(--line);font-size:21px;color:var(--accent)}.body{padding:16px}.note{padding:12px 14px;border:1px solid var(--goodline);background:var(--good);border-radius:7px;margin:12px 0}code,.code{font-family:Consolas,Monaco,"Courier New",monospace;background:var(--code);border:1px solid #ddd;border-radius:4px;padding:2px 6px}.diagram{font-family:Consolas,Monaco,"Courier New",monospace;white-space:pre-wrap;background:#fafafa;border:1px solid #ddd;border-radius:6px;padding:14px;overflow:auto}ul{margin-bottom:0}li{margin:5px 0}.muted{color:var(--muted)}table{width:100%;border-collapse:collapse}th,td{text-align:left;border:1px solid #ddd;padding:8px}th{background:#f7f7f7}
+</style>
+</head>
+<body>
+<div class="top"><h1>Dynamic Camera — Rendering Architecture</h1><p>Current Version 2 rendering rules and implementation notes</p></div>
+<div class="wrap">
+<a class="back" href="dynamic-camera-documentation.html">← Back to Dynamic Camera Documentation</a>
+
+<div class="section"><h2>Current Rendering Rule</h2><div class="body">
+<p>The camera system now uses one rendering path for normal rendering, zooming, rotation, flipping, tile/world content, and direct background presentation. Camera effects do not select alternate renderers.</p>
+<div class="diagram">camera state
+→ resolve scene-clamped camera center
+→ render world / tiles / backgrounds through the normal path
+→ apply zoom and presentation smoothing
+→ compose ordered presentation
+→ apply final presentation transforms such as rotation / flip</div>
+<div class="note"><strong>Architectural rule:</strong> alternate rendering paths should not be introduced for camera transforms. Rotation and flipping belong as late as possible in presentation, after the same camera image and layer-order work used by the normal path.</div>
+</div></div>
+
+<div class="section"><h2>Scene-Centered Camera and Parallax</h2><div class="body">
+<p>The resolved camera center is the authoritative camera position. Scene limiting clamps that resolved center itself, rather than allowing a separate requested center to continue beyond the scene edge.</p>
+<div class="diagram">sceneCenterX = sceneWidth / 2
+sceneCenterY = sceneHeight / 2
+cameraDeltaX = resolvedCameraCenterX - sceneCenterX
+cameraDeltaY = resolvedCameraCenterY - sceneCenterY</div>
+<p>Background and parallax positioning are derived from this scene-centered relationship. At the scene center, each layer's neutral logical surface aligns with the camera/view center.</p>
+<p>Public Camera X/Y remain the visible top-left coordinates derived from the resolved center and visible size.</p>
+</div></div>
+
+<div class="section"><h2>Zoom-Aware Background Scroll Factor</h2><div class="body">
+<p>Stencyl's stored background scroll factor remains the source setting, but bittyBIG converts it to an effective movement factor for the current visible camera size. This preserves the background's intended logical travel span while zoom changes how much of the scene is visible.</p>
+<div class="diagram">logicalSpan = baseViewportSize + baseScrollFactor × (sceneSize - baseViewportSize)
+effectiveScrollFactor = (logicalSpan - currentVisibleSize) / (sceneSize - currentVisibleSize)</div>
+<p>This prevents a background that is correctly aligned at zoom 1 from drifting away from the expected scene edge at another zoom level.</p>
+</div></div>
+
+<div class="section"><h2>Background Layer Anchor</h2><div class="body">
+<p>Background positional anchoring is stored per background layer in a map. A layer with no stored value defaults to <code>0,0</code>, preserving the traditional top-left registration.</p>
+<table><tr><th>Value</th><th>X meaning</th><th>Y meaning</th></tr><tr><td>0</td><td>Left</td><td>Top</td></tr><tr><td>0.5</td><td>Center</td><td>Center</td></tr><tr><td>1</td><td>Right</td><td>Bottom</td></tr></table>
+<p>Values are clamped to the range <code>0–1</code>. The previous bottom-center registration is represented by <code>X = 0.5</code>, <code>Y = 1</code>.</p>
+<div class="diagram">logical anchor point = logicalSurfaceOrigin + logicalSurfaceSize × anchor
+image origin = logical anchor point - preparedImageSize × anchor</div>
+<p>The anchor changes how the prepared background image is registered inside its logical parallax surface. It does not create a separate render path.</p>
+<h3>Stencyl block</h3>
+<div class="diagram">Set background anchor X [0–1] Y [0–1] for Layer with [Name/ID] [...]</div>
+<p><strong>Translation call:</strong> <code>scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerAnchor(anchorX, anchorY, layerLookup, layerValue);</code></p>
+<p><strong>Default:</strong> <code>0,0</code>.</p>
+</div></div>
+
+<div class="section"><h2>Repeating Background Preparation</h2><div class="body">
+<p>Repeating backgrounds prepare only the minimum number of source copies required to cover their logical surface:</p>
+<div class="diagram">copies = ceil(requiredSize / sourceTileSize)</div>
+<p>Minimum is one copy. There is no extra +1 safety copy. This avoids unnecessary prepared image area and the performance cost that came with it.</p>
+<p>Non-repeating source images may intentionally contain overscan. Extra source width or height is treated as image coverage, not as an additional movement multiplier.</p>
+</div></div>
+
+<div class="section"><h2>Fractional Camera Motion and Tile / World Rasterization</h2><div class="body">
+<p>World and tile content is rasterized through BitmapData. Feeding a changing fractional camera origin directly into that raster caused subtle subpixel shimmer, visible even when zoom was stationary.</p>
+<p>The renderer now separates the camera position into a pixel-aligned raster origin and a fractional remainder:</p>
+<div class="diagram">camera position
+→ pixel-aligned raster origin
+→ render tile/world BitmapData
+
+fractional remainder
+→ preserve per camera
+→ apply at final presentation wrapper</div>
+<p>This keeps raster sampling stable while retaining smooth fractional camera movement on screen. Rasterized world layers with non-1.0 scroll factors are compensated before the shared final residual is applied so their parallax rate remains correct.</p>
+<div class="note"><strong>Result:</strong> the main tile/world layer no longer has the subtle settling shimmer that previously remained during ordinary camera movement or at the ends of zoom transitions.</div>
+</div></div>
+
+<div class="section"><h2>Zoom Clamp Smoothing</h2><div class="body">
+<p>The raster camera intentionally uses parity-matched integer source dimensions during smooth zoom. At a scene edge, those source dimensions change in steps while presentation zoom changes continuously.</p>
+<p>Direct background wrappers reconstruct the smooth mathematical clamped camera center for presentation. The rasterized world presentation separately compensates for the fractional source-size remainder at the final wrapper. These corrections preserve the intentional parity-matched raster source while keeping visible motion smooth.</p>
+</div></div>
+
+<div class="section"><h2>Rotation and Flip</h2><div class="body">
+<p>Rotation no longer selects a rotation-specific capture or presentation renderer. Ordered layers, direct backgrounds, zoom behavior, scene clamping, parallax, and smoothing all run through the same normal camera path first.</p>
+<div class="diagram">normal camera render
+→ ordered world / tile segments
+→ direct backgrounds
+→ zoom + clamp smoothing
+→ normal presentation
+→ final rotation / flip</div>
+<p>Rotation may require enough source coverage to avoid exposing empty corners, but that coverage requirement does not change renderer ownership or layer-order behavior.</p>
+</div></div>
+
+<div class="section"><h2>Ownership Summary</h2><div class="body">
+<ul>
+<li><strong>BittyViewports:</strong> owns resolved camera/view state, visible size, scene clamp state, and zoom state.</li>
+<li><strong>BittyRenderer:</strong> produces the world/tile raster and keeps raster sampling pixel-aligned where required.</li>
+<li><strong>BittyDisplayManager:</strong> owns presentation placement, direct background presentation, final fractional residuals, and late rotation/flip transforms.</li>
+<li><strong>BittyCameraBlocks:</strong> is the Stencyl translation/API layer and does not own rendering behavior.</li>
+</ul>
+<p class="muted">Current rule: each stage does one job and hands its result forward. Camera transforms should not duplicate earlier rendering work.</p>
+</div></div>
+
+</div>
+</body>
+</html>
