@@ -3503,15 +3503,14 @@
 			if(code == null) return;
 
 			var lines = [];
-			lines.push("// Game Area uses the configured size. Viewports are placed inside this rectangle.");
-			lines.push("scripts.BittyCameraBlocks.setGameAreaRect(" + Math.round(canvasX) + ", " + Math.round(canvasY) + ", " + Math.round(canvasW) + ", " + Math.round(canvasH) + ");");
+			lines.push("// Create Camera automatically creates and links its matching Viewport.");
+			lines.push("scripts.api.stencyl.BittyCameraBlocks.setGameAreaRect(" + Math.round(canvasX) + ", " + Math.round(canvasY) + ", " + Math.round(canvasW) + ", " + Math.round(canvasH) + ");");
 			lines.push("");
 
 			ports.forEach(function(port, i)
 			{
-				lines.push("scripts.BittyCameraBlocks.createCamera(" + i + ");");
-				lines.push("scripts.BittyCameraBlocks.createDisplayPort(" + i + ", " + Math.round(port.x) + ", " + Math.round(port.y) + ", " + Math.round(port.w) + ", " + Math.round(port.h) + ");");
-				lines.push("scripts.BittyCameraBlocks.renderCameraToDisplayPort(" + i + ", " + i + ");");
+				lines.push("scripts.api.stencyl.BittyCameraBlocks.createCamera(" + i + ");");
+				lines.push("scripts.api.stencyl.BittyCameraBlocks.setViewportRect(" + i + ", " + Math.round(port.x) + ", " + Math.round(port.y) + ", " + Math.round(port.w) + ", " + Math.round(port.h) + ");");
 
 				if(i < ports.length - 1)
 				{
@@ -3600,8 +3599,7 @@
 			ports.forEach(function(port, i)
 			{
 				addPreviewBlock(preview, "blue", ["Create Camera ID", i]);
-				addPreviewBlock(preview, "blue", ["Create Viewport ID", i, "at X", port.x, "Y", port.y, "with Width", port.w, "Height", port.h]);
-				addPreviewBlock(preview, "blue", ["Render Camera ID", i, "to Viewport ID", i]);
+				addPreviewBlock(preview, "blue", ["Set Viewport ID", i, "to X", port.x, "Y", port.y, "Width", port.w, "Height", port.h]);
 			});
 		}
 
@@ -3635,8 +3633,7 @@
 			ports.forEach(function(port, i)
 			{
 				lines.push(buildActionBlock('bbcam-create-camera', [i]));
-				lines.push(buildActionBlock('bbcam-create-viewport', [i, port.x, port.y, port.w, port.h]));
-				lines.push(buildActionBlock('bbcam-render-camera-to-viewport', [i, i]));
+				lines.push(buildActionBlock('bbcam-set-viewport-rect', [i, port.x, port.y, port.w, port.h]));
 			});
 
 			lines.push('    </group>');
