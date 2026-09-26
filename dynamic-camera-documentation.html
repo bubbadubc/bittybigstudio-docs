@@ -2162,8 +2162,6 @@
 <div class="cat-title">Scene</div>
 <a href="#block-setup-set-camera-scene-lock-1">Set Camera Scene Lock</a>
 <a href="#block-setup-set-background-layer-repeat-1">Set Background Layer Repeat</a>
-<a href="#block-setup-set-background-layer-alignment-1">Set Background Layer Alignment</a>
-<a href="#block-setup-set-background-layer-anchor-1">Set Background Layer Anchor</a>
 <a href="#block-setup-set-background-layer-anchors-1">Set Background Layer Anchors</a>
 <a href="#block-setup-set-background-layer-alignments-1">Set Background Layer Alignments</a>
 <a href="#block-setup-set-background-layer-offset-1">Set Background Layer Offset</a>
@@ -2398,7 +2396,7 @@
 </div>
 </section>
 
-<section class="section doc-section collapsible-section collapsed" data-search="common setups viewport builder full screen split screen top bottom four view picture in picture smaller display area viewport coordinates pixel perfect camera size generated code" id="common-setups">
+<section class="section doc-section collapsible-section collapsed" data-search="common setups viewport builder full screen split screen top bottom four view picture in picture smaller game area viewport coordinates pixel perfect camera size generated code" id="common-setups">
 <div class="section-header">
 <button class="section-toggle" type="button" aria-expanded="false">
 <h2>Layout Editor</h2>
@@ -2408,24 +2406,24 @@
 <div class="section-body">
 <p>
 							Choose a common layout or adjust the values yourself, preview the result, then generate setup code for your project.
-							Viewports split the Display Area, not the full screen.
+							Viewports are placed inside the Game Area, not directly on the Screen.
 						</p>
 <div class="viewport-demo">
 <div class="demo-controls">
 <label>
-									Canvas X
+									Game Area X
 									<input id="canvasX" type="number" value="0"/>
 </label>
 <label>
-									Canvas Y
+									Game Area Y
 									<input id="canvasY" type="number" value="0"/>
 </label>
 <label>
-									Canvas Width
+									Game Area Width
 									<input id="canvasW" min="1" type="number" value="1920"/>
 </label>
 <label>
-									Canvas Height
+									Game Area Height
 									<input id="canvasH" min="1" type="number" value="1080"/>
 </label>
 <label>
@@ -2450,7 +2448,7 @@
 <button class="tab-button layout-button" data-layout="top-bottom">Top / Bottom Split</button>
 <button class="tab-button layout-button" data-layout="four-grid">Four View Grid</button>
 <button class="tab-button layout-button" data-layout="pip">Picture-in-Picture</button>
-<button class="tab-button layout-button" data-layout="small-area">Smaller Display Area</button>
+<button class="tab-button layout-button" data-layout="small-area">Smaller Game Area</button>
 </div>
 <div class="builder-layout">
 <div>
@@ -2467,7 +2465,7 @@
 <div class="pixel-panel">
 <h3>Suggested Pixel Perfect Camera Sizes</h3>
 <p>
-									These are clean camera sizes based on your canvas size. 1x is the full canvas size.
+									These are clean camera sizes based on your Game Area size. 1x is the full Game Area size.
 								</p>
 <ul class="pixel-list" id="pixelPerfectList"></ul>
 </div>
@@ -2515,11 +2513,29 @@
 <div id="key-terms">
 <h3>Key Terms</h3>
 <div class="term-list">
-<p><strong>Display Area</strong> - The final rectangle where the whole bittyBIG output appears on the screen.</p>
-<p><strong>Viewport</strong> - A rectangle inside the Display Area. It controls where a camera image appears.</p>
-<p><strong>Camera Size</strong> - How much world the camera sees before zoom. This is your low-resolution world view size.</p>
-<p><strong>Zoom</strong> - Changes how much of the world the camera sees. Higher zoom means a closer view.</p>
-<p><strong>Viewport Coordinates</strong> - Based on the current Display Area size.</p>
+<p><strong>Screen</strong> - The full output area of the device or game window. The Game Area is positioned and sized within the Screen.</p>
+<p><strong>Game Area</strong> - The rectangular area where bittyBIG renders the game. It can be resized and positioned anywhere on the Screen and contains the Viewports.</p>
+<p><strong>Viewport</strong> - The output area for a single Camera. A Viewport can be positioned and sized anywhere within the Game Area.</p>
+<p><strong>Camera</strong> - Captures a rectangular area of the Scene and renders that view to a Viewport.</p>
+<p><strong>Scene</strong> - The Stencyl game world being viewed by the Cameras. Actors, tiles, backgrounds, and scene boundaries exist in Scene coordinates.</p>
+<p><strong>Camera Size</strong> - The base width and height of the Scene captured by a Camera before zoom is applied.</p>
+<p><strong>Camera Center</strong> - The Scene position at the center of the Camera's view.</p>
+<p><strong>Camera Target</strong> - The Scene position the Camera is moving toward. This may come from an Actor, a manually specified position, or another camera-follow operation.</p>
+<p><strong>Zoom</strong> - Changes how much of the Scene is visible through a Camera without changing its base Camera Size. Higher zoom shows a smaller area of the Scene; lower zoom shows a larger area.</p>
+<p><strong>Scene Lock</strong> - Restricts a Camera so its visible area does not move beyond the Scene boundaries.</p>
+<p><strong>Follow</strong> - Continuously updates a Camera's target based on an Actor.</p>
+<p><strong>Viewport Position</strong> - The position of a Viewport within the Game Area.</p>
+<p><strong>Viewport Size</strong> - The width and height of the Camera's output area within the Game Area. This does not change the Camera's Scene capture size.</p>
+<p><strong>Viewport Scale Mode</strong> - Controls how the Camera image is fitted into its Viewport when their dimensions or aspect ratios differ.</p>
+<p><strong>Game Area Coordinates</strong> - Coordinates relative to the Game Area. Viewports are positioned using Game Area coordinates.</p>
+<p><strong>Screen Coordinates</strong> - Coordinates relative to the full Screen. The Game Area is positioned using Screen coordinates.</p>
+<p><strong>Background Layer</strong> - A Stencyl Scene background layer rendered as part of the Camera view.</p>
+<p><strong>Scroll Factor / Parallax</strong> - Controls how quickly a Background Layer moves relative to Camera movement.</p>
+<p><strong>Background Repeat</strong> - Controls whether a Background Layer repeats horizontally, vertically, both, or not at all.</p>
+<p><strong>Image Anchor</strong> - The point on a background image used when positioning that image. 0,0 is top-left, 0.5,0.5 is center, and 1,1 is bottom-right.</p>
+<p><strong>Scene Anchor</strong> - The point in the Scene that the Background Layer's Image Anchor is aligned to.</p>
+<p><strong>Background Offset</strong> - An additional Scene-space X/Y offset applied after the Background Layer's Image Anchor and Scene Anchor are aligned.</p>
+<p><strong>Rendering Flow</strong> - Scene → Camera → Viewport → Game Area → Screen.</p>
 </div></div>
 <h3 class="glossary-category-title" id="cat-setup">Setup</h3>
 <h4 class="glossary-subcategory-title">Quick Start</h4><div class="glossary-group-meta">Setup → Quick Start</div>
@@ -2531,8 +2547,6 @@
 <h4 class="glossary-subcategory-title">Scene</h4><div class="glossary-group-meta">Setup → Scene</div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Camera Scene Lock</h3><div class="glossary-entry-desc">Locks or unlocks the camera from being limited to the scene bounds.</div></div><div class="block-card glossary-demo-card" id="block-setup-set-camera-scene-lock-1"><div class="block-row"><div class="st-block blue">Set Camera ID <span class="st-input"></span> Scene Lock to <span class="st-dropdown">Lock Camera To Scene</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-setup-set-camera-scene-lock-1">Copy</button></div><pre id="pre-block-setup-set-camera-scene-lock-1">scripts.api.stencyl.BittyCameraBlocks.setCameraSceneLock(~,~);</pre></div></div></div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Repeat</h3><div class="glossary-entry-desc">Overrides Stencyl&#x27;s repeat setting for this background layer in bittyBIG. If this block is not used, Stencyl&#x27;s Repeat setting is preserved: off = none, on = both. Horizontal and Vertical repeat only the selected axis.</div></div><div class="block-card glossary-demo-card" id="block-setup-set-background-layer-repeat-1"><div class="block-row"><div class="st-block blue">Set repeat to <span class="st-dropdown">None</span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-setup-set-background-layer-repeat-1">Copy</button></div><pre id="pre-block-setup-set-background-layer-repeat-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerRepeatMode(~,~,~);</pre></div></div></div>
-<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Alignment</h3><div class="glossary-entry-desc">Sets both image and scene anchors to the same named alignment. Bottom Center equals X 0.5, Y 1. Use Background Offset to move from that position, or the fractional alignment block for custom alignment.</div></div><div class="block-card glossary-demo-card" id="block-setup-set-background-layer-alignment-1"><div class="block-row"><div class="st-block blue">Align background <span class="st-dropdown">Bottom Center</span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-setup-set-background-layer-alignment-1">Copy</button></div><pre id="pre-block-setup-set-background-layer-alignment-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerAlignment(~,~,~);</pre></div></div></div>
-<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Anchor</h3><div class="glossary-entry-desc">Sets both image and scene anchors to the same fractional alignment. X and Y range from 0 to 1: 0 = left/top, 0.5 = center, 1 = right/bottom. Use Background Offset for scene-unit adjustments. Existing default remains 0,0.</div></div><div class="block-card glossary-demo-card" id="block-setup-set-background-layer-anchor-1"><div class="block-row"><div class="st-block blue">Set background alignment X <span class="st-input"></span> Y <span class="st-input"></span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-setup-set-background-layer-anchor-1">Copy</button></div><pre id="pre-block-setup-set-background-layer-anchor-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerAnchor(~,~,~,~);</pre></div></div></div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Anchors</h3><div class="glossary-entry-desc">Each anchor uses 0 to 1: left/top 0, center 0.5, right/bottom 1. Choose the image point and scene point independently. Background Offset adjusts the placement in scene units.</div></div><div class="block-card glossary-demo-card" id="block-setup-set-background-layer-anchors-1"><div class="block-row"><div class="st-block blue">Set background image anchor X <span class="st-input"></span> Y <span class="st-input"></span> to scene anchor X <span class="st-input"></span> Y <span class="st-input"></span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-setup-set-background-layer-anchors-1">Copy</button></div><pre id="pre-block-setup-set-background-layer-anchors-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerAnchors(~,~,~,~,~,~);</pre></div></div></div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Alignments</h3><div class="glossary-entry-desc">Select image and scene anchor points independently. Background Offset adds a scene-unit adjustment.</div></div><div class="block-card glossary-demo-card" id="block-setup-set-background-layer-alignments-1"><div class="block-row"><div class="st-block blue">Align background image <span class="st-dropdown">Bottom Center</span> to scene <span class="st-dropdown">Bottom Center</span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-setup-set-background-layer-alignments-1">Copy</button></div><pre id="pre-block-setup-set-background-layer-alignments-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerAlignments(~,~,~,~);</pre></div></div></div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Background Layer Offset</h3><div class="glossary-entry-desc">Sets an absolute offset from the aligned background position in scene units. Positive X is right; positive Y is down. Negative Y moves up. Set 0,0 to reset. Repeated calls replace the offset; they do not add to it. Independent of scroll factor.</div></div><div class="block-card glossary-demo-card" id="block-setup-set-background-layer-offset-1"><div class="block-row"><div class="st-block blue">Set background offset X <span class="st-input"></span> Y <span class="st-input"></span> for Layer with <span class="st-dropdown">Name</span> <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-setup-set-background-layer-offset-1">Copy</button></div><pre id="pre-block-setup-set-background-layer-offset-1">scripts.api.stencyl.BittyCameraBlocks.setBackgroundLayerOffset(~,~,~,~);</pre></div></div></div>
@@ -2620,8 +2634,8 @@
 <h3 class="glossary-category-title" id="cat-game-area">Game Area</h3>
 <h4 class="glossary-subcategory-title">Game Area</h4><div class="glossary-group-meta">Game Area → Game Area</div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Game Area Rect</h3><div class="glossary-entry-desc">Sets the full rectangle of the Game Area.</div></div><div class="block-card glossary-demo-card" id="block-game-area-set-display-area-rect-1"><div class="block-row"><div class="st-block blue">Set Game Area to X <span class="st-input"></span> Y <span class="st-input"></span> Width <span class="st-input"></span> Height <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-game-area-set-display-area-rect-1">Copy</button></div><pre id="pre-block-game-area-set-display-area-rect-1">scripts.api.stencyl.BittyCameraBlocks.setGameAreaRect(~,~,~,~);</pre></div></div></div>
-<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Game Area Position</h3><div class="glossary-entry-desc">Sets the position of the Game Area on the Canvas.</div></div><div class="block-card glossary-demo-card" id="block-game-area-set-display-area-position-1"><div class="block-row"><div class="st-block blue">Set Game Area Position to X <span class="st-input"></span> Y <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-game-area-set-display-area-position-1">Copy</button></div><pre id="pre-block-game-area-set-display-area-position-1">scripts.api.stencyl.BittyCameraBlocks.setGameAreaPosition(~,~);</pre></div></div></div>
-<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Game Area Size</h3><div class="glossary-entry-desc">Sets the size of the Game Area on the Canvas.</div></div><div class="block-card glossary-demo-card" id="block-game-area-set-display-area-size-1"><div class="block-row"><div class="st-block blue">Set Game Area Size to Width <span class="st-input"></span> Height <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-game-area-set-display-area-size-1">Copy</button></div><pre id="pre-block-game-area-set-display-area-size-1">scripts.api.stencyl.BittyCameraBlocks.setGameAreaSize(~,~);</pre></div></div></div>
+<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Game Area Position</h3><div class="glossary-entry-desc">Sets the position of the Game Area on the Screen.</div></div><div class="block-card glossary-demo-card" id="block-game-area-set-display-area-position-1"><div class="block-row"><div class="st-block blue">Set Game Area Position to X <span class="st-input"></span> Y <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-game-area-set-display-area-position-1">Copy</button></div><pre id="pre-block-game-area-set-display-area-position-1">scripts.api.stencyl.BittyCameraBlocks.setGameAreaPosition(~,~);</pre></div></div></div>
+<div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Game Area Size</h3><div class="glossary-entry-desc">Sets the size of the Game Area on the Screen.</div></div><div class="block-card glossary-demo-card" id="block-game-area-set-display-area-size-1"><div class="block-row"><div class="st-block blue">Set Game Area Size to Width <span class="st-input"></span> Height <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-game-area-set-display-area-size-1">Copy</button></div><pre id="pre-block-game-area-set-display-area-size-1">scripts.api.stencyl.BittyCameraBlocks.setGameAreaSize(~,~);</pre></div></div></div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Game Area X</h3><div class="glossary-entry-desc">Returns the X position of the Game Area.</div></div><div class="block-card glossary-demo-card" id="block-game-area-get-display-area-x-1"><div class="block-row"><div class="st-block blue reporter">Get Game Area X</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-game-area-get-display-area-x-1">Copy</button></div><pre id="pre-block-game-area-get-display-area-x-1">scripts.api.stencyl.BittyCameraBlocks.getGameAreaX()</pre></div></div></div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Game Area Y</h3><div class="glossary-entry-desc">Returns the Y position of the Game Area.</div></div><div class="block-card glossary-demo-card" id="block-game-area-get-display-area-y-1"><div class="block-row"><div class="st-block blue reporter">Get Game Area Y</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-game-area-get-display-area-y-1">Copy</button></div><pre id="pre-block-game-area-get-display-area-y-1">scripts.api.stencyl.BittyCameraBlocks.getGameAreaY()</pre></div></div></div>
 <div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Game Area Width</h3><div class="glossary-entry-desc">Returns the width of the Game Area.</div></div><div class="block-card glossary-demo-card" id="block-game-area-get-display-area-width-1"><div class="block-row"><div class="st-block blue reporter">Get Game Area Width</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-game-area-get-display-area-width-1">Copy</button></div><pre id="pre-block-game-area-get-display-area-width-1">scripts.api.stencyl.BittyCameraBlocks.getGameAreaWidth()</pre></div></div></div>
@@ -2681,9 +2695,9 @@
 <div class="section-body">
 <div class="faq-list">
 <details class="faq-item">
-<summary class="faq-issue">Camera Size vs. Viewport Size vs. Display Area</summary>
+<summary class="faq-issue">Camera Size vs. Viewport Size vs. Game Area</summary>
 <div class="faq-details">
-<p><strong>Camera Size</strong> controls how much of the game world is seen. <strong>Viewport Size</strong> controls how large that Camera image is drawn inside the final output. <strong>Display Area</strong> is the rectangle containing the complete bittyBIG output. Changing one does not automatically change the other two.</p>
+<p><strong>Camera Size</strong> controls how much of the Scene the Camera captures before zoom. <strong>Viewport Size</strong> controls how large that Camera output is drawn inside the Game Area. <strong>Game Area</strong> is the rectangle on the Screen that contains the Viewports. Changing one does not automatically change the other two.</p>
 </div>
 </details>
 <details class="faq-item">
@@ -2695,7 +2709,7 @@
 <details class="faq-item">
 <summary class="faq-issue">Split-Screen Layout</summary>
 <div class="faq-details">
-<p>Each Camera starts with a matching default Viewport, so custom split-screen comes down to arranging those Viewports inside the <strong>Display Area</strong>. Resize and reposition each Viewport to the region it should occupy. Camera ID <span class="inline-code">0</span> starts routed to Viewport ID <span class="inline-code">0</span>, Camera ID <span class="inline-code">1</span> to Viewport ID <span class="inline-code">1</span>, and so on unless you deliberately change the routing.</p>
+<p>Each Camera starts with a matching default Viewport, so custom split-screen comes down to arranging those Viewports inside the <strong>Game Area</strong>. Resize and reposition each Viewport to the region it should occupy. Camera ID <span class="inline-code">0</span> starts routed to Viewport ID <span class="inline-code">0</span>, Camera ID <span class="inline-code">1</span> to Viewport ID <span class="inline-code">1</span>, and so on unless you deliberately change the routing.</p>
 </div>
 </details>
 <details class="faq-item">
@@ -2713,7 +2727,7 @@
 <details class="faq-item">
 <summary class="faq-issue">Scene Background Layer Anchoring</summary>
 <div class="faq-details">
-<p>Use <strong>Set Background Layer Anchor</strong> to control how a Stencyl scene background image is registered inside its logical parallax surface. X and Y use normalized values from 0 to 1: <strong>0,0</strong> is top-left, <strong>0.5,0.5</strong> is centered, and <strong>0.5,1</strong> is bottom-center. Layers with no override default to <strong>0,0</strong>.</p>
+<p>Use <strong>Set Background Layer Alignments</strong> for named image-to-scene alignment, or <strong>Set Background Layer Anchors</strong> for custom normalized anchors. Image and scene anchors are independent: X and Y use values from 0 to 1, where <strong>0</strong> is left/top, <strong>0.5</strong> is center, and <strong>1</strong> is right/bottom. Use <strong>Set Background Layer Offset</strong> for an additional scene-unit adjustment after alignment.</p>
 </div>
 </details>
 <details class="faq-item">
@@ -2759,7 +2773,7 @@
 <li>viewport backgrounds</li>
 <li>viewport borders</li>
 <li>viewport transforms</li>
-<li>display area control</li>
+<li>game area control</li>
 <li>background color support</li>
 <li>background image support</li>
 <li>unlocked cameras</li>
@@ -2786,56 +2800,56 @@
 	Version 2.0 pushes the Dynamic Camera System further away from depending on Stencyl's built-in camera render path. The major focus is smoother camera movement, stronger multi-viewport rendering, and reducing repeated CPU/GPU work while keeping Stencyl as the editor and gameplay workflow.
 </p>
 
-<p><strong>Cached Background Renderer — Implemented</strong></p>
+<p><strong>Cached Background Renderer - Implemented</strong></p>
 <ul>
 <li>bittyBIG now renders Stencyl background source frames through its own camera and floating-point parallax math instead of relying on Stencyl's pixel-snapped background position.</li>
 <li>Background presentation data is reused per viewport while Stencyl continues to own source assets, animation timing, and scrolling state.</li>
 <li><strong>Result:</strong> smoother background movement and parallax that stays aligned with the bittyBIG camera.</li>
 </ul>
 
-<p><strong>Cached Tile / World Renderer — Implemented</strong></p>
+<p><strong>Cached Tile / World Renderer - Implemented</strong></p>
 <ul>
 <li>Static tile rendering now uses the shared <span class="inline-code">BittyTileCache</span> instead of asking Stencyl's tile layer to redraw separately for each camera.</li>
 <li>Cached tile chunks are reused across camera captures while dynamic actors and drawing continue through the normal Stencyl world-layer display tree.</li>
 <li><strong>Result:</strong> less dependency on Stencyl's built-in camera and substantially less repeated static rendering work.</li>
 </ul>
 
-<p><strong>Automatic Cache Refresh — Superseded Manual Rebuild Blocks</strong></p>
+<p><strong>Automatic Cache Refresh - Superseded Manual Rebuild Blocks</strong></p>
 <ul>
 <li>The originally planned manual rebuild blocks were not needed after the cache gained automatic change detection.</li>
 <li>Tile changes, visual variants, source changes, and animated tile state are detected during cache synchronization and the affected cached content is refreshed automatically.</li>
 <li><strong>Result:</strong> users do not need to manually tell the camera system when normal tile content changes.</li>
 </ul>
 
-<p><strong>Dirty-Region / Changed-Chunk Updates — Implemented</strong></p>
+<p><strong>Dirty-Region / Changed-Chunk Updates - Implemented</strong></p>
 <ul>
 <li>Changed tile cells update only their affected cached chunk instead of forcing the entire tile world to be rebuilt.</li>
 <li>On the Windows GPU-first path, dirty chunks are refreshed and reusable GPU-side chunk images are retained.</li>
 <li><strong>Result:</strong> larger scenes and runtime tile edits require much less redundant work.</li>
 </ul>
 
-<p><strong>Animated / Dynamic Background Support — Implemented</strong></p>
+<p><strong>Animated / Dynamic Background Support - Implemented</strong></p>
 <ul>
 <li>bittyBIG reads the current Stencyl background animation frame while preserving Stencyl's scrolling-background timing and independent scroll phase.</li>
 <li>Repeating backgrounds, custom scroll factors, and parallax continue to work through the bittyBIG-controlled presentation path.</li>
 <li><strong>Result:</strong> animated and moving backgrounds retain smooth camera-controlled positioning instead of being limited to a static cache.</li>
 </ul>
 
-<p><strong>HTML5 Tile Seam Improvements — Implemented</strong></p>
+<p><strong>HTML5 Tile Seam Improvements - Implemented</strong></p>
 <ul>
 <li>The shared tile-cache path avoids repeatedly rebuilding Stencyl's tile layer at different camera origins during the same frame.</li>
 <li>The renderer uses expanded capture coverage / safety pixels where needed so smooth subpixel camera movement does not have to be snapped to hide seams.</li>
 <li><strong>Result:</strong> the previous one-pixel tile-phase seam path is avoided while keeping smooth camera movement.</li>
 </ul>
 
-<p><strong>Renderer Independence — Major V2.0 Step Implemented</strong></p>
+<p><strong>Renderer Independence - Major V2.0 Step Implemented</strong></p>
 <ul>
 <li>Static tiles and Stencyl backgrounds are now presented through bittyBIG-controlled camera/render paths instead of depending on Stencyl's camera transform for each viewport.</li>
 <li>Stencyl remains responsible for the editor, actors, behaviors, scene setup, assets, animation state, and normal gameplay workflow.</li>
 <li><strong>Result:</strong> bittyBIG owns substantially more of the runtime camera/output behavior without requiring users to abandon Stencyl's creation pipeline.</li>
 </ul>
 
-<p><strong>Scene-Centered Camera / Zoom-Aware Parallax — Implemented</strong></p>
+<p><strong>Scene-Centered Camera / Zoom-Aware Parallax - Implemented</strong></p>
 <ul>
 <li>Scene limiting now clamps the resolved camera center itself, so the camera's actual center stays authoritative at scene edges.</li>
 <li>Background movement is calculated from the resolved camera center relative to the scene center, and Stencyl's stored scroll factor is converted to a zoom-aware effective factor so the same logical travel span is preserved as the visible camera size changes.</li>
@@ -2843,7 +2857,7 @@
 <li><strong>Result:</strong> backgrounds stay aligned with the camera and scene edges through movement and smooth zoom without edge drift or clamp jitter.</li>
 </ul>
 
-<p><strong>Background Repeat / Anchor Controls — Implemented</strong></p>
+<p><strong>Background Repeat / Anchor Controls - Implemented</strong></p>
 <ul>
 <li>Background repeat can be overridden per layer as None, Horizontal, Vertical, or Both while leaving Stencyl's own Repeat setting untouched when no override is used.</li>
 <li>Repeating backgrounds prepare only the minimum number of source copies needed for coverage; the previous extra safety copy is not added.</li>
@@ -2851,7 +2865,7 @@
 <li><strong>Result:</strong> background preparation and registration are explicit per-layer controls without introducing another rendering path.</li>
 </ul>
 
-<p><strong>Unified Rotation / Flip Presentation Path — Implemented</strong></p>
+<p><strong>Unified Rotation / Flip Presentation Path - Implemented</strong></p>
 <ul>
 <li>Rotation no longer switches to a separate capture bitmap, separate world renderer, or separate transformed-camera presentation path.</li>
 <li>Ordered layers, backgrounds, zoom, scene clamping, parallax, and smoothing now run through the same normal rendering path first.</li>
@@ -2859,7 +2873,7 @@
 <li><strong>Result:</strong> rotation inherits the same rendering behavior and fixes as ordinary rendering and zoom instead of maintaining parallel special cases.</li>
 </ul>
 
-<p><strong>Pixel-Aligned World Raster + Fractional Presentation Residual — Implemented</strong></p>
+<p><strong>Pixel-Aligned World Raster + Fractional Presentation Residual - Implemented</strong></p>
 <ul>
 <li>The rasterized world / tile camera origin is split into a pixel-aligned raster position and a fractional remainder.</li>
 <li>The world is rendered at the stable pixel-aligned origin, while the fractional remainder is preserved and applied at final presentation.</li>
@@ -2870,7 +2884,7 @@
 
 <h3>Remaining V2.0 Work</h3>
 <div class="term-list">
-<p><strong>Per-Viewport Debug Drawing — Planned</strong></p>
+<p><strong>Per-Viewport Debug Drawing - Planned</strong></p>
 <ul>
 <li>Add optional visual debug drawing for each viewport and camera.</li>
 <li><strong>Goal:</strong> make it easy to see camera bounds, viewport rectangles, centers, targets, offsets, and split-screen behavior directly on screen while testing.</li>
@@ -3451,7 +3465,7 @@
 
 			readout.innerHTML =
 				"<strong>Screen Size:</strong> " + Math.round(screenW) + "x" + Math.round(screenH) +
-				"<br><strong>Canvas / Display Area:</strong> " + Math.round(canvasX) + ", " + Math.round(canvasY) + ", " + Math.round(canvasW) + ", " + Math.round(canvasH) +
+				"<br><strong>Game Area:</strong> " + Math.round(canvasX) + ", " + Math.round(canvasY) + ", " + Math.round(canvasW) + ", " + Math.round(canvasH) +
 				"<br><strong>Viewport Rects:</strong><br>" + lines.join("<br>");
 
 			renderPixelPerfect(canvasW, canvasH, ports);
@@ -3489,7 +3503,7 @@
 			if(code == null) return;
 
 			var lines = [];
-			lines.push("// Canvas / Display Area uses the canvas size. Viewports split inside this rectangle.");
+			lines.push("// Game Area uses the configured size. Viewports are placed inside this rectangle.");
 			lines.push("scripts.BittyCameraBlocks.setGameAreaRect(" + Math.round(canvasX) + ", " + Math.round(canvasY) + ", " + Math.round(canvasW) + ", " + Math.round(canvasH) + ");");
 			lines.push("");
 
@@ -3581,7 +3595,7 @@
 
 			preview.innerHTML = "";
 
-			addPreviewBlock(preview, "blue", ["Set Display Area to X", canvasX, "Y", canvasY, "Width", canvasW, "Height", canvasH]);
+			addPreviewBlock(preview, "blue", ["Set Game Area to X", canvasX, "Y", canvasY, "Width", canvasW, "Height", canvasH]);
 
 			ports.forEach(function(port, i)
 			{
