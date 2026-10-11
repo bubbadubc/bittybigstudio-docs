@@ -3,10 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link rel="icon" type="image/png" href="../favicon.png">
 <title>bittyBIG Easy Input System Documentation</title>
 <style>
-
 		:root
 		{
 			--bg: #f2f2f2;
@@ -204,11 +202,11 @@
 			z-index: 30;
 			display: flex;
 			flex-wrap: wrap;
-			gap: 8px;
-			padding: 10px 24px;
+			gap: 5px;
+			padding: 7px 20px;
 			background: #ffffff;
 			border-bottom: 1px solid var(--line);
-			box-shadow: 0 2px 7px rgba(0,0,0,0.08);
+			box-shadow: 0 1px 5px rgba(0,0,0,0.07);
 		}
 
 		.top-nav a
@@ -293,23 +291,23 @@
 
 		.content
 		{
-			padding: 24px;
-			max-width: 1300px;
+			padding: 18px 20px;
+			max-width: 1260px;
 		}
 
 		.section
 		{
 			background: var(--panel);
 			border: 1px solid var(--line);
-			border-radius: 8px;
-			box-shadow: 0 2px 8px var(--shadow);
-			margin-bottom: 18px;
+			border-radius: 7px;
+			box-shadow: 0 1px 5px rgba(0, 0, 0, 0.08);
+			margin-bottom: 12px;
 			overflow: hidden;
 		}
 
 		.section-header
 		{
-			padding: 18px 20px;
+			padding: 12px 16px;
 			border-bottom: 1px solid var(--line);
 			background: var(--panel-2);
 		}
@@ -317,13 +315,13 @@
 		.section-header h2
 		{
 			margin: 0;
-			font-size: 24px;
+			font-size: 21px;
 			color: #138a84;
 		}
 
 		.section-body
 		{
-			padding: 20px;
+			padding: 16px;
 		}
 
 		p
@@ -335,15 +333,15 @@
 		{
 			background: linear-gradient(135deg, #5d7389, #455a6f);
 			color: white;
-			padding: 24px;
-			border-radius: 8px;
+			padding: 18px 20px;
+			border-radius: 7px;
 			border: 1px solid #394a5c;
 		}
 
 		.hero-box h2
 		{
-			margin: 0 0 10px;
-			font-size: 34px;
+			margin: 0 0 8px;
+			font-size: 30px;
 			color: white;
 		}
 
@@ -401,8 +399,8 @@
 		.info-card
 		{
 			border: 1px solid var(--line);
-			border-radius: 8px;
-			padding: 16px;
+			border-radius: 6px;
+			padding: 13px;
 			background: #fafafa;
 		}
 
@@ -443,6 +441,59 @@
 			font-family: Consolas, Monaco, "Courier New", monospace;
 			font-size: 0.95em;
 		}
+
+		/* Collapsible major sections */
+		.section-toggle
+		{
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			gap: 8px;
+			padding: 0;
+			border: 0;
+			background: transparent;
+			color: inherit;
+			text-align: left;
+			cursor: pointer;
+		}
+
+		.section-toggle-icon
+		{
+			order: -1;
+			flex: 0 0 auto;
+			display: inline-block;
+			color: #111111;
+			font-size: 14px;
+			line-height: 1;
+			transition: transform 0.16s ease;
+			transform: rotate(90deg);
+			margin-left: 2px;
+		}
+
+		.section-toggle:focus-visible
+		{
+			outline: 2px solid var(--accent);
+			outline-offset: 4px;
+			border-radius: 3px;
+		}
+
+		.collapsible-section.collapsed > .section-body
+		{
+			display: none;
+		}
+
+		.collapsible-section.collapsed > .section-header
+		{
+			border-bottom: 0;
+		}
+
+		.collapsible-section.collapsed .section-toggle-icon
+		{
+			transform: rotate(0deg);
+		}
+
+
 
 		/* Tabs */
 		.tabs
@@ -783,10 +834,10 @@
 		.block-card
 		{
 			border: 1px solid var(--line);
-			border-radius: 8px;
+			border-radius: 6px;
 			background: #fafafa;
-			padding: 16px;
-			margin-bottom: 14px;
+			padding: 13px;
+			margin-bottom: 10px;
 		}
 
 		.block-card h3
@@ -946,8 +997,7 @@
 			border-radius: 8px;
 			background: #fafafa;
 			padding: 14px 16px;
-			margin-bottom: 18px;
-		}
+			margin-bottom: 18px;		}
 
 		.term-list p
 		{
@@ -1162,7 +1212,7 @@
 		}
 
 
-		/* Balanced FAQ Cards */
+		/* FAQ Dropdowns */
 		.faq-list
 		{
 			display: grid;
@@ -1174,17 +1224,37 @@
 			border: 1px solid #d8d8d8;
 			border-radius: 7px;
 			background: #fafafa;
-			padding: 11px 13px;
+			overflow: hidden;
 		}
 
-		.faq-line
+		.faq-issue
 		{
-			margin: 0 0 6px;
+			cursor: pointer;
+			padding: 12px 14px;
+			font-weight: bold;
+			color: #333333;
+			user-select: none;
 		}
 
-		.faq-line:last-child
+		.faq-issue:hover
 		{
-			margin-bottom: 0;
+			background: #f1f5f8;
+		}
+
+		.faq-item[open] .faq-issue
+		{
+			border-bottom: 1px solid #e1e1e1;
+			background: #f5f7f9;
+		}
+
+		.faq-details
+		{
+			padding: 12px 14px 14px;
+		}
+
+		.faq-details p
+		{
+			margin: 0;
 		}
 
 		.faq-block-image
@@ -1197,14 +1267,6 @@
 			color: var(--accentDark);
 			font-weight: bold;
 			text-decoration: underline;
-		}
-
-		.faq-label
-		{
-			display: inline-block;
-			min-width: 68px;
-			font-weight: bold;
-			color: #138a84;
 		}
 
 		/* Footer */
@@ -1246,6 +1308,11 @@
 				position: relative;
 				top: 0;
 			}
+
+			.left-glossary-nav
+			{
+				display: none;
+			}
 		}
 
 		@media (max-width: 900px)
@@ -1260,1067 +1327,911 @@
 			}
 		}
 	
-
-		/* Easy Input documentation additions */
-		.st-block.event-hat
+		/* Ultra-compact layout pass */
+		.content
 		{
-			border-radius: 16px 5px 4px 4px;
-			padding-left: 14px;
+			padding: 12px 14px;
+			max-width: 1220px;
 		}
 
-		.st-block.event-hat::before
+		.section
 		{
-			content: none;
-		}
-
-		.event-reporters
-		{
-			display: flex;
-			flex-wrap: wrap;
-			gap: 7px;
-			margin: 10px 0 4px;
-		}
-
-		.event-reporters .st-block
-		{
-			--blockCutout: #fafafa;
-		}
-
-		.event-menu-path
-		{
-			display: inline-block;
-			padding: 5px 8px;
-			border: 1px solid #c4ccd5;
-			border-radius: 5px;
-			background: #eef2f6;
-			font-weight: bold;
-		}
-
-		.flow-row
-		{
-			display: flex;
-			flex-wrap: wrap;
-			align-items: center;
-			gap: 8px;
-			margin: 12px 0;
-		}
-
-		.flow-node
-		{
-			padding: 8px 10px;
-			border: 1px solid #b8c7d8;
+			margin-bottom: 8px;
 			border-radius: 6px;
-			background: #edf4fb;
-			font-weight: bold;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 		}
 
-		.flow-arrow
+		.section-header
 		{
-			color: #657585;
-			font-weight: bold;
+			padding: 9px 12px;
 		}
 
-		.support-table
+		.section-header h2
 		{
-			width: 100%;
-			border-collapse: collapse;
-			margin-top: 10px;
+			font-size: 18px;
 		}
 
-		.support-table th,
-		.support-table td
+		.section-body
+		{
+			padding: 10px 12px;
+		}
+
+		.section-body > p
+		{
+			margin-bottom: 8px;
+		}
+
+		.hero-box
+		{
+			padding: 14px 16px;
+		}
+
+		.hero-box h2
+		{
+			font-size: 26px;
+			margin-bottom: 5px;
+		}
+
+		.hero-box p
+		{
+			font-size: 14px;
+			margin-bottom: 10px;
+		}
+
+		.hero-buttons
+		{
+			gap: 6px;
+		}
+
+		.btn
+		{
+			padding: 7px 10px;
+			font-size: 13px;
+		}
+
+		.grid-2,
+		.grid-3,
+		.grid-4
+		{
+			gap: 8px;
+		}
+
+		.info-card
 		{
 			padding: 9px 10px;
-			border: 1px solid var(--line);
-			text-align: left;
-			vertical-align: top;
+			border-radius: 5px;
 		}
 
-		.support-table th
+		.info-card h3
 		{
-			background: #e8edf2;
+			font-size: 15px;
+			margin-bottom: 5px;
 		}
 
-		.glossary-category-title
+		.info-card p,
+		.info-card li
 		{
-			margin: 24px 0 10px;
-			padding-bottom: 7px;
-			border-bottom: 1px solid var(--line);
-			color: #333333;
+			font-size: 13px;
 		}
 
-		.glossary-category-title:first-child
+		.info-card ol,
+		.info-card ul
 		{
-			margin-top: 0;
+			margin-top: 4px;
+			margin-bottom: 4px;
+			padding-left: 20px;
 		}
 
-		.simple-list
+		.note
 		{
+			padding: 8px 10px;
+			margin: 7px 0;
+			border-radius: 5px;
+			font-size: 13px;
+		}
+
+		.tabs
+		{
+			gap: 5px;
+			margin-bottom: 9px;
+		}
+
+		.tab-button
+		{
+			padding: 6px 9px;
+			font-size: 13px;
+		}
+
+		.block-stack
+		{
+			margin: 4px 0 7px;
+			padding: 3px 5px 6px 2px;
+		}
+
+		/* Compact glossary entries */
+		.block-card
+		{
+			padding: 8px 9px;
+			margin-bottom: 6px;
+			border-radius: 5px;
+		}
+
+		.block-card h3
+		{
+			font-size: 14px;
+			margin: 0 0 4px;
+		}
+
+		.block-meta
+		{
+			font-size: 11px;
+			margin-bottom: 3px;
+		}
+
+		.block-card > .block-row
+		{
+			margin: 0 0 5px;
+		}
+
+		.block-desc
+		{
+			font-size: 12px;
+			line-height: 1.3;
+			margin-bottom: 0;
+		}
+
+		.block-card .code-box
+		{
+			display: none;
+		}
+
+		.block-card.code-open .code-box
+		{
+			display: block;
+			margin-top: 7px;
+		}
+
+		.block-card .code-toggle
+		{
+			display: inline-block;
+			margin-top: 5px;
+			padding: 4px 7px;
+			font-size: 11px;
+		}
+
+		/* Slightly smaller Stencyl block visuals */
+		.block-card .st-block
+		{
+			font-size: 10px;
+			min-height: 19px;
+			padding: 2px 7px 3px;
+		}
+
+		.block-card .st-block.reporter
+		{
+			min-height: 18px;
+			padding: 2px 8px 3px;
+		}
+
+		.block-card .st-block.boolean
+		{
+			min-height: 19px;
+			padding: 2px 13px 3px;
+		}
+
+		.block-card .st-input,
+		.block-card .st-dropdown,
+		.block-card .st-text
+		{
+			min-height: 16px;
+			padding: 0 5px;
+		}
+
+		.term-list
+		{
+			padding: 9px 11px;
+			margin-bottom: 10px;
+		}
+
+		.term-list p
+		{
+			margin-bottom: 5px;
+			font-size: 13px;
+		}
+
+		/* Compact Layout Editor */
+		.viewport-demo
+		{
+			padding: 10px;
+		}
+
+		.demo-controls
+		{
+			gap: 6px;
+			margin-bottom: 8px;
+		}
+
+		.demo-controls input,
+		.viewport-row input
+		{
+			padding: 5px 6px;
+		}
+
+		.builder-layout
+		{
+			gap: 10px;
+			grid-template-columns: minmax(0, 1fr) 320px;
+		}
+
+		.viewport-editor,
+		.pixel-panel,
+		.generated-code
+		{
+			padding: 9px;
+		}
+
+		.viewport-row
+		{
+			gap: 5px;
+			padding: 5px 0;
+		}
+
+		.generated-code,
+		.pixel-panel
+		{
+			margin-top: 9px;
+		}
+
+		/* Compact FAQ dropdowns */
+		.faq-list
+		{
+			gap: 6px;
+		}
+
+		.faq-item
+		{
+			padding: 7px 9px;
+			border-radius: 5px;
+		}
+
+		.faq-item summary
+		{
+			font-size: 13px;
+		}
+
+
+		/* Desktop glossary entries: use width instead of height */
+		#glossary .block-card
+		{
+			display: grid;
+			grid-template-columns: 185px minmax(300px, max-content) minmax(220px, 1fr) auto;
+			grid-template-areas:
+				"title block desc code"
+				"meta  block desc code"
+				"box   box   box  box";
+			column-gap: 12px;
+			row-gap: 1px;
+			align-items: center;
+			padding: 7px 9px;
+			min-height: 46px;
+		}
+
+		#glossary .block-card > h3
+		{
+			grid-area: title;
+			align-self: end;
 			margin: 0;
-			padding-left: 22px;
+			font-size: 13px;
+			line-height: 1.15;
 		}
 
-		.simple-list li + li
+		#glossary .block-card > .block-meta
 		{
+			grid-area: meta;
+			align-self: start;
+			margin: 1px 0 0;
+			font-size: 10px;
+			line-height: 1.15;
+		}
+
+		#glossary .block-card > .block-row
+		{
+			grid-area: block;
+			margin: 0;
+			min-width: 0;
+			overflow-x: auto;
+			overflow-y: visible;
+			padding: 3px 0 6px;
+		}
+
+		#glossary .block-card > .block-desc
+		{
+			grid-area: desc;
+			margin: 0;
+			font-size: 12px;
+			line-height: 1.25;
+			min-width: 0;
+		}
+
+		#glossary .block-card > .glossary-code-toggle
+		{
+			grid-area: code;
+			margin: 0;
+			align-self: center;
+			white-space: nowrap;
+		}
+
+		#glossary .block-card > .code-box
+		{
+			grid-area: box;
 			margin-top: 6px;
 		}
 
-		.inline-link
+		@media (max-width: 1050px)
 		{
-			color: var(--accentDark);
-			font-weight: bold;
-			text-decoration: underline;
+			#glossary .block-card
+			{
+				grid-template-columns: 160px minmax(260px, 1fr) auto;
+				grid-template-areas:
+					"title block code"
+					"meta  block code"
+					"desc  desc  desc"
+					"box   box   box";
+			}
+
+			#glossary .block-card > .block-desc
+			{
+				margin-top: 4px;
+			}
 		}
 
+		@media (max-width: 720px)
+		{
+			#glossary .block-card
+			{
+				display: block;
+				padding: 8px 9px;
+			}
+
+			#glossary .block-card > h3
+			{
+				margin-bottom: 2px;
+			}
+
+			#glossary .block-card > .block-meta
+			{
+				margin-bottom: 5px;
+			}
+
+			#glossary .block-card > .block-row
+			{
+				margin-bottom: 3px;
+			}
+
+			#glossary .block-card > .block-desc
+			{
+				margin: 3px 0 5px;
+			}
+		}
+
+
+		/* Glossary: description beneath the name, block preview to the right */
+		#glossary h4
+		{
+			margin: 12px 0 1px;
+			font-size: 15px;
+		}
+
+		#glossary .glossary-group-meta
+		{
+			margin: 0 0 5px;
+			font-size: 11px;
+			line-height: 1.15;
+			color: var(--muted);
+		}
+
+		#glossary .block-card
+		{
+			display: grid;
+			grid-template-columns: 280px minmax(0, 1fr) auto;
+			grid-template-areas:
+				"title block code"
+				"desc  block code"
+				"box   box   box";
+			column-gap: 12px;
+			row-gap: 2px;
+			align-items: start;
+			padding: 7px 9px;
+			margin-bottom: 5px;
+		}
+
+		#glossary .block-card > h3
+		{
+			grid-area: title;
+			margin: 0;
+			font-size: 13px;
+			line-height: 1.15;
+		}
+
+		#glossary .block-card > .block-desc
+		{
+			grid-area: desc;
+			margin: 0;
+			font-size: 12px;
+			line-height: 1.25;
+			min-width: 0;
+			align-self: start;
+		}
+
+		#glossary .block-card > .block-row
+		{
+			grid-area: block;
+			margin: 0;
+			padding: 1px 0 3px;
+			overflow-x: auto;
+			overflow-y: visible;
+			align-self: center;
+		}
+
+		#glossary .block-card > .glossary-code-toggle
+		{
+			grid-area: code;
+			margin: 0;
+			align-self: center;
+			white-space: nowrap;
+		}
+
+		#glossary .block-card > .code-box
+		{
+			grid-area: box;
+			margin-top: 6px;
+		}
+
+		@media (max-width: 980px)
+		{
+			#glossary .block-card
+			{
+				grid-template-columns: minmax(0, 1fr) auto;
+				grid-template-areas:
+					"title code"
+					"desc  code"
+					"block block"
+					"box   box";
+			}
+
+			#glossary .block-card > .block-row
+			{
+				margin-top: 4px;
+			}
+		}
+
+
+		/* Glossary redesign */
+		#glossary .glossary-category-title
+		{
+			margin: 18px 0 8px;
+			padding: 8px 11px;
+			border-left: 4px solid #138a84;
+			border-radius: 4px;
+			background: #455a6f;
+			color: #ffffff;
+			font-size: 17px;
+			line-height: 1.2;
+		}
+
+		#glossary .glossary-subcategory-title
+		{
+			display: inline-block;
+			margin: 11px 0 2px;
+			padding: 4px 8px;
+			border: 1px solid #c9d0d6;
+			border-left: 3px solid #138a84;
+			border-radius: 4px;
+			background: #eef1f3;
+			color: #2f3a44;
+			font-size: 13px;
+			font-weight: bold;
+			line-height: 1.2;
+		}
+
+		#glossary .glossary-group-meta
+		{
+			margin: 0 0 7px;
+			font-size: 10px;
+			color: var(--muted);
+		}
+
+		#glossary .glossary-entry
+		{
+			margin: 0 0 10px;
+		}
+
+		#glossary .glossary-entry-header
+		{
+			padding: 0 2px 5px;
+		}
+
+		#glossary .glossary-entry-title
+		{
+			margin: 0 0 2px;
+			font-size: 14px;
+			line-height: 1.2;
+			color: #202020;
+		}
+
+		#glossary .glossary-entry-desc
+		{
+			margin: 0;
+			max-width: 980px;
+			font-size: 12px;
+			line-height: 1.35;
+			color: #4f4f4f;
+		}
+
+		#glossary .glossary-demo-card
+		{
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(300px, 42%);
+			gap: 14px;
+			align-items: center;
+			padding: 9px 10px;
+			margin: 0;
+			border: 1px solid #d3d3d3;
+			border-radius: 6px;
+			background: #fafafa;
+		}
+
+		#glossary .glossary-demo-card > .block-row
+		{
+			margin: 0;
+			padding: 4px 0 7px 2px;
+			min-width: 0;
+			overflow-x: auto;
+			overflow-y: visible;
+		}
+
+		#glossary .glossary-demo-card > .code-box
+		{
+			display: block !important;
+			margin: 0 0 0 12px;
+			border: 1px solid #d5d5d5;
+			border-left: 4px solid #b8c2ca;
+			border-radius: 4px;
+			background: #f2f3f4;
+			min-width: 0;
+		}
+
+		#glossary .glossary-demo-card > .code-box .code-bar
+		{
+			padding: 5px 7px;
+			background: #e7eaec;
+			font-size: 10px;
+		}
+
+		#glossary .glossary-demo-card > .code-box pre
+		{
+			padding: 8px 10px 8px 16px;
+			font-size: 11px;
+			line-height: 1.35;
+			white-space: pre-wrap;
+			overflow-wrap: anywhere;
+		}
+
+		#glossary .glossary-demo-card .copy-btn
+		{
+			padding: 3px 6px;
+			font-size: 10px;
+		}
+
+		@media (max-width: 900px)
+		{
+			#glossary .glossary-demo-card
+			{
+				grid-template-columns: 1fr;
+				gap: 7px;
+			}
+
+			#glossary .glossary-demo-card > .code-box
+			{
+				margin-left: 0;
+			}
+		}
+
+
+		/* Final glossary card alignment:
+		   visual block hard-left, compact indented code field to the right */
+		#glossary .glossary-demo-card
+		{
+			display: grid;
+			grid-template-columns: minmax(300px, auto) minmax(320px, 1fr);
+			gap: 18px;
+			align-items: center;
+			padding: 8px 10px;
+			margin: 0;
+			border: 1px solid #d3d3d3;
+			border-radius: 6px;
+			background: #fafafa;
+		}
+
+		#glossary .glossary-demo-card > .block-row
+		{
+			margin: 0;
+			padding: 4px 0 7px 0;
+			min-width: 0;
+			overflow-x: auto;
+			overflow-y: visible;
+			justify-content: flex-start;
+		}
+
+		#glossary .glossary-demo-card > .code-box
+		{
+			display: grid !important;
+			grid-template-columns: minmax(0, 1fr) auto;
+			align-items: center;
+			margin: 0;
+			border: 1px solid #d5d5d5;
+			border-left: 4px solid #b8c2ca;
+			border-radius: 4px;
+			background: #f2f3f4;
+			min-width: 0;
+			overflow: hidden;
+		}
+
+		#glossary .glossary-demo-card > .code-box .code-bar
+		{
+			grid-column: 2;
+			grid-row: 1;
+			padding: 4px 6px;
+			border: 0;
+			border-left: 1px solid #d5d5d5;
+			background: transparent;
+		}
+
+		#glossary .glossary-demo-card > .code-box .code-bar > span
+		{
+			display: none;
+		}
+
+		#glossary .glossary-demo-card > .code-box pre
+		{
+			grid-column: 1;
+			grid-row: 1;
+			margin: 0;			padding: 8px 12px 8px 18px;
+			font-size: 11px;
+			line-height: 1.35;
+			white-space: pre-wrap;
+			overflow-wrap: anywhere;
+			background: transparent;
+		}
+
+		#glossary .glossary-demo-card .copy-btn
+		{
+			padding: 4px 7px;
+			font-size: 10px;
+		}
+
+		@media (max-width: 820px)
+		{
+			#glossary .glossary-demo-card
+			{
+				grid-template-columns: 1fr;
+				gap: 7px;
+			}
+		}
+
+
+		/* True compact glossary demo row: block left, code right */
+		#glossary .glossary-demo-card
+		{
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(320px, 46%);
+			gap: 16px;
+			align-items: center;
+			padding: 6px 9px;
+			margin: 0;
+			min-height: 0;
+		}
+
+		#glossary .glossary-demo-card > .block-row
+		{
+			grid-area: auto !important;
+			justify-self: start;
+			align-self: center;
+			width: 100%;
+			margin: 0;
+			padding: 3px 0 6px;
+			overflow-x: auto;
+			overflow-y: visible;
+			text-align: left;
+		}
+
+		#glossary .glossary-demo-card > .code-box
+		{
+			grid-area: auto !important;
+			justify-self: end;
+			align-self: center;
+			width: 100%;
+			max-width: 560px;
+			margin: 0 !important;
+			display: grid !important;
+			grid-template-columns: minmax(0, 1fr) auto;
+			min-width: 0;
+		}
+
+		#glossary .glossary-demo-card > .code-box pre
+		{
+			margin: 0;
+			padding: 7px 10px 7px 16px;
+		}
+
+		#glossary .glossary-entry
+		{
+			margin-bottom: 8px;
+		}
+
+		#glossary .glossary-entry-header
+		{
+			padding-bottom: 4px;
+		}
+
+		@media (max-width: 820px)
+		{
+			#glossary .glossary-demo-card
+			{
+				grid-template-columns: 1fr;
+				gap: 6px;
+			}
+
+			#glossary .glossary-demo-card > .code-box
+			{
+				justify-self: stretch;
+				max-width: none;
+			}
+		}
+
+
+		/* Remove legacy glossary grid rows that were reserving empty vertical space */
+		#glossary .glossary-demo-card
+		{
+			grid-template-areas: none !important;
+			grid-template-rows: auto !important;
+			grid-auto-rows: auto !important;
+			min-height: 0 !important;
+			height: auto !important;
+			padding: 4px 8px !important;
+			gap: 12px !important;
+			align-content: center;
+		}
+
+		#glossary .glossary-demo-card > .block-row
+		{
+			grid-row: 1 !important;
+			grid-column: 1 !important;
+			padding: 2px 0 5px !important;
+			margin: 0 !important;
+			align-self: center !important;
+		}
+
+		#glossary .glossary-demo-card > .code-box
+		{
+			grid-row: 1 !important;
+			grid-column: 2 !important;
+			margin: 0 !important;
+			align-self: center !important;
+		}
+
+		#glossary .glossary-demo-card > .code-box pre
+		{
+			padding-top: 6px !important;
+			padding-bottom: 6px !important;
+		}
+
+		#glossary .glossary-entry
+		{
+			margin-bottom: 6px !important;
+		}
+
+		#glossary .glossary-entry-header
+		{
+			padding-bottom: 3px !important;
+		}
+
+
+
+/* Easy Input documentation additions */
+.definition-table { width:100%; border-collapse:collapse; margin:8px 0 12px; font-size:13px; }
+.definition-table th, .definition-table td { border:1px solid #d7d7d7; padding:7px 9px; vertical-align:top; text-align:left; }
+.definition-table th { background:#eef1f3; color:#2f3a44; }
+.definition-table td:first-child { font-weight:bold; white-space:nowrap; width:210px; }
+.dropdown-card { border:1px solid var(--line); border-radius:6px; background:#fafafa; margin-bottom:10px; overflow:hidden; }
+.dropdown-card h4 { margin:0; padding:8px 10px; background:#eef1f3; border-bottom:1px solid #d7d7d7; font-size:14px; color:#2f3a44; }
+.dropdown-card .dropdown-summary { margin:0; padding:8px 10px 0; font-size:12px; color:#4f4f4f; }
+.dropdown-card .definition-table { margin:8px 10px 10px; width:calc(100% - 20px); }
+.compact-dropdown .dropdown-summary { padding:6px 10px 8px; }
+.platform-table { width:100%; border-collapse:collapse; margin-top:8px; }
+.platform-table th, .platform-table td { border:1px solid #d7d7d7; padding:8px 9px; text-align:left; vertical-align:top; }
+.platform-table th { background:#eef1f3; }
+.flow-line { font-family:Consolas, Monaco, "Courier New", monospace; padding:10px 12px; border:1px solid #d8d8d8; background:#f6f6f6; border-radius:6px; margin:8px 0; overflow:auto; white-space:nowrap; }
+.small-muted { font-size:12px; color:var(--muted); }
+.key-value { display:grid; grid-template-columns:190px 1fr; gap:6px 12px; margin:8px 0; }
+.key-value > div:nth-child(odd) { font-weight:bold; }
+@media(max-width:720px){ .definition-table td:first-child{width:auto;white-space:normal;} .key-value{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
-
 <div class="app">
 <aside class="sidebar">
-	<div class="sidebar-header">
-		<h1><a href="https://docs.bittybigstudio.com/">Docs Home</a></h1>
-		<div class="sub">bittyBIG Studio Documentation</div>
-	</div>
-	<div class="glossary-sidebar left-glossary-nav">
-<div class="glossary-main-title">Block Glossary</div>
-<div class="cat">
-<div class="cat-title">Action Maps</div>
-<div class="cat-title">Setters</div>
-<a href="#block-bbinput-set-action-binding">Set Action Binding</a>
-<a href="#block-bbinput-set-active-action-map">Set Active Action Map</a>
-<a href="#block-bbinput-remove-input-binding">Remove Input Binding</a>
-<a href="#block-bbinput-clear-action-map">Clear Action Map</a>
-<div class="cat-title">Getters</div>
-<a href="#block-bbinput-get-active-action-map">Get Active Action Map</a>
-<a href="#block-bbinput-get-bound-action">Get Bound Action</a>
-<a href="#block-bbinput-action-map-exists">Action Map Exists?</a>
-</div>
-<div class="cat">
-<div class="cat-title">Input</div>
-<div class="cat-title">Setters</div>
-<a href="#block-bbinput-receive-action-events-in-this-actor">Receive Action Events in This Actor</a>
-<a href="#block-bbinput-set-digital-vector">Set Digital Vector</a>
-<div class="cat-title">Getters</div>
-<a href="#block-bbinput-action-state">Get Action State</a>
-<a href="#block-bbinput-input-state">Get Input State</a>
-<a href="#block-bbinput-get-analog-value">Get Analog Value</a>
-<a href="#block-bbinput-get-digital-vector">Get Digital Vector</a>
-</div>
-<div class="cat">
-<div class="cat-title">Controllers</div>
-<div class="cat-title">Getters</div>
-<a href="#block-bbinput-controller-connected">Controller Connected?</a>
-<a href="#block-bbinput-connected-controller-count">Connected Controller Count</a>
-<a href="#block-bbinput-get-controller-name">Get Controller Name</a>
-<a href="#block-bbinput-get-controller-id">Get Controller ID</a>
-</div>
-<div class="cat">
-<div class="cat-title">Event Data</div>
-<div class="cat-title">Getters</div>
-<a href="#block-bbinput-current-action">Current Action</a>
-<a href="#block-bbinput-current-input-name">Current Input Name</a>
-<a href="#block-bbinput-current-input-phase">Current Input Phase</a>
-<a href="#block-bbinput-current-analog-input">Current Analog Input</a>
-<a href="#block-bbinput-current-analog-value">Current Analog Value</a>
-<a href="#block-bbinput-current-controller-port">Current Controller Port</a>
-<a href="#block-bbinput-current-controller-name">Current Controller Name</a>
-<a href="#block-bbinput-current-controller-id">Current Controller ID</a>
-<a href="#block-bbinput-current-controller-connected">Current Controller Is Connected</a>
-</div>
-<div class="cat">
-<div class="cat-title">Events</div>
-<a href="#event-any-input">Any Button</a>
-<a href="#event-controller">Controller Connected</a>
-<a href="#event-analog">Analog Input</a>
-</div></div>
+<div class="sidebar-header"><h1><a href="https://docs.bittybigstudio.com/">Docs Home</a></h1><div class="sub">bittyBIG Studio Documentation</div></div>
+<div class="glossary-sidebar left-glossary-nav"><div class="glossary-main-title">Easy Input Docs</div><a href="#overview">Overview</a><a href="#project-setup">Project Setup</a><a href="#quick-start">Quick Start</a><a href="#core-concepts">Core Concepts</a><a href="#platform-notes">Platform Notes</a><a href="#dropdown-reference">Dropdown Reference</a><a href="#glossary">Block Glossary</a><a href="#troubleshooting">FAQs</a><a href="#release-notes">Release Notes</a><div class="glossary-main-title" style="margin-top:14px;">Block Glossary</div><div class="cat"><div class="cat-title">Events</div><a href="#block-event-bbinput-when-input">Any Input</a><a href="#block-event-bbinput-when-touch">Touch</a><a href="#block-event-bbinput-when-touch-gesture">Any Touch Gesture</a><a href="#block-event-bbinput-when-device-gesture">Any Device Gesture</a><a href="#block-event-bbinput-when-controller-change">Controller</a><a href="#block-event-bbinput-when-analog-change">Analog Input</a><a href="#block-event-bbinput-when-action">Action</a></div><div class="cat"><div class="cat-title">Input Logic</div><a href="#block-palette-bbinput-input-source-state">Input is</a><a href="#block-palette-bbinput-input-source-state-slot">Input is for Input Slot</a><a href="#block-palette-bbinput-action-state">Action is for Input Slot</a><a href="#block-palette-bbinput-action-value">Get Value of Action for Input Slot</a><a href="#block-palette-bbinput-set-action">Set Action to</a><a href="#block-palette-bbinput-input-source-digital-vector">Digital Vector</a><a href="#block-palette-bbinput-input-combination">+</a><a href="#block-palette-bbinput-action-map-operation">Action Map</a><a href="#block-palette-bbinput-set-input-slot-action-map">Set Input Slot Action Map to</a><a href="#block-palette-bbinput-get-input-slot-action-map">Get Action Map for Input Slot</a><a href="#block-palette-bbinput-get-active-action-map">Get Active Action Map</a><a href="#block-palette-bbinput-create-digital-vector">Create Digital Vector</a><a href="#block-palette-bbinput-create-digital-vector-directions">Create Digital Vector Up Down Left Right</a><a href="#block-palette-bbinput-add-digital-vector-input">Add to of Digital Vector</a><a href="#block-palette-bbinput-clear-digital-vector">Clear Digital Vector</a></div><div class="cat"><div class="cat-title">Kb &amp; M</div><a href="#block-palette-bbinput-input-source-keyboard">Keyboard</a><a href="#block-palette-bbinput-input-source-keyboard-common">Keyboard Common / Symbol</a><a href="#block-palette-bbinput-input-source-keyboard-function">Keyboard Function Key</a><a href="#block-palette-bbinput-input-source-mouse">Mouse</a><a href="#block-palette-bbinput-input-source-mouse-analog">Mouse Analog</a><a href="#block-palette-bbinput-input-source-mouse-vector">Mouse Vector</a><a href="#block-palette-bbinput-mouse-position">Get Mouse</a><a href="#block-palette-bbinput-mouse-delta">Get Mouse Delta</a><a href="#block-palette-bbinput-get-mouse-wheel">Get Mouse Wheel</a></div><div class="cat"><div class="cat-title">Gamepads</div><a href="#block-palette-bbinput-input-source-controller">Controller</a><a href="#block-palette-bbinput-input-source-controller-analog">Controller Analog</a><a href="#block-palette-bbinput-input-source-controller-vector">Controller Vector</a><a href="#block-palette-bbinput-controller-connected">Controller is connected at Port</a><a href="#block-palette-bbinput-get-controller-number">Get for Controller Port</a><a href="#block-palette-bbinput-set-deadzone">Set Deadzone to</a><a href="#block-palette-bbinput-connected-controller-count">Get Connected Controller Count</a><a href="#block-palette-bbinput-get-controller-text">Get Controller for Port</a></div><div class="cat"><div class="cat-title">Mobile</div><a href="#block-palette-bbinput-input-source-mobile">Mobile Input</a><a href="#block-palette-bbinput-input-source-touch">Touch</a><a href="#block-palette-bbinput-input-source-touch-gesture">Touch Gesture</a><a href="#block-palette-bbinput-input-source-device-gesture">Device Gesture</a><a href="#block-palette-bbinput-input-source-motion-analog">Motion Analog</a><a href="#block-palette-bbinput-input-source-motion-vector">Motion Vector</a><a href="#block-palette-bbinput-set-touch-gesture-setting">Set Touch Gesture to</a><a href="#block-palette-bbinput-set-device-gesture-setting">Set Device Gesture to</a><a href="#block-palette-bbinput-touch-count">Get Touch Count</a><a href="#block-palette-bbinput-touch-value">Get Touch for Touch ID</a><a href="#block-palette-bbinput-device-motion-value">Get of</a><a href="#block-palette-bbinput-orientation-value">Get of Orientation</a><a href="#block-palette-bbinput-set-device-motion-threshold">Set Threshold to</a><a href="#block-palette-bbinput-device-motion-threshold">Get Threshold</a></div><div class="cat"><div class="cat-title">Virtual Controls</div><a href="#block-palette-bbinput-input-source-virtual">Virtual Input</a><a href="#block-palette-bbinput-input-source-virtual-joystick-analog">Virtual Joystick Analog</a><a href="#block-palette-bbinput-input-source-virtual-joystick-vector">Virtual Joystick Vector</a><a href="#block-palette-bbinput-create-virtual-button">Create Virtual Button at X Y named</a><a href="#block-palette-bbinput-register-virtual-button">Register as Virtual Button named</a><a href="#block-palette-bbinput-set-virtual-button-property">Set of Virtual Button to</a><a href="#block-palette-bbinput-set-virtual-button-shape">Set Shape of Virtual Button to</a><a href="#block-palette-bbinput-remove-virtual-button">Remove Virtual Button</a><a href="#block-palette-bbinput-create-virtual-joystick">Create Virtual Joystick at X Y Radius named</a><a href="#block-palette-bbinput-register-virtual-joystick">Register as Virtual Joystick named</a><a href="#block-palette-bbinput-set-virtual-joystick-property">Set of Virtual Joystick to</a><a href="#block-palette-bbinput-remove-virtual-joystick">Remove Virtual Joystick</a></div></div>
 </aside>
-
 <main class="main">
-	<div class="topbar">
-		<div class="title">bittyBIG Easy Input System</div>
-		<div class="subtitle">Setup guide, action maps, controller events, examples, and block glossary</div>
-	</div>
-
-	<nav class="top-nav">
-		<a href="#overview">Overview</a>
-		<a href="#project-setup">Project Setup</a>
-		<a href="#quick-start">Quick Start Guide</a>
-		<a href="#action-maps">Action Maps</a>
-		<a href="#events">Events</a>
-		<a href="#glossary">Block Glossary</a>
-		<a href="#troubleshooting">FAQs</a>
-		<a href="#release-notes">Release Notes</a>
-		<a href="https://discord.gg/BR3WJM4zfG">Support</a>
-	</nav>
-
-	<div class="content">
-		<section class="section doc-section" id="overview">
-			<div class="section-body">
-				<div class="hero-box">
-					<h2>Easy Input System</h2>
-					<p>
-						The bittyBIG Easy Input System gives Stencyl projects one global controller-input layer.
-						It translates common controllers into consistent position-based input names, stores named Action Maps,
-						tracks button and action state per controller port, and exposes controller, button, and analog events.
-					</p>
-					<div class="hero-buttons">
-						<a class="btn" href="#project-setup">Project Setup</a>
-						<a class="btn" href="#quick-start">Quick Start Guide</a>
-						<a class="btn" href="#events">Events</a>
-						<a class="btn" href="#glossary">Block Glossary</a>
-						<a class="btn" href="#troubleshooting">FAQs</a>
-						<a class="btn" href="https://discord.gg/BR3WJM4zfG">Support</a>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="project-setup">
-			<div class="section-header"><h2>Project Setup in Stencyl</h2></div>
-			<div class="section-body">
-				<p>
-					The extension loads globally. You do not attach an Input Manager or Action Map behavior to every scene,
-					and there is no separate initialization block.
-				</p>
-
-				<div class="grid-2">
-					<div class="info-card">
-						<h3>1. Install the extension</h3>
-						<ol>
-							<li>Place the extension folder in Stencyl's <span class="inline-code">engine-extensions</span> folder.</li>
-							<li>Keep the folder name as <span class="inline-code">bittybig-easy-input-system</span>.</li>
-							<li>Restart Stencyl so the extension files and event menu are reloaded.</li>
-						</ol>
-					</div>
-
-					<div class="info-card">
-						<h3>2. Enable it for the game</h3>
-						<ol>
-							<li>Open the game in Stencyl.</li>
-							<li>Enable <strong>bittyBIG Easy Input System</strong> in the game's Extensions settings.</li>
-							<li>Reopen the project if Stencyl asks to reload extension blocks.</li>
-						</ol>
-					</div>
-				</div>
-
-				<div class="note good">
-					<strong>Ready check:</strong> the palette should contain four tabs:
-					<strong>Action Maps</strong>, <strong>Input</strong>, <strong>Controllers</strong>, and <strong>Event Data</strong>.
-					The Add Event menu should contain a separate <strong>bittyBIG Easy Input System</strong> section.
-				</div>
-
-				<div class="note warn">
-					<strong>Do not rename the extension folder with spaces.</strong>
-					Stencyl uses the folder name while generating conditional Haxe code. Spaces can compile the extension's event registration out of the game.
-				</div>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="quick-start">
-			<div class="section-header"><h2>Quick Start Guide</h2></div>
-			<div class="section-body">
-				<p>
-					Start by creating one named Action Map, assigning a few universal inputs, and making that map active.
-					Action Maps are created automatically when they are first used.
-				</p>
-
-				
-<div class="block-stack">
-	<div class="block-row"><div class="st-block blue">Set Action <span class="st-text">Jump</span> to <span class="st-dropdown">Button South</span> for Action Map <span class="st-text">Gameplay</span></div></div>
-	<div class="block-row"><div class="st-block blue">Set Action <span class="st-text">Pause</span> to <span class="st-dropdown">Start</span> for Action Map <span class="st-text">Gameplay</span></div></div>
-	<div class="block-row"><div class="st-block blue">Set Active Action Map to <span class="st-text">Gameplay</span></div></div>
-</div>
-
-
-				<div class="note good">
-					<strong>What this creates:</strong> pressing the bottom face button produces the action
-					<span class="inline-code">Jump</span>, and pressing Start produces
-					<span class="inline-code">Pause</span>, while the <span class="inline-code">Gameplay</span> map is active.
-				</div>
-
-				<h3>Receive the action in a scene behavior</h3>
-				<ol>
-					<li>Add a Stencyl Custom Event named <span class="inline-code">JumpPressed</span>.</li>
-					<li>Add another named <span class="inline-code">JumpReleased</span> when release logic is needed.</li>
-					<li>Place the gameplay logic inside those Custom Events.</li>
-				</ol>
-
-				<div class="flow-row">
-					<div class="flow-node">Button South</div>
-					<div class="flow-arrow">→</div>
-					<div class="flow-node">Gameplay Action Map</div>
-					<div class="flow-arrow">→</div>
-					<div class="flow-node">Jump</div>
-					<div class="flow-arrow">→</div>
-					<div class="flow-node">JumpPressed / JumpReleased</div>
-				</div>
-
-				<div class="grid-2">
-					<div class="info-card">
-						<h3>Read the action continuously</h3>
-						<div class="block-row"><div class="st-block blue boolean">Action <span class="st-text">Jump</span> is <span class="st-dropdown">Down</span> for Controller Port <span class="st-input">0</span></div></div>
-						<p>Use <strong>Down</strong> for held movement or continuous behavior. Use <strong>Pressed</strong> and <strong>Released</strong> for one-update checks.</p>
-					</div>
-
-					<div class="info-card">
-						<h3>Read the physical input directly</h3>
-						<div class="block-row"><div class="st-block blue boolean">Input <span class="st-dropdown">Button South</span> is <span class="st-dropdown">Pressed</span> for Controller Port <span class="st-input">0</span></div></div>
-						<p>This bypasses the Action Map and checks the universal controller input itself.</p>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="action-maps">
-			<div class="section-header"><h2>Action Maps</h2></div>
-			<div class="section-body">
-				<p>
-					An Action Map converts controller inputs into game-specific action names.
-					The active map stays selected as scenes change until another map is activated.
-				</p>
-
-				<div class="grid-2">
-					<div class="info-card">
-						<h3>Create and update maps</h3>
-						<p>
-							Using <strong>Set Action Binding</strong> creates the named map when needed.
-							Binding the same input again replaces its previous action inside that map.
-						</p>
-					</div>
-
-					<div class="info-card">
-						<h3>Switch game contexts</h3>
-						<p>
-							Use separate maps such as <span class="inline-code">Gameplay</span>,
-							<span class="inline-code">Menu</span>, and <span class="inline-code">Vehicle</span>.
-							Only the active map resolves input into actions.
-						</p>
-					</div>
-				</div>
-
-				<table class="support-table">
-					<thead>
-						<tr><th>Action Map</th><th>Universal Input</th><th>Action</th></tr>
-					</thead>
-					<tbody>
-						<tr><td>Gameplay</td><td>Button South</td><td>Jump</td></tr>
-						<tr><td>Gameplay</td><td>Start</td><td>Pause</td></tr>
-						<tr><td>Menu</td><td>Button South</td><td>Confirm</td></tr>
-						<tr><td>Menu</td><td>Button East</td><td>Cancel</td></tr>
-					</tbody>
-				</table>
-
-				<div class="note">
-					<strong>Event naming:</strong> mapped actions are delivered as the action name plus the phase.
-					For an action named <span class="inline-code">Jump</span>, the generated Custom Events are
-					<span class="inline-code">JumpPressed</span> and <span class="inline-code">JumpReleased</span>.
-				</div>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="actor-actions">
-			<div class="section-header"><h2>Receiving Actions in Actors</h2></div>
-			<div class="section-body">
-				<p>
-					Scene behaviors receive mapped action Custom Events automatically.
-					Actors opt in so the system does not shout every action to every actor in the scene.
-				</p>
-
-				<div class="block-stack">
-					<div class="block-row"><div class="st-block blue">Receive bittyBIG Action Events in this Actor</div></div>
-				</div>
-
-				<ol>
-					<li>Place this block once in the actor behavior's <strong>Created</strong> event.</li>
-					<li>Add Custom Events such as <span class="inline-code">JumpPressed</span> to that actor behavior.</li>
-					<li>The actor will then receive mapped actions while it is registered and active.</li>
-				</ol>
-
-				<div class="note good">
-					<strong>Current Action:</strong> inside mapped action logic, use the
-					<strong>Current Action</strong> reporter to retrieve the base action name without the
-					Pressed or Released suffix.
-				</div>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="input-values">
-			<div class="section-header"><h2>Analog Input and Digital Vectors</h2></div>
-			<div class="section-body">
-				<div class="grid-2">
-					<div class="info-card">
-						<h3>Analog values</h3>
-						<div class="block-row"><div class="st-block blue reporter">Get <span class="st-dropdown">Left Stick X</span> for Controller Port <span class="st-input">0</span></div></div>
-						<p>Stick axes return values from <strong>-1 to 1</strong>. Trigger reporters return values from <strong>0 to 1</strong>.</p>
-					</div>
-
-					<div class="info-card">
-						<h3>Digital vectors</h3>
-						<p>A digital vector combines a negative action and positive action into one number.</p>
-						<div class="block-row"><div class="st-block blue">Set Digital Vector <span class="st-text">Move X</span> Negative Action <span class="st-text">Move Left</span> Positive Action <span class="st-text">Move Right</span> for Action Map <span class="st-text">Gameplay</span></div></div>
-						<div style="margin-top:10px;"><div class="block-row"><div class="st-block blue reporter">Get Digital Vector <span class="st-text">Move X</span> for Controller Port <span class="st-input">0</span></div></div></div>
-					</div>
-				</div>
-
-				<table class="support-table">
-					<thead><tr><th>Held actions</th><th>Digital vector result</th></tr></thead>
-					<tbody>
-						<tr><td>Negative action only</td><td>-1</td></tr>
-						<tr><td>Positive action only</td><td>1</td></tr>
-						<tr><td>Neither action, or both actions</td><td>0</td></tr>
-					</tbody>
-				</table>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="events">
-			<div class="section-header"><h2>Input Events</h2></div>
-			<div class="section-body">
-				<p>
-					Open <span class="event-menu-path">Add Event → Extensions → bittyBIG Easy Input System</span>.
-					These events are for input routing, rebinding screens, multiplayer assignment, diagnostics, and other advanced workflows.
-				</p>
-
-				<div class="block-card" id="event-any-input">
-					<h3>Any Button</h3>
-					<div class="block-meta">Add Event → Extensions → bittyBIG Easy Input System</div>
-					
-<div class="block-row">
-	<div class="st-block red event-hat">When Any Input is <span class="st-dropdown">Pressed</span></div>
-</div>
-<div class="event-reporters">
-	<div class="st-block blue reporter">Input Name</div>
-	<div class="st-block blue reporter">Input Phase</div>
-	<div class="st-block blue reporter">Controller Port</div>
-	<div class="st-block blue reporter">Controller Name</div>
-	<div class="st-block blue reporter">Controller ID</div>
-</div>
-
-					<div class="block-desc">
-						Runs when a controller input is pressed or released. Mapped inputs report their universal name.
-						Unsupported or unmapped buttons can report their raw numeric input value.
-					</div>
-					<div class="note">
-						<strong>Current Action is available here.</strong> When the active Action Map resolves this input,
-						the Current Action reporter contains the mapped action before the Any Input callback runs.
-						Unassigned raw input returns empty text.
-					</div>
-				</div>
-
-				<div class="block-card" id="event-controller">
-					<h3>Controller Connected</h3>
-					<div class="block-meta">Add Event → Extensions → bittyBIG Easy Input System</div>
-					
-<div class="block-row">
-	<div class="st-block red event-hat">When a Controller <span class="st-dropdown">Connects</span></div>
-</div>
-<div class="event-reporters">
-	<div class="st-block blue reporter">Controller Port</div>
-	<div class="st-block blue reporter">Controller Name</div>
-	<div class="st-block blue reporter">Controller ID</div>
-	<div class="st-block blue boolean">Connected</div>
-</div>
-
-					<div class="block-desc">
-						Runs once for the controller port whose connection state changed.
-						Use the attached reporters to identify the exact device and assigned port.
-					</div>
-				</div>
-
-				<div class="block-card" id="event-analog">
-					<h3>Analog Input</h3>
-					<div class="block-meta">Add Event → Extensions → bittyBIG Easy Input System</div>
-					
-<div class="block-row">
-	<div class="st-block red event-hat">When an Analog Input Changes</div>
-</div>
-<div class="event-reporters">
-	<div class="st-block blue reporter">Analog Input</div>
-	<div class="st-block blue reporter">Analog Value</div>
-	<div class="st-block blue reporter">Controller Port</div>
-	<div class="st-block blue reporter">Controller Name</div>
-	<div class="st-block blue reporter">Controller ID</div>
-</div>
-
-					<div class="block-desc">
-						Runs when a stick axis or trigger changes enough to pass the analog event threshold.
-					</div>
-				</div>
-
-				<div class="note good">
-					<strong>Attached reporters are local to the callback.</strong>
-					Use them inside the event when you need data from that exact invocation.
-					The Event Data palette contains shared Current Event Data reporters for reusable logic and mapped action events.
-				</div>
-
-				<div class="note warn">
-					<strong>Raw fallback is event-only.</strong>
-					A raw numeric button reported by Any Button is not added to normal Input State tracking or Action Maps.
-					It is provided so unsupported controller buttons can still be identified.
-				</div>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="controllers">
-			<div class="section-header"><h2>Controllers and Ports</h2></div>
-			<div class="section-body">
-				<p>
-					The system supports controller ports <strong>0 through 3</strong>.
-					A newly detected controller is assigned to the first empty port.
-				</p>
-
-				<table class="support-table">
-					<thead><tr><th>Detected controller</th><th>Mapping path</th></tr></thead>
-					<tbody>
-						<tr><td>Xbox and XInput controllers</td><td>XInput preset</td></tr>
-						<tr><td>DualSense, DualShock, or PlayStation-named controllers</td><td>PS5-style preset</td></tr>
-						<tr><td>Nintendo Switch Pro controllers</td><td>Switch Pro preset</td></tr>
-						<tr><td>HTML5 browser gamepads</td><td>HTML Gamepad mapping path</td></tr>
-						<tr><td>Unknown native controller names</td><td>XInput fallback, with raw Any Button reporting for buttons the preset does not translate</td></tr>
-					</tbody>
-				</table>
-
-				<h3>Universal face-button names</h3>
-				<table class="support-table">
-					<thead><tr><th>Physical position</th><th>Universal name</th></tr></thead>
-					<tbody>
-						<tr><td>Bottom</td><td>Button South</td></tr>
-						<tr><td>Right</td><td>Button East</td></tr>
-						<tr><td>Left</td><td>Button West</td></tr>
-						<tr><td>Top</td><td>Button North</td></tr>
-					</tbody>
-				</table>
-
-				<div class="note">
-					<strong>HTML5 note:</strong> browsers may not expose a gamepad until the game has focus and the user presses a controller button.
-				</div>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="glossary">
-			<div class="section-header"><h2>Block Glossary</h2></div>
-			<div class="section-body">
-				<p>
-					The glossary follows the same order as the Stencyl palette:
-					commands first, getters after them, with the generated Haxe call shown under each block.
-				</p>
-				<h3 class="glossary-category-title" id="cat-action-maps">Action Maps</h3>
-<h4>Setters</h4>
-
-<div class="block-card" id="block-bbinput-set-action-binding">
-	<h3>Set Action Binding</h3>
-	<div class="block-meta">Action Maps → Setters</div>
-	<div class="block-row"><div class="st-block blue">Set Action <span class="st-text"></span> to <span class="st-dropdown">Button South</span> for Action Map <span class="st-text"></span></div></div>
-	<div class="block-desc">Assigns the selected universal input to an action in the named Action Map. The Action Map is created automatically if it does not exist.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-set-action-binding">Copy</button>
-	</div>
-	<pre id="code-bbinput-set-action-binding">scripts.BittyInputBlocks.setActionBinding(~,~,~);</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-set-active-action-map">
-	<h3>Set Active Action Map</h3>
-	<div class="block-meta">Action Maps → Setters</div>
-	<div class="block-row"><div class="st-block blue">Set Active Action Map to <span class="st-text"></span></div></div>
-	<div class="block-desc">Makes the named Action Map the map used to translate input into actions.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-set-active-action-map">Copy</button>
-	</div>
-	<pre id="code-bbinput-set-active-action-map">scripts.BittyInputBlocks.setActiveActionMap(~);</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-remove-input-binding">
-	<h3>Remove Input Binding</h3>
-	<div class="block-meta">Action Maps → Setters</div>
-	<div class="block-row"><div class="st-block blue">Remove <span class="st-dropdown">Button South</span> from Action Map <span class="st-text"></span></div></div>
-	<div class="block-desc">Removes the selected universal input from the named Action Map.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-remove-input-binding">Copy</button>
-	</div>
-	<pre id="code-bbinput-remove-input-binding">scripts.BittyInputBlocks.removeInputBinding(~,~);</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-clear-action-map">
-	<h3>Clear Action Map</h3>
-	<div class="block-meta">Action Maps → Setters</div>
-	<div class="block-row"><div class="st-block blue">Clear Action Map <span class="st-text"></span></div></div>
-	<div class="block-desc">Removes every input-to-action assignment from the named Action Map without deleting other maps.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-clear-action-map">Copy</button>
-	</div>
-	<pre id="code-bbinput-clear-action-map">scripts.BittyInputBlocks.clearActionMap(~);</pre>
-</div>
-</div>
-<h4>Getters</h4>
-
-<div class="block-card" id="block-bbinput-get-active-action-map">
-	<h3>Get Active Action Map</h3>
-	<div class="block-meta">Action Maps → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Get Active Action Map</div></div>
-	<div class="block-desc">Returns the name of the currently active Action Map.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-get-active-action-map">Copy</button>
-	</div>
-	<pre id="code-bbinput-get-active-action-map">scripts.BittyInputBlocks.getActiveActionMap()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-get-bound-action">
-	<h3>Get Bound Action</h3>
-	<div class="block-meta">Action Maps → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Get Action assigned to <span class="st-dropdown">Button South</span> in Action Map <span class="st-text"></span></div></div>
-	<div class="block-desc">Returns the action assigned to the selected input in the named Action Map, or an empty string when unassigned.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-get-bound-action">Copy</button>
-	</div>
-	<pre id="code-bbinput-get-bound-action">scripts.BittyInputBlocks.getBoundAction(~,~)</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-action-map-exists">
-	<h3>Action Map Exists?</h3>
-	<div class="block-meta">Action Maps → Getters</div>
-	<div class="block-row"><div class="st-block blue boolean">Action Map <span class="st-text"></span> exists</div></div>
-	<div class="block-desc">Returns true if the named Action Map has been created.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-action-map-exists">Copy</button>
-	</div>
-	<pre id="code-bbinput-action-map-exists">scripts.BittyInputBlocks.actionMapExists(~)</pre>
-</div>
-</div>
-<h3 class="glossary-category-title" id="cat-input">Input</h3>
-<h4>Setters</h4>
-
-<div class="block-card" id="block-bbinput-receive-action-events-in-this-actor">
-	<h3>Receive Action Events in This Actor</h3>
-	<div class="block-meta">Input → Setters</div>
-	<div class="block-row"><div class="st-block blue">Receive bittyBIG Action Events in this Actor</div></div>
-	<div class="block-desc">Registers this actor to receive mapped action custom events such as JumpPressed and JumpReleased. Add it once in the actor&#x27;s Created event.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-receive-action-events-in-this-actor">Copy</button>
-	</div>
-	<pre id="code-bbinput-receive-action-events-in-this-actor">scripts.BittyInputBlocks.receiveActionEventsInActor(actor);</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-set-digital-vector">
-	<h3>Set Digital Vector</h3>
-	<div class="block-meta">Input → Setters</div>
-	<div class="block-row"><div class="st-block blue">Set Digital Vector <span class="st-text"></span> Negative Action <span class="st-text"></span> Positive Action <span class="st-text"></span> for Action Map <span class="st-text"></span></div></div>
-	<div class="block-desc">Creates or replaces a digital vector. The vector returns -1 for the negative action, 1 for the positive action, and 0 when neither or both are held.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-set-digital-vector">Copy</button>
-	</div>
-	<pre id="code-bbinput-set-digital-vector">scripts.BittyInputBlocks.setDigitalVector(~,~,~,~);</pre>
-</div>
-</div>
-<h4>Getters</h4>
-
-<div class="block-card" id="block-bbinput-action-state">
-	<h3>Get Action State</h3>
-	<div class="block-meta">Input → Getters</div>
-	<div class="block-row"><div class="st-block blue boolean">Action <span class="st-text"></span> is <span class="st-dropdown">Down</span> for Controller Port <span class="st-input"></span></div></div>
-	<div class="block-desc">Returns whether an action is down, was pressed this frame, or was released this frame for the selected controller port.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-action-state">Copy</button>
-	</div>
-	<pre id="code-bbinput-action-state">scripts.BittyInputBlocks.getActionState(~,~,~)</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-input-state">
-	<h3>Get Input State</h3>
-	<div class="block-meta">Input → Getters</div>
-	<div class="block-row"><div class="st-block blue boolean">Input <span class="st-dropdown">Button South</span> is <span class="st-dropdown">Down</span> for Controller Port <span class="st-input"></span></div></div>
-	<div class="block-desc">Returns whether a universal input is down, was pressed this frame, or was released this frame for the selected controller port.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-input-state">Copy</button>
-	</div>
-	<pre id="code-bbinput-input-state">scripts.BittyInputBlocks.getInputState(~,~,~)</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-get-analog-value">
-	<h3>Get Analog Value</h3>
-	<div class="block-meta">Input → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Get <span class="st-dropdown">Left Stick X</span> for Controller Port <span class="st-input"></span></div></div>
-	<div class="block-desc">Returns the current analog value for a stick axis or trigger. Stick axes use -1 to 1. Triggers use 0 to 1.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-get-analog-value">Copy</button>
-	</div>
-	<pre id="code-bbinput-get-analog-value">scripts.BittyInputBlocks.getAnalogValue(~,~)</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-get-digital-vector">
-	<h3>Get Digital Vector</h3>
-	<div class="block-meta">Input → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Get Digital Vector <span class="st-text"></span> for Controller Port <span class="st-input"></span></div></div>
-	<div class="block-desc">Returns the current -1, 0, or 1 value of the named digital vector using the active Action Map.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-get-digital-vector">Copy</button>
-	</div>
-	<pre id="code-bbinput-get-digital-vector">scripts.BittyInputBlocks.getDigitalVector(~,~)</pre>
-</div>
-</div>
-<h3 class="glossary-category-title" id="cat-controllers">Controllers</h3>
-<h4>Getters</h4>
-
-<div class="block-card" id="block-bbinput-controller-connected">
-	<h3>Controller Connected?</h3>
-	<div class="block-meta">Controllers → Getters</div>
-	<div class="block-row"><div class="st-block blue boolean">Controller is connected at Port <span class="st-input"></span></div></div>
-	<div class="block-desc">Returns true if a controller is currently assigned to the selected controller port.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-controller-connected">Copy</button>
-	</div>
-	<pre id="code-bbinput-controller-connected">scripts.BittyInputBlocks.isControllerConnected(~)</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-connected-controller-count">
-	<h3>Connected Controller Count</h3>
-	<div class="block-meta">Controllers → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Connected Controller Count</div></div>
-	<div class="block-desc">Returns the number of currently connected controllers.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-connected-controller-count">Copy</button>
-	</div>
-	<pre id="code-bbinput-connected-controller-count">scripts.BittyInputBlocks.getConnectedControllerCount()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-get-controller-name">
-	<h3>Get Controller Name</h3>
-	<div class="block-meta">Controllers → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Get Controller Name for Port <span class="st-input"></span></div></div>
-	<div class="block-desc">Returns the connected controller name for the selected port, or an empty string when the port is empty.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-get-controller-name">Copy</button>
-	</div>
-	<pre id="code-bbinput-get-controller-name">scripts.BittyInputBlocks.getControllerName(~)</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-get-controller-id">
-	<h3>Get Controller ID</h3>
-	<div class="block-meta">Controllers → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Get Controller ID for Port <span class="st-input"></span></div></div>
-	<div class="block-desc">Returns the internal device identifier assigned to the selected controller port.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-get-controller-id">Copy</button>
-	</div>
-	<pre id="code-bbinput-get-controller-id">scripts.BittyInputBlocks.getControllerID(~)</pre>
-</div>
-</div>
-<h3 class="glossary-category-title" id="cat-event-data">Event Data</h3>
-<h4>Getters</h4>
-
-<div class="block-card" id="block-bbinput-current-action">
-	<h3>Current Action</h3>
-	<div class="block-meta">Event Data → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Current Action</div></div>
-	<div class="block-desc">Returns the mapped action currently being delivered, such as Jump. Use it inside a mapped action custom event.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-current-action">Copy</button>
-	</div>
-	<pre id="code-bbinput-current-action">scripts.BittyInputBlocks.getCurrentAction()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-current-input-name">
-	<h3>Current Input Name</h3>
-	<div class="block-meta">Event Data → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Current Input Name</div></div>
-	<div class="block-desc">Returns the universal input name associated with the current Any Input event.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-current-input-name">Copy</button>
-	</div>
-	<pre id="code-bbinput-current-input-name">scripts.BittyInputBlocks.getCurrentInputName()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-current-input-phase">
-	<h3>Current Input Phase</h3>
-	<div class="block-meta">Event Data → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Current Input Phase</div></div>
-	<div class="block-desc">Returns Pressed or Released for the current Any Input event.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-current-input-phase">Copy</button>
-	</div>
-	<pre id="code-bbinput-current-input-phase">scripts.BittyInputBlocks.getCurrentInputPhase()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-current-analog-input">
-	<h3>Current Analog Input</h3>
-	<div class="block-meta">Event Data → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Current Analog Input</div></div>
-	<div class="block-desc">Returns the analog input name associated with the current Analog Input Changes event.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-current-analog-input">Copy</button>
-	</div>
-	<pre id="code-bbinput-current-analog-input">scripts.BittyInputBlocks.getCurrentAnalogInput()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-current-analog-value">
-	<h3>Current Analog Value</h3>
-	<div class="block-meta">Event Data → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Current Analog Value</div></div>
-	<div class="block-desc">Returns the new analog value associated with the current Analog Input Changes event.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-current-analog-value">Copy</button>
-	</div>
-	<pre id="code-bbinput-current-analog-value">scripts.BittyInputBlocks.getCurrentAnalogValue()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-current-controller-port">
-	<h3>Current Controller Port</h3>
-	<div class="block-meta">Event Data → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Current Controller Port</div></div>
-	<div class="block-desc">Returns the controller port associated with the current input, action, analog, connect, or disconnect event.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-current-controller-port">Copy</button>
-	</div>
-	<pre id="code-bbinput-current-controller-port">scripts.BittyInputBlocks.getCurrentControllerPort()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-current-controller-name">
-	<h3>Current Controller Name</h3>
-	<div class="block-meta">Event Data → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Current Controller Name</div></div>
-	<div class="block-desc">Returns the controller name associated with the current event.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-current-controller-name">Copy</button>
-	</div>
-	<pre id="code-bbinput-current-controller-name">scripts.BittyInputBlocks.getCurrentControllerName()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-current-controller-id">
-	<h3>Current Controller ID</h3>
-	<div class="block-meta">Event Data → Getters</div>
-	<div class="block-row"><div class="st-block blue reporter">Current Controller ID</div></div>
-	<div class="block-desc">Returns the internal device identifier associated with the current event.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-current-controller-id">Copy</button>
-	</div>
-	<pre id="code-bbinput-current-controller-id">scripts.BittyInputBlocks.getCurrentControllerID()</pre>
-</div>
-</div>
-
-<div class="block-card" id="block-bbinput-current-controller-connected">
-	<h3>Current Controller Is Connected</h3>
-	<div class="block-meta">Event Data → Getters</div>
-	<div class="block-row"><div class="st-block blue boolean">Current Controller is Connected</div></div>
-	<div class="block-desc">Returns true when the current Controller Connection event is a connection and false when it is a disconnection.</div>
-	
-<div class="code-box">
-	<div class="code-bar">
-		<span>Code</span>
-		<button class="copy-btn" data-copy-target="code-bbinput-current-controller-connected">Copy</button>
-	</div>
-	<pre id="code-bbinput-current-controller-connected">scripts.BittyInputBlocks.getCurrentControllerConnected()</pre>
-</div>
-</div>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="troubleshooting">
-			<div class="section-header"><h2>FAQs and Troubleshooting</h2></div>
-			<div class="section-body">
-				<div class="faq-list">
-					<div class="faq-item">
-						<p class="faq-line"><span class="faq-label">Problem:</span> The extension blocks or Add Event entries do not appear.</p>
-						<p class="faq-line"><span class="faq-label">Solution:</span> Confirm the extension is enabled, the folder is named <span class="inline-code">bittybig-easy-input-system</span>, and Stencyl was restarted.</p>
-					</div>
-
-					<div class="faq-item">
-						<p class="faq-line"><span class="faq-label">Problem:</span> A mapped action Custom Event does not run.</p>
-						<p class="faq-line"><span class="faq-label">Solution:</span> Confirm the correct Action Map is active, the input is assigned in that map, and the Custom Event exactly matches <span class="inline-code">ActionNamePressed</span> or <span class="inline-code">ActionNameReleased</span>.</p>
-					</div>
-
-					<div class="faq-item">
-						<p class="faq-line"><span class="faq-label">Problem:</span> A scene behavior receives the action, but an actor behavior does not.</p>
-						<p class="faq-line"><span class="faq-label">Solution:</span> Put <strong>Receive bittyBIG Action Events in this Actor</strong> in the actor's Created event.</p>
-					</div>
-
-					<div class="faq-item">
-						<p class="faq-line"><span class="faq-label">Problem:</span> An unusual controller button reports a number instead of a name.</p>
-						<p class="faq-line"><span class="faq-label">Solution:</span> The current controller preset did not translate that button. The Any Button event is exposing the raw input value so the controller can be diagnosed.</p>
-					</div>
-
-					<div class="faq-item">
-						<p class="faq-line"><span class="faq-label">Problem:</span> A controller is connected, but my logic reads the wrong port.</p>
-						<p class="faq-line"><span class="faq-label">Solution:</span> Use the Controller Connected event or controller getter blocks to confirm the assigned port. Controllers use the first empty port when detected.</p>
-					</div>
-
-					<div class="faq-item">
-						<p class="faq-line"><span class="faq-label">Problem:</span> Current Event Data seems to change during nested or additional input processing.</p>
-						<p class="faq-line"><span class="faq-label">Solution:</span> Use the reporters attached directly to the Add Event callback when the value must belong to that exact invocation.</p>
-					</div>
-				</div>
-
-				<div class="note">
-					For support, include the target platform, controller name, controller ID, assigned port,
-					and the Input Name reported by the Any Button event.
-				</div>
-			</div>
-		</section>
-
-		<section class="section doc-section" id="release-notes">
-			<div class="section-header"><h2>Release Notes</h2></div>
-			<div class="section-body">
-				<h3>Current documented build</h3>
-				<ul class="simple-list">
-					<li>Global extension-owned input runtime; no per-scene manager behavior required.</li>
-					<li>Named Action Maps that remain active across scene changes.</li>
-					<li>Mapped action Custom Events for scene behaviors and registered actors.</li>
-					<li>Any Button, Controller Connected, and Analog Input Add Event entries with attached reporter blocks.</li>
-					<li>Current Action available during mapped action handling and the Any Button event.</li>
-					<li>Raw Any Button fallback for unsupported or unmapped controller buttons.</li>
-					<li>Palette organized into Action Maps, Input, Controllers, and Event Data.</li>
-				</ul>
-
-				<h3>Current controller presets</h3>
-				<p>PS5-style, XInput, Switch Pro, and HTML Gamepad mappings are included.</p>
-
-				<div class="note warn">
-					<strong>Planned, not currently included:</strong> user-editable controller presets.
-				</div>
-			</div>
-		</section>
-
-		<div class="footer">&copy; 2026 bittyBIG Studio. All rights reserved.</div>
-	</div>
-</main>
-</div>
-
-
+<div class="topbar"><div class="title">bittyBIG Easy Input System</div><div class="subtitle">Actions, Action Maps, input sources, controllers, touch, gestures, motion, and virtual controls</div></div>
+<nav class="top-nav"><a href="#overview">Overview</a><a href="#project-setup">Project Setup</a><a href="#quick-start">Quick Start</a><a href="#core-concepts">Core Concepts</a><a href="#dropdown-reference">Dropdown Reference</a><a href="#glossary">Block Glossary</a><a href="#troubleshooting">FAQs</a><a href="https://discord.gg/BR3WJM4zfG">Support</a></nav>
+<div class="content">
+<section class="section doc-section" id="overview"><div class="section-body"><div class="hero-box"><h2>Easy Input System</h2><p>The bittyBIG Easy Input System gives Stencyl one unified input layer for keyboard, mouse, gamepads, touch, mobile gestures, device motion, and virtual controls. Build named Actions once, assign Input Sources to them, then choose an Action Map per Input Slot.</p><div class="hero-buttons"><a class="btn" href="#quick-start">Quick Start</a><a class="btn" href="#core-concepts">Core Concepts</a><a class="btn" href="#dropdown-reference">Dropdown Reference</a><a class="btn" href="#glossary">Block Glossary</a></div></div></div></section>
+
+<section class="section doc-section" id="project-setup"><div class="section-header"><h2>Project Setup in Stencyl</h2></div><div class="section-body"><div class="grid-2"><div class="info-card"><h3>1. Install and enable the extension</h3><ol><li>Open <strong>Settings → Extensions</strong>.</li><li>Install <strong>bittyBIG Easy Input System</strong>.</li><li>Enable it for the project.</li></ol></div><div class="info-card"><h3>2. Use the Easy Input palette</h3><p>The extension initializes its input backends automatically. You do not need to create a separate manager Actor just to begin using the public blocks.</p><p>Create an Action Map, make it active while defining Actions, then assign the map to one or more Input Slots.</p></div></div><div class="note good"><strong>Recommended workflow:</strong> define gameplay in Actions first. Use raw input reporters/events only when you genuinely need the underlying device data.</div></div></section>
+
+<section class="section doc-section" id="quick-start"><div class="section-header"><h2>Quick Start Guide</h2></div><div class="section-body"><p>Create a map, assign one or more Input Sources to named Actions, give the map to an Input Slot, then read the Action instead of checking each physical input separately.</p><div class="block-stack"><div class="block-row"><div class="st-block blue"><span class="st-dropdown">Create</span> Action Map <span class="st-text">Basic</span></div></div><div class="block-row"><div class="st-block blue">Set Action <span class="st-text">Move</span> to <span class="st-input"><span class="st-block blue reporter">Keyboard Common / Symbol WASD</span></span></div></div><div class="block-row"><div class="st-block blue">Set Action <span class="st-text">Jump</span> to <span class="st-input"><span class="st-block blue reporter">Keyboard Space</span></span></div></div><div class="block-row"><div class="st-block blue">Set Action <span class="st-text">Jump</span> to <span class="st-input"><span class="st-block blue reporter">Controller Button South</span></span></div></div><div class="block-row"><div class="st-block blue">Set Input Slot <span class="st-input">0</span> Action Map to <span class="st-text">Basic</span></div></div><div class="block-row"><div class="st-block blue boolean">Action <span class="st-text">Jump</span> is <span class="st-dropdown">Pressed</span> for Input Slot <span class="st-input">0</span></div></div></div><div class="grid-2"><div class="info-card"><h3>Multiple inputs can share one Action</h3><p>Calling <strong>Set Action</strong> again with the same Action name adds another binding of the same kind. For example, Space and Button South can both trigger <em>Jump</em>.</p></div><div class="info-card"><h3>Input Slots choose maps</h3><p>Action Maps are definitions. Input Slots select which map they use. This lets different players or modes use different mappings without redefining the physical input system.</p></div></div></div></section>
+
+<section class="section doc-section collapsible-section" id="core-concepts"><div class="section-header"><button class="section-toggle" type="button" aria-expanded="true"><h2>Core Concepts</h2><span class="section-toggle-icon" aria-hidden="true">▶</span></button></div><div class="section-body"><div class="term-list">
+<p><strong>Input Source</strong> — A typed description of an input that can be assigned to an Action. Sources can be digital/button, analog/scalar, or vector.</p>
+<p><strong>Action</strong> — A gameplay-facing name such as Jump, Shoot, Move, Aim, or Pause. Game logic should usually read Actions instead of physical devices.</p>
+<p><strong>Action Map</strong> — A named collection of Action definitions and their bindings.</p>
+<p><strong>Active Action Map</strong> — The map currently being edited by Set Action and Digital Vector setup blocks. This is separate from the map an Input Slot is using.</p>
+<p><strong>Input Slot</strong> — A player/input routing slot. Controller ports map naturally to slots, while keyboard, mouse, touch, gestures, and virtual controls can route through the maps that use them.</p>
+<p><strong>Digital Input</strong> — On/off input with Down, Pressed, and Released state.</p>
+<p><strong>Analog Input</strong> — One numeric value, such as a trigger, stick axis, mouse delta, or Motion axis.</p>
+<p><strong>Vector Input</strong> — Two numeric components, X and Y, such as a stick, mouse movement, Motion pair, or Digital Vector.</p>
+<p><strong>Digital Vector</strong> — Four digital directions combined into a Vector Action. Each direction can contain more than one digital input.</p>
+<p><strong>Combination Inputs</strong> — Multiple digital Input Sources that must all be held together for the Action to be Down.</p>
+<p><strong>Raw Input</strong> — Physical/device-level values and lifecycle events. Useful for drawing, custom touch logic, diagnostics, or behavior that the Action layer does not model.</p>
+<p><strong>Gesture Input</strong> — Higher-level interpretation of touch or device movement. One-shot gestures pulse Pressed/Released; Hold and Drag remain Down until they end.</p>
+</div><div class="flow-line">Physical / Virtual Input → Input Source → Action Map → Input Slot → Action → Gameplay</div><div class="note"><strong>Action kind is stable.</strong> Once an Action exists as digital, analog, or vector inside a map, the system will not silently change it to another kind.</div></div></section>
+
+<section class="section doc-section collapsible-section collapsed" id="platform-notes"><div class="section-header"><button class="section-toggle" type="button" aria-expanded="false"><h2>Platform Notes</h2><span class="section-toggle-icon" aria-hidden="true">▶</span></button></div><div class="section-body"><table class="platform-table"><thead><tr><th>Area</th><th>Current behavior</th></tr></thead><tbody>
+<tr><td>Keyboard / Mouse</td><td>OpenFL/Stencyl keyboard and mouse input. Mouse position is reported in stage coordinates; movement/wheel values are accumulated per frame.</td></tr>
+<tr><td>Gamepads</td><td>Normalized digital buttons, analog sticks/triggers, vectors, connection events, controller Name/ID, and up to the system’s configured Input Slots. Deadzones are currently global rather than per Input Slot.</td></tr>
+<tr><td>Touch</td><td>Uses OpenFL multi-touch IDs and stage coordinates. Virtual controls consume their owned touches before raw Touch events and gesture recognition, preventing duplicate input.</td></tr>
+<tr><td>Android Motion</td><td>Acceleration uses the raw accelerometer stream. Motion uses Android linear acceleration with gravity removed and normalized to g. Orientation uses TYPE_ROTATION_VECTOR. Gyro uses raw TYPE_GYROSCOPE radians/second.</td></tr>
+<tr><td>Other Motion targets</td><td>The OpenFL accelerometer path remains available where supported. The native iOS Core Motion Gyro/Orientation bridge is intentionally not implemented in this version; hooks/comments are retained for later work.</td></tr>
+</tbody></table></div></section>
+
+<section class="section doc-section collapsible-section collapsed" id="dropdown-reference"><div class="section-header"><button class="section-toggle" type="button" aria-expanded="false"><h2>Dropdown Reference</h2><span class="section-toggle-icon" aria-hidden="true">▶</span></button></div><div class="section-body"><p>These definitions describe what each dropdown choice actually means in the current implementation. Defaults shown for gesture settings are the values built into this version.</p><h3 class="glossary-category-title" id="dropdown-actions-state">Actions &amp; State</h3><div class="dropdown-card" id="dropdown-bbinput-digital-vector-direction"><h4>Digital Vector Direction</h4><p class="dropdown-summary">Chooses the direction being edited in a custom Digital Vector.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Up</td><td>Add the source to the vector’s Up direction.</td></tr><tr><td>Down</td><td>Add the source to Down.</td></tr><tr><td>Left</td><td>Add the source to Left.</td></tr><tr><td>Right</td><td>Add the source to Right.</td></tr><tr><td>All</td><td>Populate all four directions from a WASD, Arrows, or D-Pad vector source.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-action-map-operation"><h4>Action Map Operation</h4><p class="dropdown-summary">Creates, selects for editing, or clears a named Action Map.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Create</td><td>Creates the named Action Map if it does not already exist. Also creates built-in WASD, Arrow Keys, and D-Pad Digital Vectors for that map.</td></tr><tr><td>Set Active</td><td>Selects an existing Action Map as the map subsequent Set Action / Digital Vector editing blocks modify.</td></tr><tr><td>Clear</td><td>Removes all Actions and custom Digital Vectors from the named map, then restores its built-in default vectors.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-action-value-kind"><h4>Action Value Type</h4><p class="dropdown-summary">Chooses which numeric component to read from an Action.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Analog</td><td>Scalar numeric value of an Analog Action.</td></tr><tr><td>Vector X</td><td>Horizontal/X component of a Vector Action.</td></tr><tr><td>Vector Y</td><td>Vertical/Y component of a Vector Action.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-input-phase"><h4>Input Phase</h4><p class="dropdown-summary">Chooses an edge event: the instant an input begins or ends.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Pressed</td><td>Fires on the transition from not-down to down.</td></tr><tr><td>Released</td><td>Fires on the transition from down to not-down.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-action-event-scope"><h4>Action Event Scope</h4><p class="dropdown-summary">Controls whether an Action event listens to every Input Slot or one supplied Input Slot.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Any</td><td>Listen to matching Action events from every Input Slot. The numeric slot field is ignored.</td></tr><tr><td>Input Slot</td><td>Only run when the Action event came from the supplied Input Slot number.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-input-state"><h4>Input State</h4><p class="dropdown-summary">Chooses continuous state or one-frame edge state.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Down</td><td>True continuously while the digital Input Source or Action is currently held.</td></tr><tr><td>Pressed</td><td>True only on the frame the source transitions into Down.</td></tr><tr><td>Released</td><td>True only on the frame the source transitions out of Down.</td></tr></tbody></table></div><h3 class="glossary-category-title" id="dropdown-keyboard-mouse">Keyboard &amp; Mouse</h3><div class="dropdown-card compact-dropdown" id="dropdown-bbinput-keyboard-letters-numbers"><h4>Keyboard Letters / Numbers</h4><p class="dropdown-summary">Uses the standard A–Z and 0–9 keyboard keys as individual digital Input Sources.</p></div><div class="dropdown-card compact-dropdown" id="dropdown-bbinput-keyboard-common-symbols"><h4>Keyboard Common / Symbols</h4><p class="dropdown-summary">Uses common keyboard keys including Space, Enter, Escape, modifiers, arrows, navigation keys, and punctuation/symbol keys. <strong>WASD</strong> and <strong>Arrows</strong> are built-in Digital Vector sources rather than single buttons.</p></div><div class="dropdown-card compact-dropdown" id="dropdown-bbinput-keyboard-function-keys"><h4>Keyboard Function Keys</h4><p class="dropdown-summary">Uses the F1–F12 function keys as individual digital Input Sources.</p></div><div class="dropdown-card" id="dropdown-bbinput-mouse-button"><h4>Mouse Button</h4><p class="dropdown-summary">Selects a mouse button as a digital Input Source.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Left Button</td><td>Primary/left mouse button.</td></tr><tr><td>Right Button</td><td>Secondary/right mouse button.</td></tr><tr><td>Middle Button</td><td>Middle/wheel mouse button.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-mouse-position"><h4>Mouse Position</h4><p class="dropdown-summary">Chooses which absolute stage-coordinate mouse position to report.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>X</td><td>Horizontal component.</td></tr><tr><td>Y</td><td>Vertical component.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-mouse-axis"><h4>Mouse Axis</h4><p class="dropdown-summary">Chooses which per-frame mouse movement component to report.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>X</td><td>Horizontal component.</td></tr><tr><td>Y</td><td>Vertical component.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-mouse-analog-value"><h4>Mouse Analog Input</h4><p class="dropdown-summary">Selects a mouse value that can be assigned as an Analog Action source.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Move Delta X</td><td>Per-frame horizontal mouse movement.</td></tr><tr><td>Move Delta Y</td><td>Per-frame vertical mouse movement.</td></tr><tr><td>Wheel</td><td>Mouse-wheel movement for the current frame.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-mouse-vector"><h4>Mouse Vector</h4><p class="dropdown-summary">Returns the two-component per-frame mouse movement vector.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Move Delta</td><td>2D vector of per-frame mouse movement: X=Delta X, Y=Delta Y.</td></tr></tbody></table></div><h3 class="glossary-category-title" id="dropdown-gamepads">Gamepads</h3><div class="dropdown-card" id="dropdown-bbinput-controller-button"><h4>Controller Button</h4><p class="dropdown-summary">Selects a normalized digital gamepad button name.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Button South</td><td>Bottom face button in the normalized face-button layout (A / Cross style position).</td></tr><tr><td>Button East</td><td>Right face button (B / Circle style position).</td></tr><tr><td>Button West</td><td>Left face button (X / Square style position).</td></tr><tr><td>Button North</td><td>Top face button (Y / Triangle style position).</td></tr><tr><td>Back</td><td>Back / Select / View style controller button.</td></tr><tr><td>Start</td><td>Start / Menu / Options style controller button.</td></tr><tr><td>Guide</td><td>Guide / Home / system-style controller button when exposed by the platform.</td></tr><tr><td>DPad Up</td><td>Digital D-Pad Up.</td></tr><tr><td>DPad Down</td><td>Digital D-Pad Down.</td></tr><tr><td>DPad Left</td><td>Digital D-Pad Left.</td></tr><tr><td>DPad Right</td><td>Digital D-Pad Right.</td></tr><tr><td>Left Shoulder</td><td>Left shoulder / bumper button.</td></tr><tr><td>Right Shoulder</td><td>Right shoulder / bumper button.</td></tr><tr><td>Left Stick Press</td><td>Left stick click / L3.</td></tr><tr><td>Right Stick Press</td><td>Right stick click / R3.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-controller-analog-value"><h4>Controller Analog Input</h4><p class="dropdown-summary">Selects a normalized controller trigger or stick axis.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Left Trigger</td><td>Normalized analog controller value for Left Trigger.</td></tr><tr><td>Right Trigger</td><td>Normalized analog controller value for Right Trigger.</td></tr><tr><td>Left Stick X</td><td>Normalized analog controller value for Left Stick X.</td></tr><tr><td>Left Stick Y</td><td>Normalized analog controller value for Left Stick Y.</td></tr><tr><td>Right Stick X</td><td>Normalized analog controller value for Right Stick X.</td></tr><tr><td>Right Stick Y</td><td>Normalized analog controller value for Right Stick Y.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-controller-vector"><h4>Controller Vector</h4><p class="dropdown-summary">Selects a complete controller movement vector. D-Pad is digital; stick vectors are analog.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Left Stick</td><td>2D analog vector from Left Stick X/Y.</td></tr><tr><td>Right Stick</td><td>2D analog vector from Right Stick X/Y.</td></tr><tr><td>D-Pad</td><td>Built-in digital vector from DPad Up/Down/Left/Right.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-controller-change"><h4>Controller Connection Change</h4><p class="dropdown-summary">Chooses whether the controller event reacts to connection or disconnection.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Connects</td><td>Runs when a controller is newly assigned to a controller port/Input Slot.</td></tr><tr><td>Disconnects</td><td>Runs when a controller is removed from its controller port/Input Slot.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-controller-number-value"><h4>Controller Number Reporter</h4><p class="dropdown-summary">Chooses a controller numeric value or the current global deadzone.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Left Stick X</td><td>Current normalized analog value for Left Stick X on the selected controller port.</td></tr><tr><td>Left Stick Y</td><td>Current normalized analog value for Left Stick Y on the selected controller port.</td></tr><tr><td>Right Stick X</td><td>Current normalized analog value for Right Stick X on the selected controller port.</td></tr><tr><td>Right Stick Y</td><td>Current normalized analog value for Right Stick Y on the selected controller port.</td></tr><tr><td>Left Trigger</td><td>Current normalized analog value for Left Trigger on the selected controller port.</td></tr><tr><td>Right Trigger</td><td>Current normalized analog value for Right Trigger on the selected controller port.</td></tr><tr><td>Stick Deadzone</td><td>Current global stick deadzone. Controller Port is presently ignored for deadzone reporters.</td></tr><tr><td>Trigger Deadzone</td><td>Current global trigger deadzone. Controller Port is presently ignored for deadzone reporters.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-controller-text-value"><h4>Controller Text Reporter</h4><p class="dropdown-summary">Chooses controller display Name or internal ID.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Name</td><td>Human-readable connected controller name for the selected port.</td></tr><tr><td>ID</td><td>Internal device identifier for the selected port.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-deadzone-type"><h4>Deadzone Type</h4><p class="dropdown-summary">Chooses the global stick-axis or trigger-axis deadzone.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Stick</td><td>Global deadzone applied to controller stick axes. Values are clamped from 0.02 to 1.0.</td></tr><tr><td>Trigger</td><td>Global deadzone applied to analog triggers. Values are clamped from 0.02 to 1.0.</td></tr></tbody></table></div><h3 class="glossary-category-title" id="dropdown-mobile-touch">Mobile — Touch</h3><div class="dropdown-card" id="dropdown-bbinput-touch-value"><h4>Touch Value</h4><p class="dropdown-summary">Chooses a tracked value for a specific Touch ID.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>X</td><td>Current stage X position of the Touch ID.</td></tr><tr><td>Y</td><td>Current stage Y position of the Touch ID.</td></tr><tr><td>Delta X</td><td>Horizontal movement accumulated for the current frame.</td></tr><tr><td>Delta Y</td><td>Vertical movement accumulated for the current frame.</td></tr><tr><td>Pressure</td><td>Touch pressure reported by the platform/OpenFL.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-touch-gesture"><h4>Touch Gesture</h4><p class="dropdown-summary">Chooses a recognized finger/screen gesture. Hold and Drag are sustained; the others are one-shot.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Tap</td><td>One-shot on release when the touch is short and stays within Tap Max Movement. Tap fires immediately and also begins Double/Triple Tap counting.</td></tr><tr><td>Double Tap</td><td>One-shot on the second qualifying Tap within Multi-Tap Interval and Multi-Tap Distance. The individual Tap has already fired.</td></tr><tr><td>Triple Tap</td><td>One-shot on the third qualifying Tap. Tap and Double Tap can already have fired earlier in the sequence.</td></tr><tr><td>Long Press</td><td>One-shot when a mostly stationary touch reaches Long Press Duration.</td></tr><tr><td>Hold</td><td>Sustained digital gesture. Begins when Long Press qualifies, stays Down while the finger remains within the hold movement tolerance, and releases on lift, Drag takeover, or multi-touch takeover.</td></tr><tr><td>Drag</td><td>Sustained digital gesture. Begins once movement reaches Drag Minimum Distance and stays Down until lift or multi-touch takeover. If Hold was active, Hold releases first.</td></tr><tr><td>Swipe Left</td><td>One-shot on release after a fast qualifying leftward movement.</td></tr><tr><td>Swipe Right</td><td>One-shot on release after a fast qualifying rightward movement.</td></tr><tr><td>Swipe Up</td><td>One-shot on release after a fast qualifying upward movement.</td></tr><tr><td>Swipe Down</td><td>One-shot on release after a fast qualifying downward movement.</td></tr><tr><td>Slide Left</td><td>One-shot during the touch after the minimum duration and distance are reached moving left.</td></tr><tr><td>Slide Right</td><td>One-shot during the touch after the minimum duration and distance are reached moving right.</td></tr><tr><td>Slide Up</td><td>One-shot during the touch after the minimum duration and distance are reached moving up.</td></tr><tr><td>Slide Down</td><td>One-shot during the touch after the minimum duration and distance are reached moving down.</td></tr><tr><td>Pinch In</td><td>Two-finger one-shot pulse whenever finger distance decreases by the configured minimum. Re-baselines after each pulse so it can repeat without lifting.</td></tr><tr><td>Pinch Out</td><td>Two-finger one-shot pulse whenever finger distance increases by the configured minimum. Re-baselines after each pulse so it can repeat without lifting.</td></tr><tr><td>Rotate Left</td><td>Two-finger counter-clockwise rotation pulse after Rotate Minimum Degrees. Re-baselines after each pulse.</td></tr><tr><td>Rotate Right</td><td>Two-finger clockwise rotation pulse after Rotate Minimum Degrees. Re-baselines after each pulse.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-touch-gesture-setting"><h4>Touch Gesture Setting</h4><p class="dropdown-summary">Chooses the timing or distance threshold used by the touch gesture recognizer.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Tap Max Duration</td><td>Seconds. Maximum touch duration that can qualify as a Tap. Default 0.25.</td></tr><tr><td>Tap Max Movement</td><td>Stage-coordinate distance. Maximum movement allowed while still qualifying as Tap / Long Press / Hold. Default 20.</td></tr><tr><td>Multi-Tap Interval</td><td>Seconds. Maximum time between taps in a Double/Triple Tap sequence. Default 0.32.</td></tr><tr><td>Multi-Tap Distance</td><td>Stage-coordinate distance. Maximum distance between taps in the same multi-tap sequence. Default 36.</td></tr><tr><td>Long Press Duration</td><td>Seconds. Time a mostly stationary touch must remain down before Long Press and Hold begin. Default 0.55.</td></tr><tr><td>Swipe Minimum Distance</td><td>Stage-coordinate distance required for a Swipe. Default 60.</td></tr><tr><td>Swipe Maximum Duration</td><td>Seconds. Maximum total touch duration for a Swipe. Default 0.50.</td></tr><tr><td>Slide Minimum Distance</td><td>Stage-coordinate distance required before Slide can fire. Default 32.</td></tr><tr><td>Slide Minimum Duration</td><td>Seconds. Minimum touch duration before Slide can fire. Default 0.25.</td></tr><tr><td>Drag Minimum Distance</td><td>Stage-coordinate distance required before Drag becomes sustained Down. Default 20.</td></tr><tr><td>Pinch Minimum Distance Change</td><td>Stage-coordinate change in distance between two touches required for each Pinch pulse. Default 24.</td></tr><tr><td>Rotate Minimum Degrees</td><td>Degrees of two-finger angular change required for each Rotate pulse. Default 15.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-touch-source-mode"><h4>Touch Source Mode</h4><p class="dropdown-summary">Chooses whether a Touch Input Source represents any active touch or one exact Touch ID.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Any</td><td>Represents the aggregate Touch input: Down while at least one unconsumed touch exists.</td></tr><tr><td>ID</td><td>Represents exactly one OpenFL Touch ID using the numeric ID supplied to the block.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-touch-phase"><h4>Touch Phase</h4><p class="dropdown-summary">Chooses which raw touch lifecycle event runs the Touch event block.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Begins</td><td>Raw touch begin.</td></tr><tr><td>Moves</td><td>Raw touch movement.</td></tr><tr><td>Ends</td><td>Raw touch release/end.</td></tr></tbody></table></div><h3 class="glossary-category-title" id="dropdown-mobile-device-motion">Mobile — Device Motion</h3><div class="dropdown-card" id="dropdown-bbinput-axis-xyz"><h4>Device Axis</h4><p class="dropdown-summary">Chooses the physical device X, Y, or Z axis.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>X</td><td>Device X axis.</td></tr><tr><td>Y</td><td>Device Y axis.</td></tr><tr><td>Z</td><td>Device Z axis.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-device-motion-kind"><h4>Device Motion Type</h4><p class="dropdown-summary">Chooses which sensor-derived data stream the X/Y/Z reporter returns.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Acceleration</td><td>Raw accelerometer values. Includes gravity.</td></tr><tr><td>Gyro</td><td>Raw angular velocity around X/Y/Z. Android values are radians per second.</td></tr><tr><td>Motion</td><td>Processed movement acceleration. On Android this uses linear acceleration with gravity removed and is normalized to g; the Motion threshold is applied.</td></tr><tr><td>Rotation</td><td>Per-update change in Pitch/Roll/Yaw, expressed in degrees and filtered by the Rotation threshold.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-motion-threshold-kind"><h4>Motion Threshold Type</h4><p class="dropdown-summary">Chooses which processed sensor threshold is read or changed.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Motion</td><td>Threshold applied independently to processed Motion X/Y/Z; values below it report 0.</td></tr><tr><td>Rotation</td><td>Degree threshold applied independently to Rotation X/Y/Z; changes below it report 0.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-orientation-axis"><h4>Orientation Axis</h4><p class="dropdown-summary">Chooses one absolute device orientation angle.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Pitch</td><td>Front/back orientation angle in degrees.</td></tr><tr><td>Roll</td><td>Left/right orientation angle in degrees.</td></tr><tr><td>Yaw</td><td>Heading/rotation-around-Z style orientation angle in degrees.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-motion-analog-value"><h4>Motion Analog Input</h4><p class="dropdown-summary">Selects one gravity-filtered Motion axis as an Analog Input Source.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>X</td><td>Processed Motion X as an Analog Input Source.</td></tr><tr><td>Y</td><td>Processed Motion Y as an Analog Input Source.</td></tr><tr><td>Z</td><td>Processed Motion Z as an Analog Input Source.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-motion-vector-axes"><h4>Motion Vector Axes</h4><p class="dropdown-summary">Selects two Motion axes to expose together as a 2D Vector Input Source.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>X / Y</td><td>Vector X=Motion X, Y=Motion Y.</td></tr><tr><td>X / Z</td><td>Vector X=Motion X, Y=Motion Z.</td></tr><tr><td>Y / Z</td><td>Vector X=Motion Y, Y=Motion Z.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-device-gesture"><h4>Device Gesture</h4><p class="dropdown-summary">Chooses a recognized physical-device gesture derived from acceleration, Motion, or orientation.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Move Left</td><td>One-shot when the strongest gravity-free Motion axis is X negative and reaches Move Threshold.</td></tr><tr><td>Move Right</td><td>One-shot when the strongest gravity-free Motion axis is X positive and reaches Move Threshold.</td></tr><tr><td>Move Up</td><td>One-shot when the strongest Motion axis is Y positive and reaches Move Threshold.</td></tr><tr><td>Move Down</td><td>One-shot when the strongest Motion axis is Y negative and reaches Move Threshold.</td></tr><tr><td>Move In</td><td>One-shot when the strongest Motion axis is Z positive and reaches Move Threshold.</td></tr><tr><td>Move Out</td><td>One-shot when the strongest Motion axis is Z negative and reaches Move Threshold.</td></tr><tr><td>Shake</td><td>Detected from strong alternating linear-Motion reversals on one axis; it does not use Gyro.</td></tr><tr><td>Tilt Left</td><td>One-shot when Roll moves far enough left from the current orientation baseline.</td></tr><tr><td>Tilt Right</td><td>One-shot when Roll moves far enough right from the current orientation baseline.</td></tr><tr><td>Tilt Up</td><td>One-shot when Pitch moves far enough upward from baseline.</td></tr><tr><td>Tilt Down</td><td>One-shot when Pitch moves far enough downward from baseline.</td></tr><tr><td>Rotate Left</td><td>One-shot when accumulated Yaw change reaches the configured device rotation threshold in the left direction.</td></tr><tr><td>Rotate Right</td><td>One-shot when accumulated Yaw change reaches the configured threshold in the right direction.</td></tr><tr><td>Flip Face Up</td><td>Fires when raw acceleration Z transitions into the configured positive face-up state.</td></tr><tr><td>Flip Face Down</td><td>Fires when raw acceleration Z transitions into the configured negative face-down state.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-device-gesture-setting"><h4>Device Gesture Setting</h4><p class="dropdown-summary">Chooses a threshold/timing value used by the physical-device gesture recognizer.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Move Threshold</td><td>g units. Minimum strongest-axis Motion magnitude needed to fire a Move gesture. Default 0.17.</td></tr><tr><td>Move Reset Threshold</td><td>g units. Motion must fall to or below this level before a latched Move can reset. Default 0.05.</td></tr><tr><td>Move Reset Time</td><td>Seconds Motion must remain quiet below the reset threshold before Move unlocks. Default 0.10.</td></tr><tr><td>Move Max Lock Time</td><td>Seconds. Safety timeout that unlocks Move even if the quiet reset is not reached. Default 0.65.</td></tr><tr><td>Shake Threshold</td><td>g units. Motion magnitude that enters Shake recognition instead of normal Move recognition. Default 0.75.</td></tr><tr><td>Shake Max Gap</td><td>Seconds. Maximum gap between qualifying reversals in a Shake sequence. Default 0.24.</td></tr><tr><td>Shake Required Reversals</td><td>Count of sign reversals required to emit Shake. Rounded to an integer. Default 3.</td></tr><tr><td>Shake Cooldown</td><td>Seconds after Shake fires before another Shake can be emitted. Default 0.40.</td></tr><tr><td>Tilt Threshold Degrees</td><td>Degrees away from the current orientation baseline needed to emit a Tilt. Default 20.</td></tr><tr><td>Tilt Reset Degrees</td><td>Degrees from baseline both Pitch and Roll must return within before another Tilt can fire. Default 8.</td></tr><tr><td>Rotate Threshold Degrees</td><td>Accumulated Yaw change required to emit physical-device Rotate Left/Right. Default 18.</td></tr><tr><td>Flip Z Threshold</td><td>Raw acceleration Z magnitude used to classify Face Up versus Face Down. Default 0.75.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-device-button"><h4>Physical Device Button</h4><p class="dropdown-summary">Selects a supported physical mobile-device button.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Back</td><td>Android/device Back button.</td></tr><tr><td>Volume Up</td><td>Physical Volume Up button.</td></tr><tr><td>Volume Down</td><td>Physical Volume Down button.</td></tr></tbody></table></div><h3 class="glossary-category-title" id="dropdown-virtual-controls">Virtual Controls</h3><div class="dropdown-card" id="dropdown-bbinput-virtual-button-shape"><h4>Virtual Button Shape</h4><p class="dropdown-summary">Chooses the generated visual/hit shape for a generated Virtual Button.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Rectangle</td><td>Axis-aligned generated rectangle using Width and Height.</td></tr><tr><td>Rounded Rectangle</td><td>Generated rounded rectangle using Width, Height, and Radius.</td></tr><tr><td>Circle</td><td>Generated circle using Radius.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-virtual-joystick-mode"><h4>Virtual Joystick Mode</h4><p class="dropdown-summary">Chooses whether a Virtual Joystick emits digital directions or analog axes.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>Digital</td><td>Emits four digital virtual inputs named &lt;Name&gt; Up/Down/Left/Right.</td></tr><tr><td>Analog</td><td>Exposes analog axes &lt;Name&gt;X and &lt;Name&gt;Y and a vector source named &lt;Name&gt;.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-virtual-button-property"><h4>Virtual Button Property</h4><p class="dropdown-summary">Chooses which generated Virtual Button property to change.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>X</td><td>Control center X in game coordinates.</td></tr><tr><td>Y</td><td>Control center Y in game coordinates.</td></tr><tr><td>Width</td><td>Rectangle/rounded-rectangle width in game units.</td></tr><tr><td>Height</td><td>Rectangle/rounded-rectangle height in game units.</td></tr><tr><td>Radius</td><td>Circle radius or rounded-corner radius, depending on Shape.</td></tr><tr><td>Color</td><td>Generated control fill color as an integer color value.</td></tr><tr><td>Opacity</td><td>Generated control opacity, 0–100.</td></tr><tr><td>Visible</td><td>Shows/hides the generated display without changing registration.</td></tr><tr><td>Enabled</td><td>Enables/disables interaction; disabling also prevents the control from acting as input.</td></tr></tbody></table></div><div class="dropdown-card" id="dropdown-bbinput-virtual-joystick-property"><h4>Virtual Joystick Property</h4><p class="dropdown-summary">Chooses which generated Virtual Joystick property to change.</p><table class="definition-table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody><tr><td>X</td><td>Joystick center X in game coordinates.</td></tr><tr><td>Y</td><td>Joystick center Y in game coordinates.</td></tr><tr><td>Radius</td><td>Base radius and touch range in game units.</td></tr><tr><td>Thumb Radius</td><td>Radius of the generated joystick thumb.</td></tr><tr><td>Base Color</td><td>Generated base-circle color.</td></tr><tr><td>Thumb Color</td><td>Generated thumb color.</td></tr><tr><td>Opacity</td><td>Generated joystick opacity, 0–100.</td></tr><tr><td>Visible</td><td>Shows/hides the generated display.</td></tr><tr><td>Enabled</td><td>Enables/disables joystick interaction.</td></tr></tbody></table></div></div></section>
+
+<section class="section doc-section collapsible-section collapsed" id="glossary"><div class="section-header"><button class="section-toggle" type="button" aria-expanded="false"><h2>Block Glossary</h2><span class="section-toggle-icon" aria-hidden="true">▶</span></button></div><div class="section-body"><p>This glossary mirrors the current Easy Input Stencyl palette and event menu. Blocks are shown in current palette order with their tooltip description and public Haxe call/registration path.</p><h3 class="glossary-category-title" id="cat-events">Events</h3><h4 class="glossary-subcategory-title">Any Input</h4><div class="glossary-group-meta">Add Event → Extensions → bittyBIG Easy Input System</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">When Any Input is</h3><div class="glossary-entry-desc">Runs when any digital input is pressed or released, including physical mobile device buttons.</div></div><div class="block-card glossary-demo-card" id="block-event-bbinput-when-input"><div class="block-row"><div class="st-block red">When Any Input is <span class="st-dropdown">Pressed</span> <span class="st-input"><span class="st-block blue reporter">Input Name</span></span> <span class="st-input"><span class="st-block blue reporter">Input Source</span></span> <span class="st-input"><span class="st-block blue reporter">Input Slot</span></span> <span class="st-input"><span class="st-block blue reporter">Device Name</span></span> <span class="st-input"><span class="st-block blue reporter">Device ID</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-event-bbinput-when-input">Copy</button></div><pre id="pre-block-event-bbinput-when-input">scripts.BittyInputBlocks.registerInputEventListener(${eventRef});
+// condition: inputPhase == #0</pre></div></div></div><h4 class="glossary-subcategory-title">Touch</h4><div class="glossary-group-meta">Add Event → Extensions → bittyBIG Easy Input System</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">When a Touch</h3><div class="glossary-entry-desc">Runs for each touch point that begins, moves, or ends.</div></div><div class="block-card glossary-demo-card" id="block-event-bbinput-when-touch"><div class="block-row"><div class="st-block red">When a Touch <span class="st-dropdown">Begins</span> <span class="st-input"><span class="st-block blue reporter">Touch ID</span></span> <span class="st-input"><span class="st-block blue reporter">X</span></span> <span class="st-input"><span class="st-block blue reporter">Y</span></span> <span class="st-input"><span class="st-block blue reporter">Delta X</span></span> <span class="st-input"><span class="st-block blue reporter">Delta Y</span></span> <span class="st-input"><span class="st-block blue reporter">Pressure</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-event-bbinput-when-touch">Copy</button></div><pre id="pre-block-event-bbinput-when-touch">scripts.BittyInputBlocks.registerTouchEventListener(${eventRef});
+// condition: touchPhase == #0</pre></div></div></div><h4 class="glossary-subcategory-title">Any Touch Gesture</h4><div class="glossary-group-meta">Add Event → Extensions → bittyBIG Easy Input System</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">When Any Touch Gesture</h3><div class="glossary-entry-desc">Runs when any finger/screen gesture is recognized. Hold and Drag report both Pressed and Released phases.</div></div><div class="block-card glossary-demo-card" id="block-event-bbinput-when-touch-gesture"><div class="block-row"><div class="st-block red">When Any Touch Gesture <span class="st-input"><span class="st-block blue reporter">Gesture Name</span></span> <span class="st-input"><span class="st-block blue reporter">Input Source</span></span> <span class="st-input"><span class="st-block blue reporter">Gesture Phase</span></span> <span class="st-input"><span class="st-block blue reporter">Touch ID</span></span> <span class="st-input"><span class="st-block blue reporter">X</span></span> <span class="st-input"><span class="st-block blue reporter">Y</span></span> <span class="st-input"><span class="st-block blue reporter">Delta X</span></span> <span class="st-input"><span class="st-block blue reporter">Delta Y</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-event-bbinput-when-touch-gesture">Copy</button></div><pre id="pre-block-event-bbinput-when-touch-gesture">scripts.BittyInputBlocks.registerTouchGestureEventListener(${eventRef});</pre></div></div></div><h4 class="glossary-subcategory-title">Any Device Gesture</h4><div class="glossary-group-meta">Add Event → Extensions → bittyBIG Easy Input System</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">When Any Device Gesture</h3><div class="glossary-entry-desc">Runs when any physical device gesture is recognized.</div></div><div class="block-card glossary-demo-card" id="block-event-bbinput-when-device-gesture"><div class="block-row"><div class="st-block red">When Any Device Gesture <span class="st-input"><span class="st-block blue reporter">Gesture Name</span></span> <span class="st-input"><span class="st-block blue reporter">Input Source</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-event-bbinput-when-device-gesture">Copy</button></div><pre id="pre-block-event-bbinput-when-device-gesture">scripts.BittyInputBlocks.registerDeviceGestureEventListener(${eventRef});</pre></div></div></div><h4 class="glossary-subcategory-title">Controller</h4><div class="glossary-group-meta">Add Event → Extensions → bittyBIG Easy Input System</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">When a Controller</h3><div class="glossary-entry-desc">Runs once for each controller port that changes connection state. Use the Current Controller getters inside this event.</div></div><div class="block-card glossary-demo-card" id="block-event-bbinput-when-controller-change"><div class="block-row"><div class="st-block red">When a Controller <span class="st-dropdown">Connects</span> <span class="st-input"><span class="st-block blue reporter">Input Slot</span></span> <span class="st-input"><span class="st-block blue reporter">Device Name</span></span> <span class="st-input"><span class="st-block blue reporter">Device ID</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-event-bbinput-when-controller-change">Copy</button></div><pre id="pre-block-event-bbinput-when-controller-change">scripts.BittyInputBlocks.registerControllerEventListener(${eventRef});
+// condition: controllerConnected == #0</pre></div></div></div><h4 class="glossary-subcategory-title">Analog Input</h4><div class="glossary-group-meta">Add Event → Extensions → bittyBIG Easy Input System</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">When an Analog Input Changes</h3><div class="glossary-entry-desc">Runs when a controller analog input or Analog Virtual Joystick axis changes enough to pass the system&#x27;s analog event threshold.</div></div><div class="block-card glossary-demo-card" id="block-event-bbinput-when-analog-change"><div class="block-row"><div class="st-block red">When an Analog Input Changes <span class="st-input"><span class="st-block blue reporter">Input Name</span></span> <span class="st-input"><span class="st-block blue reporter">Analog Source</span></span> <span class="st-input"><span class="st-block blue reporter">Analog Value</span></span> <span class="st-input"><span class="st-block blue reporter">Input Slot</span></span> <span class="st-input"><span class="st-block blue reporter">Device Name</span></span> <span class="st-input"><span class="st-block blue reporter">Device ID</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-event-bbinput-when-analog-change">Copy</button></div><pre id="pre-block-event-bbinput-when-analog-change">scripts.BittyInputBlocks.registerAnalogEventListener(${eventRef});</pre></div></div></div><h4 class="glossary-subcategory-title">Action</h4><div class="glossary-group-meta">Add Event → Extensions → bittyBIG Easy Input System</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">When Action is for</h3><div class="glossary-entry-desc">Runs when the selected mapped Action is pressed or released. Choose Any for every Input Slot, or Input Slot to filter by the supplied slot number.</div></div><div class="block-card glossary-demo-card" id="block-event-bbinput-when-action"><div class="block-row"><div class="st-block red">When Action <span class="st-text"></span> is <span class="st-dropdown">Pressed</span> for <span class="st-dropdown">Any</span> <span class="st-input"></span> </div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-event-bbinput-when-action">Copy</button></div><pre id="pre-block-event-bbinput-when-action">scripts.BittyInputBlocks.registerActionEventListener(${eventRef}, this);
+// condition: action == #0 &amp;&amp; actionPhase == #1 &amp;&amp; (#2 == &quot;Any&quot; || controllerPort == Std.int(#3))</pre></div></div></div><h4 class="glossary-subcategory-title">Attached Event Reporters</h4><div class="glossary-group-meta">These reporter blocks are attached automatically to the relevant event and are only valid inside that event.</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Input Name</h3><div class="glossary-entry-desc">Returns the input name for this event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-input-name"><div class="block-row"><div class="st-block blue reporter">Input Name</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-input-name">Copy</button></div><pre id="pre-block-reporter-bbinput-event-input-name">inputName</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Input Source</h3><div class="glossary-entry-desc">Returns this event input as a bittyBIG digital Input Source.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-input-source"><div class="block-row"><div class="st-block blue reporter">Input Source</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-input-source">Copy</button></div><pre id="pre-block-reporter-bbinput-event-input-source">scripts.BittyInputBlocks.eventInputSource(inputName, controllerName, controllerID)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Input Slot</h3><div class="glossary-entry-desc">Returns the Input Slot for this event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-controller-port"><div class="block-row"><div class="st-block blue reporter">Input Slot</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-controller-port">Copy</button></div><pre id="pre-block-reporter-bbinput-event-controller-port">controllerPort</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Device Name</h3><div class="glossary-entry-desc">Returns the device name for this event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-controller-name"><div class="block-row"><div class="st-block blue reporter">Device Name</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-controller-name">Copy</button></div><pre id="pre-block-reporter-bbinput-event-controller-name">controllerName</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Device ID</h3><div class="glossary-entry-desc">Returns the device ID for this event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-controller-id"><div class="block-row"><div class="st-block blue reporter">Device ID</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-controller-id">Copy</button></div><pre id="pre-block-reporter-bbinput-event-controller-id">controllerID</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Touch ID</h3><div class="glossary-entry-desc">Returns the ID of the touch point for this Touch event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-current-touch-point-id"><div class="block-row"><div class="st-block blue reporter">Touch ID</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-current-touch-point-id">Copy</button></div><pre id="pre-block-reporter-bbinput-current-touch-point-id">touchPointID</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">X</h3><div class="glossary-entry-desc">Returns the X position of the touch point for this Touch event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-current-touch-x"><div class="block-row"><div class="st-block blue reporter">X</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-current-touch-x">Copy</button></div><pre id="pre-block-reporter-bbinput-current-touch-x">touchX</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Y</h3><div class="glossary-entry-desc">Returns the Y position of the touch point for this Touch event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-current-touch-y"><div class="block-row"><div class="st-block blue reporter">Y</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-current-touch-y">Copy</button></div><pre id="pre-block-reporter-bbinput-current-touch-y">touchY</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Delta X</h3><div class="glossary-entry-desc">Returns the X movement of the touch point for this Touch event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-current-touch-delta-x"><div class="block-row"><div class="st-block blue reporter">Delta X</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-current-touch-delta-x">Copy</button></div><pre id="pre-block-reporter-bbinput-current-touch-delta-x">touchDeltaX</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Delta Y</h3><div class="glossary-entry-desc">Returns the Y movement of the touch point for this Touch event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-current-touch-delta-y"><div class="block-row"><div class="st-block blue reporter">Delta Y</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-current-touch-delta-y">Copy</button></div><pre id="pre-block-reporter-bbinput-current-touch-delta-y">touchDeltaY</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Pressure</h3><div class="glossary-entry-desc">Returns the pressure of the touch point for this Touch event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-current-touch-pressure"><div class="block-row"><div class="st-block blue reporter">Pressure</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-current-touch-pressure">Copy</button></div><pre id="pre-block-reporter-bbinput-current-touch-pressure">touchPressure</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Gesture Name</h3><div class="glossary-entry-desc">Returns the touch gesture recognized by this event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-touch-gesture-name"><div class="block-row"><div class="st-block blue reporter">Gesture Name</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-touch-gesture-name">Copy</button></div><pre id="pre-block-reporter-bbinput-event-touch-gesture-name">touchGesture</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Input Source</h3><div class="glossary-entry-desc">Returns this touch gesture as a bittyBIG digital Input Source.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-touch-gesture-source"><div class="block-row"><div class="st-block blue reporter">Input Source</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-touch-gesture-source">Copy</button></div><pre id="pre-block-reporter-bbinput-event-touch-gesture-source">scripts.BittyInputBlocks.inputSourceTouchGesture(touchGesture)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Gesture Phase</h3><div class="glossary-entry-desc">Returns Pressed when a gesture begins. Hold and Drag also report Released when they end.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-touch-gesture-phase"><div class="block-row"><div class="st-block blue reporter">Gesture Phase</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-touch-gesture-phase">Copy</button></div><pre id="pre-block-reporter-bbinput-event-touch-gesture-phase">touchGesturePhase</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Touch ID</h3><div class="glossary-entry-desc">Returns the touch point ID associated with this gesture. Multi-touch gestures return -1.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-touch-gesture-touch-id"><div class="block-row"><div class="st-block blue reporter">Touch ID</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-touch-gesture-touch-id">Copy</button></div><pre id="pre-block-reporter-bbinput-event-touch-gesture-touch-id">touchGestureTouchID</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">X</h3><div class="glossary-entry-desc">Returns the current X position for this gesture event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-touch-gesture-x"><div class="block-row"><div class="st-block blue reporter">X</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-touch-gesture-x">Copy</button></div><pre id="pre-block-reporter-bbinput-event-touch-gesture-x">touchGestureX</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Y</h3><div class="glossary-entry-desc">Returns the current Y position for this gesture event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-touch-gesture-y"><div class="block-row"><div class="st-block blue reporter">Y</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-touch-gesture-y">Copy</button></div><pre id="pre-block-reporter-bbinput-event-touch-gesture-y">touchGestureY</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Delta X</h3><div class="glossary-entry-desc">Returns total X movement from the gesture&#x27;s starting touch position.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-touch-gesture-delta-x"><div class="block-row"><div class="st-block blue reporter">Delta X</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-touch-gesture-delta-x">Copy</button></div><pre id="pre-block-reporter-bbinput-event-touch-gesture-delta-x">touchGestureDeltaX</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Delta Y</h3><div class="glossary-entry-desc">Returns total Y movement from the gesture&#x27;s starting touch position.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-touch-gesture-delta-y"><div class="block-row"><div class="st-block blue reporter">Delta Y</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-touch-gesture-delta-y">Copy</button></div><pre id="pre-block-reporter-bbinput-event-touch-gesture-delta-y">touchGestureDeltaY</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Gesture Name</h3><div class="glossary-entry-desc">Returns the physical device gesture recognized by this event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-device-gesture-name"><div class="block-row"><div class="st-block blue reporter">Gesture Name</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-device-gesture-name">Copy</button></div><pre id="pre-block-reporter-bbinput-event-device-gesture-name">deviceGesture</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Input Source</h3><div class="glossary-entry-desc">Returns this physical device gesture as a bittyBIG digital Input Source.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-device-gesture-source"><div class="block-row"><div class="st-block blue reporter">Input Source</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-device-gesture-source">Copy</button></div><pre id="pre-block-reporter-bbinput-event-device-gesture-source">scripts.BittyInputBlocks.inputSourceDeviceGesture(deviceGesture)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Input Name</h3><div class="glossary-entry-desc">Returns the name of the analog input that changed for this event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-analog-input"><div class="block-row"><div class="st-block blue reporter">Input Name</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-analog-input">Copy</button></div><pre id="pre-block-reporter-bbinput-event-analog-input">analogInput</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Analog Source</h3><div class="glossary-entry-desc">Returns this event input as a bittyBIG analog Input Source.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-analog-source"><div class="block-row"><div class="st-block blue reporter">Analog Source</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-analog-source">Copy</button></div><pre id="pre-block-reporter-bbinput-event-analog-source">scripts.BittyInputBlocks.eventAnalogSource(analogInput, controllerName, controllerID)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Analog Value</h3><div class="glossary-entry-desc">Returns the analog value for this event.</div></div><div class="block-card glossary-demo-card" id="block-reporter-bbinput-event-analog-value"><div class="block-row"><div class="st-block blue reporter">Analog Value</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-reporter-bbinput-event-analog-value">Copy</button></div><pre id="pre-block-reporter-bbinput-event-analog-value">analogValue</pre></div></div></div><h3 class="glossary-category-title" id="cat-input-logic">Input Logic</h3><h4 class="glossary-subcategory-title">State</h4><div class="glossary-group-meta">Input Logic → State</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Input Source State</h3><div class="glossary-entry-desc">Returns whether a digital Input Source is down, was pressed this frame, or was released this frame in Input Slot 0.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-state"><div class="block-row"><div class="st-block blue boolean">Input <span class="st-input"><span class="st-block blue reporter">Input Source</span></span> is <span class="st-dropdown">Down</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-state">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-state">scripts.BittyInputBlocks.getInputSourceState(~,~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Input Source State by Slot</h3><div class="glossary-entry-desc">Returns whether a digital Input Source is down, was pressed this frame, or was released this frame for the selected Input Slot.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-state-slot"><div class="block-row"><div class="st-block blue boolean">Input <span class="st-input"><span class="st-block blue reporter">Input Source</span></span> is <span class="st-dropdown">Down</span> for Input Slot <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-state-slot">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-state-slot">scripts.BittyInputBlocks.getInputSourceState(~,~,~)</pre></div></div></div><h4 class="glossary-subcategory-title">Actions</h4><div class="glossary-group-meta">Input Logic → Actions</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Action is for Input Slot</h3><div class="glossary-entry-desc">Returns whether a Button Action is down, pressed, or released for the selected Input Slot.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-action-state"><div class="block-row"><div class="st-block blue boolean">Action <span class="st-text"></span> is <span class="st-dropdown">Down</span> for Input Slot <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-action-state">Copy</button></div><pre id="pre-block-palette-bbinput-action-state">scripts.BittyInputBlocks.getActionState(~,~,~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Value of Action for Input Slot</h3><div class="glossary-entry-desc">Returns the Analog, Vector X, or Vector Y value of an Action for the selected Input Slot.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-action-value"><div class="block-row"><div class="st-block blue reporter">Get <span class="st-dropdown">Analog</span> Value of Action <span class="st-text"></span> for Input Slot <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-action-value">Copy</button></div><pre id="pre-block-palette-bbinput-action-value">scripts.BittyInputBlocks.getActionValue(~,~,~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Action to</h3><div class="glossary-entry-desc">Assigns a digital, analog, or vector Input Source to an Action in the active Action Map.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-set-action"><div class="block-row"><div class="st-block blue">Set Action <span class="st-text"></span> to <span class="st-input"><span class="st-block blue reporter">Input Source</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-set-action">Copy</button></div><pre id="pre-block-palette-bbinput-set-action">scripts.BittyInputBlocks.setAction(~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Digital Vector</h3><div class="glossary-entry-desc">Returns a named Digital Vector as a vector Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-digital-vector"><div class="block-row"><div class="st-block blue reporter">Digital Vector <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-digital-vector">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-digital-vector">scripts.BittyInputBlocks.inputSourceDigitalVector(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Combination Inputs</h3><div class="glossary-entry-desc">Combines digital Input Sources. Every contained input must be held at the same time. Combination blocks can be nested to require more than two inputs.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-combination"><div class="block-row"><div class="st-block blue reporter"><span class="st-input"><span class="st-block blue reporter">Input Source</span></span> + <span class="st-input"><span class="st-block blue reporter">Input Source</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-combination">Copy</button></div><pre id="pre-block-palette-bbinput-input-combination">scripts.BittyInputBlocks.combineInputs(~,~)</pre></div></div></div><h4 class="glossary-subcategory-title">Action Maps</h4><div class="glossary-group-meta">Input Logic → Action Maps</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Action Map Operation</h3><div class="glossary-entry-desc">Creates, selects, or clears a named Action Map.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-action-map-operation"><div class="block-row"><div class="st-block blue"><span class="st-dropdown">Create</span> Action Map <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-action-map-operation">Copy</button></div><pre id="pre-block-palette-bbinput-action-map-operation">scripts.BittyInputBlocks.actionMapOperation(~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Input Slot Action Map to</h3><div class="glossary-entry-desc">Assigns an existing Action Map to an Input Slot. Each Input Slot can use a different Action Map.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-set-input-slot-action-map"><div class="block-row"><div class="st-block blue">Set Input Slot <span class="st-input"></span> Action Map to <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-set-input-slot-action-map">Copy</button></div><pre id="pre-block-palette-bbinput-set-input-slot-action-map">scripts.BittyInputBlocks.setInputSlotActionMap(~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Action Map for Input Slot</h3><div class="glossary-entry-desc">Returns the Action Map assigned to an Input Slot.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-get-input-slot-action-map"><div class="block-row"><div class="st-block blue reporter">Get Action Map for Input Slot <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-get-input-slot-action-map">Copy</button></div><pre id="pre-block-palette-bbinput-get-input-slot-action-map">scripts.BittyInputBlocks.getInputSlotActionMap(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Active Action Map</h3><div class="glossary-entry-desc">Returns the name of the Action Map currently being defined.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-get-active-action-map"><div class="block-row"><div class="st-block blue reporter">Get Active Action Map</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-get-active-action-map">Copy</button></div><pre id="pre-block-palette-bbinput-get-active-action-map">scripts.BittyInputBlocks.getActiveActionMap()</pre></div></div></div><h4 class="glossary-subcategory-title">Digital Vectors</h4><div class="glossary-group-meta">Input Logic → Digital Vectors</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Create Digital Vector</h3><div class="glossary-entry-desc">Creates or resets a named Digital Vector in the active Action Map.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-create-digital-vector"><div class="block-row"><div class="st-block blue">Create Digital Vector <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-create-digital-vector">Copy</button></div><pre id="pre-block-palette-bbinput-create-digital-vector">scripts.BittyInputBlocks.createDigitalVector(~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Create Digital Vector Up Down Left Right</h3><div class="glossary-entry-desc">Convenience block that creates or replaces a Digital Vector and assigns one digital Input Source to each direction.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-create-digital-vector-directions"><div class="block-row"><div class="st-block blue">Create Digital Vector <span class="st-text"></span> Up <span class="st-input"><span class="st-block blue reporter">Input Source</span></span> Down <span class="st-input"><span class="st-block blue reporter">Input Source</span></span> Left <span class="st-input"><span class="st-block blue reporter">Input Source</span></span> Right <span class="st-input"><span class="st-block blue reporter">Input Source</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-create-digital-vector-directions">Copy</button></div><pre id="pre-block-palette-bbinput-create-digital-vector-directions">scripts.BittyInputBlocks.createDigitalVectorDirections(~,~,~,~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Add to of Digital Vector</h3><div class="glossary-entry-desc">Adds a digital Input Source to one direction, or adds a WASD, Arrows, or D-Pad vector source to All directions.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-add-digital-vector-input"><div class="block-row"><div class="st-block blue">Add <span class="st-input"><span class="st-block blue reporter">Input Source</span></span> to <span class="st-dropdown">Up</span> of Digital Vector <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-add-digital-vector-input">Copy</button></div><pre id="pre-block-palette-bbinput-add-digital-vector-input">scripts.BittyInputBlocks.addDigitalVectorInput(~,~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Clear Digital Vector</h3><div class="glossary-entry-desc">Removes a custom Digital Vector from the active Action Map.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-clear-digital-vector"><div class="block-row"><div class="st-block blue">Clear Digital Vector <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-clear-digital-vector">Copy</button></div><pre id="pre-block-palette-bbinput-clear-digital-vector">scripts.BittyInputBlocks.clearDigitalVector(~);</pre></div></div></div><h3 class="glossary-category-title" id="cat-kb-m">Kb &amp; M</h3><h4 class="glossary-subcategory-title">Inputs</h4><div class="glossary-group-meta">Kb &amp; M → Inputs</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Keyboard</h3><div class="glossary-entry-desc">Returns a keyboard letter or number Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-keyboard"><div class="block-row"><div class="st-block blue reporter">Keyboard <span class="st-dropdown">A</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-keyboard">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-keyboard">scripts.BittyInputBlocks.inputSourceKeyboard(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Keyboard Common / Symbol</h3><div class="glossary-entry-desc">Returns a common keyboard or punctuation Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-keyboard-common"><div class="block-row"><div class="st-block blue reporter">Keyboard Common / Symbol <span class="st-dropdown">WASD</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-keyboard-common">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-keyboard-common">scripts.BittyInputBlocks.inputSourceKeyboard(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Keyboard Function Key</h3><div class="glossary-entry-desc">Returns a keyboard function-key Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-keyboard-function"><div class="block-row"><div class="st-block blue reporter">Keyboard Function Key <span class="st-dropdown">F1</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-keyboard-function">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-keyboard-function">scripts.BittyInputBlocks.inputSourceKeyboard(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Mouse</h3><div class="glossary-entry-desc">Returns a mouse button Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-mouse"><div class="block-row"><div class="st-block blue reporter">Mouse <span class="st-dropdown">Left Button</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-mouse">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-mouse">scripts.BittyInputBlocks.inputSourceMouse(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Mouse Analog</h3><div class="glossary-entry-desc">Returns a mouse analog Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-mouse-analog"><div class="block-row"><div class="st-block blue reporter">Mouse Analog <span class="st-dropdown">Move Delta X</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-mouse-analog">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-mouse-analog">scripts.BittyInputBlocks.inputSourceMouseAnalog(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Mouse Vector</h3><div class="glossary-entry-desc">Returns a mouse vector Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-mouse-vector"><div class="block-row"><div class="st-block blue reporter">Mouse Vector <span class="st-dropdown">Move Delta</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-mouse-vector">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-mouse-vector">scripts.BittyInputBlocks.inputSourceMouseVector(~)</pre></div></div></div><h4 class="glossary-subcategory-title">Mouse</h4><div class="glossary-group-meta">Kb &amp; M → Mouse</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Mouse</h3><div class="glossary-entry-desc">Returns the selected mouse position component in stage coordinates.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-mouse-position"><div class="block-row"><div class="st-block blue reporter">Get Mouse <span class="st-dropdown">X</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-mouse-position">Copy</button></div><pre id="pre-block-palette-bbinput-mouse-position">scripts.BittyInputBlocks.getMouseValue(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Mouse Delta</h3><div class="glossary-entry-desc">Returns the selected mouse movement component accumulated for the current frame.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-mouse-delta"><div class="block-row"><div class="st-block blue reporter">Get Mouse Delta <span class="st-dropdown">X</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-mouse-delta">Copy</button></div><pre id="pre-block-palette-bbinput-mouse-delta">scripts.BittyInputBlocks.getMouseDelta(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Mouse Wheel</h3><div class="glossary-entry-desc">Returns mouse wheel movement accumulated for the current frame. Returns 0 when the wheel did not move.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-get-mouse-wheel"><div class="block-row"><div class="st-block blue reporter">Get Mouse Wheel</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-get-mouse-wheel">Copy</button></div><pre id="pre-block-palette-bbinput-get-mouse-wheel">scripts.BittyInputBlocks.getMouseWheel()</pre></div></div></div><h3 class="glossary-category-title" id="cat-gamepads">Gamepads</h3><h4 class="glossary-subcategory-title">Inputs</h4><div class="glossary-group-meta">Gamepads → Inputs</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Controller</h3><div class="glossary-entry-desc">Returns a controller button Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-controller"><div class="block-row"><div class="st-block blue reporter">Controller <span class="st-dropdown">Button South</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-controller">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-controller">scripts.BittyInputBlocks.inputSourceController(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Controller Analog</h3><div class="glossary-entry-desc">Returns a controller analog Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-controller-analog"><div class="block-row"><div class="st-block blue reporter">Controller Analog <span class="st-dropdown">Left Trigger</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-controller-analog">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-controller-analog">scripts.BittyInputBlocks.inputSourceControllerAnalog(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Controller Vector</h3><div class="glossary-entry-desc">Returns a controller vector Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-controller-vector"><div class="block-row"><div class="st-block blue reporter">Controller Vector <span class="st-dropdown">Left Stick</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-controller-vector">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-controller-vector">scripts.BittyInputBlocks.inputSourceControllerVector(~)</pre></div></div></div><h4 class="glossary-subcategory-title">Properties</h4><div class="glossary-group-meta">Gamepads → Properties</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Controller is connected at Port</h3><div class="glossary-entry-desc">Returns true if a controller is currently assigned to the selected controller port.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-controller-connected"><div class="block-row"><div class="st-block blue boolean">Controller is connected at Port <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-controller-connected">Copy</button></div><pre id="pre-block-palette-bbinput-controller-connected">scripts.BittyInputBlocks.isControllerConnected(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get for Controller Port</h3><div class="glossary-entry-desc">Returns a controller analog value or deadzone. Deadzones are currently global, so Controller Port is ignored for deadzone values.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-get-controller-number"><div class="block-row"><div class="st-block blue reporter">Get <span class="st-dropdown">Left Stick X</span> for Controller Port <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-get-controller-number">Copy</button></div><pre id="pre-block-palette-bbinput-get-controller-number">scripts.BittyInputBlocks.getControllerNumber(~,~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Deadzone to</h3><div class="glossary-entry-desc">Sets the global stick or trigger deadzone. Values are clamped from 0.02 to 1 and applied to every controller port.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-set-deadzone"><div class="block-row"><div class="st-block blue">Set <span class="st-dropdown">Stick</span> Deadzone to <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-set-deadzone">Copy</button></div><pre id="pre-block-palette-bbinput-set-deadzone">scripts.BittyInputBlocks.setDeadzone(~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Connected Controller Count</h3><div class="glossary-entry-desc">Returns the number of currently connected controllers.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-connected-controller-count"><div class="block-row"><div class="st-block blue reporter">Get Connected Controller Count</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-connected-controller-count">Copy</button></div><pre id="pre-block-palette-bbinput-connected-controller-count">scripts.BittyInputBlocks.getConnectedControllerCount()</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Controller for Port</h3><div class="glossary-entry-desc">Returns the connected controller Name or ID for the selected port.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-get-controller-text"><div class="block-row"><div class="st-block blue reporter">Get Controller <span class="st-dropdown">Name</span> for Port <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-get-controller-text">Copy</button></div><pre id="pre-block-palette-bbinput-get-controller-text">scripts.BittyInputBlocks.getControllerText(~,~)</pre></div></div></div><h3 class="glossary-category-title" id="cat-mobile">Mobile</h3><h4 class="glossary-subcategory-title">Inputs</h4><div class="glossary-group-meta">Mobile → Inputs</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Mobile Input</h3><div class="glossary-entry-desc">Returns a physical mobile device-button Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-mobile"><div class="block-row"><div class="st-block blue reporter">Mobile Input <span class="st-dropdown">Back</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-mobile">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-mobile">scripts.BittyInputBlocks.inputSourceMobile(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Touch</h3><div class="glossary-entry-desc">Returns a Touch Input Source. Choose Any to use any unconsumed touch; choose ID to use the supplied Touch ID.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-touch"><div class="block-row"><div class="st-block blue reporter">Touch <span class="st-dropdown">Any</span> <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-touch">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-touch">scripts.BittyInputBlocks.inputSourceTouch(~,~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Touch Gesture</h3><div class="glossary-entry-desc">Returns the selected touch gesture as a digital Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-touch-gesture"><div class="block-row"><div class="st-block blue reporter">Touch Gesture <span class="st-dropdown">Tap</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-touch-gesture">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-touch-gesture">scripts.BittyInputBlocks.inputSourceTouchGesture(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Device Gesture</h3><div class="glossary-entry-desc">Returns the selected physical device gesture as a digital Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-device-gesture"><div class="block-row"><div class="st-block blue reporter">Device Gesture <span class="st-dropdown">Move Left</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-device-gesture">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-device-gesture">scripts.BittyInputBlocks.inputSourceDeviceGesture(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Motion Analog</h3><div class="glossary-entry-desc">Returns a device-motion analog Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-motion-analog"><div class="block-row"><div class="st-block blue reporter">Motion Analog <span class="st-dropdown">X</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-motion-analog">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-motion-analog">scripts.BittyInputBlocks.inputSourceMotionAnalog(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Motion Vector</h3><div class="glossary-entry-desc">Returns the selected pair of device Motion axes as a 2D vector Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-motion-vector"><div class="block-row"><div class="st-block blue reporter">Motion Vector <span class="st-dropdown">X / Y</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-motion-vector">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-motion-vector">scripts.BittyInputBlocks.inputSourceMotionVector(~)</pre></div></div></div><h4 class="glossary-subcategory-title">Gestures</h4><div class="glossary-group-meta">Mobile → Gestures</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Touch Gesture to</h3><div class="glossary-entry-desc">Changes a touch-gesture recognition threshold or timing value.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-set-touch-gesture-setting"><div class="block-row"><div class="st-block blue">Set Touch Gesture <span class="st-dropdown">Tap Max Duration</span> to <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-set-touch-gesture-setting">Copy</button></div><pre id="pre-block-palette-bbinput-set-touch-gesture-setting">scripts.BittyInputBlocks.setTouchGestureSetting(~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Device Gesture to</h3><div class="glossary-entry-desc">Changes a physical-device gesture recognition threshold or timing value.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-set-device-gesture-setting"><div class="block-row"><div class="st-block blue">Set Device Gesture <span class="st-dropdown">Move Threshold</span> to <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-set-device-gesture-setting">Copy</button></div><pre id="pre-block-palette-bbinput-set-device-gesture-setting">scripts.BittyInputBlocks.setDeviceGestureSetting(~,~);</pre></div></div></div><h4 class="glossary-subcategory-title">Touch</h4><div class="glossary-group-meta">Mobile → Touch</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Touch Count</h3><div class="glossary-entry-desc">Returns the number of currently active touch points.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-touch-count"><div class="block-row"><div class="st-block blue reporter">Get Touch Count</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-touch-count">Copy</button></div><pre id="pre-block-palette-bbinput-touch-count">scripts.BittyInputBlocks.getTouchCount()</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Touch for Touch ID</h3><div class="glossary-entry-desc">Returns the selected value for the specified touch ID.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-touch-value"><div class="block-row"><div class="st-block blue reporter">Get Touch <span class="st-dropdown">X</span> for Touch ID <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-touch-value">Copy</button></div><pre id="pre-block-palette-bbinput-touch-value">scripts.BittyInputBlocks.getTouchValue(~,~)</pre></div></div></div><h4 class="glossary-subcategory-title">Device Motion</h4><div class="glossary-group-meta">Mobile → Device Motion</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Device Motion Value</h3><div class="glossary-entry-desc">Returns the selected X, Y, or Z value from Acceleration, Gyro, Motion, or Rotation.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-device-motion-value"><div class="block-row"><div class="st-block blue reporter">Get <span class="st-dropdown">X</span> of <span class="st-dropdown">Acceleration</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-device-motion-value">Copy</button></div><pre id="pre-block-palette-bbinput-device-motion-value">scripts.BittyInputBlocks.getDeviceMotionValue(~,~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Orientation Value</h3><div class="glossary-entry-desc">Returns the selected current device orientation value.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-orientation-value"><div class="block-row"><div class="st-block blue reporter">Get <span class="st-dropdown">Pitch</span> of Orientation</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-orientation-value">Copy</button></div><pre id="pre-block-palette-bbinput-orientation-value">scripts.BittyInputBlocks.getOrientationValue(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Device Motion Threshold</h3><div class="glossary-entry-desc">Sets the selected Motion or Rotation threshold.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-set-device-motion-threshold"><div class="block-row"><div class="st-block blue">Set <span class="st-dropdown">Motion</span> Threshold to <span class="st-input"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-set-device-motion-threshold">Copy</button></div><pre id="pre-block-palette-bbinput-set-device-motion-threshold">scripts.BittyInputBlocks.setDeviceMotionThreshold(~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Get Device Motion Threshold</h3><div class="glossary-entry-desc">Returns the selected Motion or Rotation threshold.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-device-motion-threshold"><div class="block-row"><div class="st-block blue reporter">Get <span class="st-dropdown">Motion</span> Threshold</div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-device-motion-threshold">Copy</button></div><pre id="pre-block-palette-bbinput-device-motion-threshold">scripts.BittyInputBlocks.getDeviceMotionThreshold(~)</pre></div></div></div><h3 class="glossary-category-title" id="cat-virtual-controls">Virtual Controls</h3><h4 class="glossary-subcategory-title">Inputs</h4><div class="glossary-group-meta">Virtual Controls → Inputs</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Virtual Input</h3><div class="glossary-entry-desc">Returns a named Virtual Button or Digital Virtual Joystick direction Input Source, such as Jump or Joystick Up.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-virtual"><div class="block-row"><div class="st-block blue reporter">Virtual Input <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-virtual">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-virtual">scripts.BittyInputBlocks.inputSourceVirtual(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Virtual Joystick Analog</h3><div class="glossary-entry-desc">Returns an Analog Virtual Joystick axis Input Source such as JoystickX or JoystickY.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-virtual-joystick-analog"><div class="block-row"><div class="st-block blue reporter">Virtual Joystick Analog <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-virtual-joystick-analog">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-virtual-joystick-analog">scripts.BittyInputBlocks.inputSourceVirtualJoystickAnalog(~)</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Virtual Joystick Vector</h3><div class="glossary-entry-desc">Returns a named Virtual Joystick as a vector Input Source.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-input-source-virtual-joystick-vector"><div class="block-row"><div class="st-block blue reporter">Virtual Joystick Vector <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-input-source-virtual-joystick-vector">Copy</button></div><pre id="pre-block-palette-bbinput-input-source-virtual-joystick-vector">scripts.BittyInputBlocks.inputSourceVirtualJoystickVector(~)</pre></div></div></div><h4 class="glossary-subcategory-title">Virtual Buttons</h4><div class="glossary-group-meta">Virtual Controls → Virtual Buttons</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Create Virtual Button at X Y named</h3><div class="glossary-entry-desc">Creates a Slot 0 Virtual Button without assigning an Action.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-create-virtual-button"><div class="block-row"><div class="st-block blue">Create Virtual Button at X <span class="st-input"></span> Y <span class="st-input"></span> named <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-create-virtual-button">Copy</button></div><pre id="pre-block-palette-bbinput-create-virtual-button">scripts.BittyInputBlocks.createVirtualButton(~,~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Register as Virtual Button named</h3><div class="glossary-entry-desc">Registers an actor as a named Virtual Button. Registering the control does not assign it to an Action.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-register-virtual-button"><div class="block-row"><div class="st-block blue">Register <span class="st-text">actor</span> as Virtual Button named <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-register-virtual-button">Copy</button></div><pre id="pre-block-palette-bbinput-register-virtual-button">scripts.BittyInputBlocks.registerVirtualButton(~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set of Virtual Button to</h3><div class="glossary-entry-desc">Changes one property of a generated Virtual Button.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-set-virtual-button-property"><div class="block-row"><div class="st-block blue">Set <span class="st-dropdown">X</span> of Virtual Button <span class="st-text"></span> to <span class="st-input"><span class="st-block blue reporter">Input Source</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-set-virtual-button-property">Copy</button></div><pre id="pre-block-palette-bbinput-set-virtual-button-property">scripts.BittyInputBlocks.setVirtualButtonProperty(~,~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set Shape of Virtual Button to</h3><div class="glossary-entry-desc">Sets the shape of a generated Virtual Button.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-set-virtual-button-shape"><div class="block-row"><div class="st-block blue">Set Shape of Virtual Button <span class="st-text"></span> to <span class="st-dropdown">Rectangle</span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-set-virtual-button-shape">Copy</button></div><pre id="pre-block-palette-bbinput-set-virtual-button-shape">scripts.BittyInputBlocks.setVirtualButtonShape(~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Remove Virtual Button</h3><div class="glossary-entry-desc">Releases held input, removes touch ownership, unregisters the control, and removes its generated display.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-remove-virtual-button"><div class="block-row"><div class="st-block blue">Remove Virtual Button <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-remove-virtual-button">Copy</button></div><pre id="pre-block-palette-bbinput-remove-virtual-button">scripts.BittyInputBlocks.removeVirtualButton(~);</pre></div></div></div><h4 class="glossary-subcategory-title">Virtual Joysticks</h4><div class="glossary-group-meta">Virtual Controls → Virtual Joysticks</div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Create Virtual Joystick at X Y Radius named</h3><div class="glossary-entry-desc">Creates a Slot 0 Virtual Joystick centered at X/Y. Digital exposes Name Up/Down/Left/Right; Analog exposes NameX/NameY. Assign Actions separately.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-create-virtual-joystick"><div class="block-row"><div class="st-block blue">Create <span class="st-dropdown">Digital</span> Virtual Joystick at X <span class="st-input"></span> Y <span class="st-input"></span> Radius <span class="st-input"></span> named <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-create-virtual-joystick">Copy</button></div><pre id="pre-block-palette-bbinput-create-virtual-joystick">scripts.BittyInputBlocks.createVirtualJoystick(~,~,~,~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Register as Virtual Joystick named</h3><div class="glossary-entry-desc">Registers an actor as a named Digital or Analog Virtual Joystick. Analog registration exposes &lt;Name&gt;X and &lt;Name&gt;Y analog inputs. Registering the control does not assign it to an Action.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-register-virtual-joystick"><div class="block-row"><div class="st-block blue">Register <span class="st-text">actor</span> as <span class="st-dropdown">Digital</span> Virtual Joystick named <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-register-virtual-joystick">Copy</button></div><pre id="pre-block-palette-bbinput-register-virtual-joystick">scripts.BittyInputBlocks.registerVirtualJoystick(~,~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Set of Virtual Joystick to</h3><div class="glossary-entry-desc">Changes one property of a generated Virtual Joystick.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-set-virtual-joystick-property"><div class="block-row"><div class="st-block blue">Set <span class="st-dropdown">X</span> of Virtual Joystick <span class="st-text"></span> to <span class="st-input"><span class="st-block blue reporter">Input Source</span></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-set-virtual-joystick-property">Copy</button></div><pre id="pre-block-palette-bbinput-set-virtual-joystick-property">scripts.BittyInputBlocks.setVirtualJoystickProperty(~,~,~);</pre></div></div></div><div class="glossary-entry"><div class="glossary-entry-header"><h3 class="glossary-entry-title">Remove Virtual Joystick</h3><div class="glossary-entry-desc">Releases held input, removes touch ownership, unregisters the control, and removes its generated display.</div></div><div class="block-card glossary-demo-card" id="block-palette-bbinput-remove-virtual-joystick"><div class="block-row"><div class="st-block blue">Remove Virtual Joystick <span class="st-text"></span></div></div><div class="code-box"><div class="code-bar"><span>Code</span><button class="copy-btn" data-copy-target="pre-block-palette-bbinput-remove-virtual-joystick">Copy</button></div><pre id="pre-block-palette-bbinput-remove-virtual-joystick">scripts.BittyInputBlocks.removeVirtualJoystick(~);</pre></div></div></div></div></section>
+
+<section class="section doc-section collapsible-section collapsed" id="troubleshooting"><div class="section-header"><button class="section-toggle" type="button" aria-expanded="false"><h2>FAQs</h2><span class="section-toggle-icon" aria-hidden="true">▶</span></button></div><div class="section-body"><div class="faq-list">
+<details class="faq-item"><summary class="faq-issue">Should I read physical inputs directly or use Actions?</summary><div class="faq-details"><p>Use Actions for normal gameplay. Physical Input Sources should generally be assigned to Actions, so keyboard, controllers, touch gestures, and virtual controls can share the same gameplay logic. Use raw reporters/events when the raw lifecycle or sensor value is itself important.</p></div></details>
+<details class="faq-item"><summary class="faq-issue">What is the difference between Pressed, Down, and Released?</summary><div class="faq-details"><p><strong>Pressed</strong> is the frame an input begins. <strong>Down</strong> stays true while it is held. <strong>Released</strong> is the frame it ends.</p></div></details>
+<details class="faq-item"><summary class="faq-issue">What is the difference between Tap, Long Press, Hold, Drag, Slide, and Swipe?</summary><div class="faq-details"><p><strong>Tap</strong> is a quick mostly stationary release. <strong>Long Press</strong> is a one-shot event after holding mostly still. <strong>Hold</strong> is the sustained state that begins at that same long-press point. <strong>Drag</strong> is sustained movement after crossing Drag Minimum Distance. <strong>Slide</strong> is a directional one-shot recognized while the finger is still down. <strong>Swipe</strong> is a fast directional one-shot classified on release. Drag can therefore begin before Slide or Swipe.</p></div></details>
+<details class="faq-item"><summary class="faq-issue">Why can Tap fire before Double Tap or Triple Tap?</summary><div class="faq-details"><p>Tap is intentionally immediate. The first qualifying release emits Tap immediately; later qualifying taps can then emit Double Tap and Triple Tap. This avoids delaying ordinary taps while waiting to see whether another tap arrives.</p></div></details>
+<details class="faq-item"><summary class="faq-issue">Can Hold and Drag both be Down at once?</summary><div class="faq-details"><p>Not for the same touch. If a held touch moves far enough to become a Drag, Hold releases first and Drag becomes Down.</p></div></details>
+<details class="faq-item"><summary class="faq-issue">Why does Drag often print before Slide or Swipe?</summary><div class="faq-details"><p>Drag is a sustained state and can begin as soon as its movement threshold is crossed. Slide needs its own distance plus minimum duration, while Swipe is classified at release. The order is intentional.</p></div></details>
+<details class="faq-item"><summary class="faq-issue">Do virtual controls also trigger raw Touch and touch gestures?</summary><div class="faq-details"><p>No. A virtual control consumes the touch it owns before raw Touch/gesture processing, preventing one finger press from becoming both a virtual-control input and a second gesture/raw input.</p></div></details>
+<details class="faq-item"><summary class="faq-issue">What is the difference between Acceleration, Motion, Rotation, Orientation, and Gyro?</summary><div class="faq-details"><p><strong>Acceleration</strong> is the raw accelerometer and includes gravity. <strong>Motion</strong> is movement acceleration; on Android it uses gravity-free linear acceleration. <strong>Orientation</strong> is the device’s current Pitch/Roll/Yaw. <strong>Rotation</strong> is the change in orientation between updates. <strong>Gyro</strong> is raw angular velocity; on Android it is radians per second.</p></div></details>
+<details class="faq-item"><summary class="faq-issue">Does Shake use the Gyro?</summary><div class="faq-details"><p>No. Shake uses strong alternating linear-Motion reversals. Gyro remains a raw angular-velocity reporter.</p></div></details>
+<details class="faq-item"><summary class="faq-issue">Are controller deadzones per controller?</summary><div class="faq-details"><p>Not yet. Stick and Trigger deadzones are global in this version. The controller-port field is ignored when the selected reporter is Stick Deadzone or Trigger Deadzone.</p></div></details>
+</div></div></section>
+
+<section class="section doc-section collapsible-section collapsed" id="release-notes"><div class="section-header"><button class="section-toggle" type="button" aria-expanded="false"><h2>Release Notes</h2><span class="section-toggle-icon" aria-hidden="true">▶</span></button></div><div class="section-body"><div class="info-card"><h3>Version 1.0 — Current documented build</h3><p>Unified keyboard, mouse, gamepad, touch, mobile-device, gesture, Action Map, Digital Vector, and virtual-control APIs. Includes sustained Hold/Drag, repeatable Pinch/Rotate touch gestures, physical device gestures, Android linear Motion/orientation, and raw Android Gyro reporters.</p><p class="small-muted">Documentation generated from the audited extension build represented by the current conversation changes.</p></div></div></section>
+<div class="footer">bittyBIG Easy Input System Documentation</div>
+</div></main></div>
 <script>
-	document.querySelectorAll(".copy-btn").forEach(function(button)
-	{
-		button.addEventListener("click", function()
-		{
-			var target = document.getElementById(button.getAttribute("data-copy-target"));
-			if(target == null) return;
+/* Major section dropdowns */
+function getSectionToggle(section){ if(section==null)return null; var header=section.firstElementChild; if(header==null||!header.classList.contains("section-header"))return null; return header.querySelector(".section-toggle"); }
+function setSectionExpanded(section,expanded){ if(section==null)return; section.classList.toggle("collapsed",!expanded); var button=getSectionToggle(section); if(button!=null)button.setAttribute("aria-expanded",expanded?"true":"false"); }
+document.querySelectorAll(".collapsible-section").forEach(function(section){ var button=getSectionToggle(section); if(button==null)return; button.addEventListener("click",function(){ setSectionExpanded(section,section.classList.contains("collapsed")); }); });
+function revealAnchorTarget(hash){ if(hash==null||hash===""||hash==="#")return; var target=document.getElementById(hash.substring(1)); if(target==null)return; var section=target.closest(".collapsible-section"); if(section!=null)setSectionExpanded(section,true); }
+document.querySelectorAll('a[href^="#"]').forEach(function(link){ link.addEventListener("click",function(){ revealAnchorTarget(link.getAttribute("href")); }); });
+revealAnchorTarget(window.location.hash);
 
-			var text = target.innerText;
-			navigator.clipboard.writeText(text).then(function()
-			{
-				var oldText = button.innerText;
-				button.innerText = "Copied";
-				setTimeout(function(){ button.innerText = oldText; }, 1200);
-			});
-		});
-	});
-
-	var sidebarLinks = Array.from(document.querySelectorAll(".left-glossary-nav a[href^='#']"));
-	var observedSections = sidebarLinks
-		.map(function(link){ return document.querySelector(link.getAttribute("href")); })
-		.filter(function(section){ return section != null; });
-
-	if("IntersectionObserver" in window)
-	{
-		var observer = new IntersectionObserver(function(entries)
-		{
-			entries.forEach(function(entry)
-			{
-				if(!entry.isIntersecting) return;
-				sidebarLinks.forEach(function(link){ link.classList.remove("active"); });
-				var active = sidebarLinks.find(function(link)
-				{
-					return link.getAttribute("href") === "#" + entry.target.id;
-				});
-				if(active != null) active.classList.add("active");
-			});
-		}, { rootMargin: "-20% 0px -70% 0px" });
-
-		observedSections.forEach(function(section){ observer.observe(section); });
-	}
+/* Copy buttons */
+function setCopyButtonStatus(button,text){ var oldText=button.getAttribute("data-default-text"); if(oldText==null||oldText===""){oldText=button.textContent;button.setAttribute("data-default-text",oldText);} button.textContent=text; setTimeout(function(){button.textContent=oldText;},1000); }
+document.querySelectorAll(".copy-btn").forEach(function(button){ button.addEventListener("click",function(){ var id=button.getAttribute("data-copy-target"); var target=document.getElementById(id); if(target==null)return; var text=target.textContent||""; if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){setCopyButtonStatus(button,"Copied");});}else{var area=document.createElement("textarea");area.value=text;document.body.appendChild(area);area.select();try{document.execCommand("copy");setCopyButtonStatus(button,"Copied");}catch(e){}document.body.removeChild(area);} }); });
 </script>
-
-</body>
-</html>
+</body></html>
